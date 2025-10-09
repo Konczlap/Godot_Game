@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd5evck3edtjv"]
+
+[ext_resource type="Texture2D" uid="uid://5rieyugciu2a" path="res://icon.svg" id="1_gaqdb"]
+[ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://MovementScript.cs" id="2_jgjqi"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(579, 326)
+texture = ExtResource("1_gaqdb")
+script = ExtResource("2_jgjqi")
