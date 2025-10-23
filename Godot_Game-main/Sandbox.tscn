@@ -1,0 +1,709 @@
+[gd_scene load_steps=15 format=3 uid="uid://bd5evck3edtjv"]
+
+[ext_resource type="Texture2D" uid="uid://uwhbgey80wmu" path="res://Assety do gry/Road 2.png" id="2_5l22i"]
+[ext_resource type="Texture2D" uid="uid://c2dh3bqf6u33n" path="res://Assety do gry/Road 1.png" id="3_d5l5x"]
+[ext_resource type="Texture2D" uid="uid://c7apv4ec58nip" path="res://Assety do gry/Corner 1.png" id="4_84mch"]
+[ext_resource type="Texture2D" uid="uid://d3uojx3eoqf0k" path="res://Assety do gry/Corner 3.png" id="5_mkvsu"]
+[ext_resource type="Texture2D" uid="uid://bi6okjjj6fbdh" path="res://Assety do gry/Curve 1.png" id="6_jlxi8"]
+[ext_resource type="Texture2D" uid="uid://dbbhbajy8rsfq" path="res://Assety do gry/Tree 3.png" id="7_nux3x"]
+[ext_resource type="Texture2D" uid="uid://b3sgiwuqyqo72" path="res://Assety do gry/Tree 1.png" id="8_vss32"]
+[ext_resource type="Texture2D" uid="uid://d4lm6d4nudoam" path="res://Assety do gry/House 2.png" id="9_rasrj"]
+[ext_resource type="Texture2D" uid="uid://cv0yrrrqndxvc" path="res://Assety do gry/House 1.png" id="10_g8htv"]
+[ext_resource type="Texture2D" uid="uid://dvliqmrjf140b" path="res://Assety do gry/Rocks 1.png" id="11_3h8bx"]
+[ext_resource type="Texture2D" uid="uid://cba8roo8712q4" path="res://Assety do gry/Tree 4.png" id="12_s5r2j"]
+[ext_resource type="Texture2D" uid="uid://dy2pydtefnd0f" path="res://Assety do gry/Tree 2.png" id="13_1sjgv"]
+[ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
+[ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="Mapa" type="Node2D" parent="."]
+
+[node name="Tlo" type="Sprite2D" parent="Mapa"]
+modulate = Color(0.35686275, 0.41960785, 0.21176471, 1)
+self_modulate = Color(0.35686275, 0.972549, 0.21176471, 1)
+position = Vector2(24, 8)
+scale = Vector2(4, 4)
+texture = ExtResource("15_5l22i")
+
+[node name="Drzewka" type="Node2D" parent="Mapa"]
+
+[node name="Tree1" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(4.0000153, 131)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree2" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(250.99997, 172)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree4" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(279.99994, 201)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree5" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(266, 237.00002)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree6" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(104, -64)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree7" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(223, -68)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree8" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(366, -68)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree9" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(412, -69)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree10" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(452, -47)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree11" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(488, -22)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree12" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(79.99997, 48.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree13" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(87.99997, 24.00003)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree14" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(103.99997, 48.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree15" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(111.99997, 24.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree16" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(127.99997, 48.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree17" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(144, 24)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree18" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(168, 96)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree19" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(200, 96)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree20" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(255.99997, 96.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree21" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(279.99994, 24.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree22" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(288, 40)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree23" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(295.99994, 16.00003)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree24" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(303.99994, 32.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree25" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(319.99994, 24.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree26" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(320, 48)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree27" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(351.99994, 24.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree28" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(15.999985, 16.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree29" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(362.00003, 255)
+rotation = 3.1415925
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree30" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(383.99994, 256)
+rotation = -1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree31" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(372, 270)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree32" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(386, 285)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree33" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(358.00003, 282)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree34" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-168, 112.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree35" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-200, 120.000015)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree36" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-184, 144)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree37" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-136, 144)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree38" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-72.000015, 272)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree39" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-72.000015, 296)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree40" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-95.99999, 328)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree41" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-4.7683716e-07, 400)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree42" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(111.99997, 232.00002)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree43" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(63.99997, 232)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree44" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(55.99997, 272)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree45" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(32, 280)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree46" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(55.99997, 296)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree47" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(31.99997, 304)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree48" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(55.99997, 320)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree49" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(31.99997, 328)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree50" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-160, -4.7683716e-07)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree51" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-9.536743e-07, -64)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_1sjgv")
+
+[node name="Tree52" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-168, -32)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree53" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(-40, -64)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree54" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(287.99994, 400)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_s5r2j")
+
+[node name="Tree55" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(239.99994, 408)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Tree56" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(55.99997, 408)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_vss32")
+
+[node name="Tree3" type="Sprite2D" parent="Mapa/Drzewka"]
+position = Vector2(331, 131)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_nux3x")
+
+[node name="Domki" type="Node2D" parent="Mapa"]
+
+[node name="House2" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(-184, 56)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("9_rasrj")
+
+[node name="House3" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(520, 48)
+rotation = -3.1415925
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("9_rasrj")
+
+[node name="House1" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(104, 88)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("10_g8htv")
+
+[node name="House4" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(216, 208)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("9_rasrj")
+
+[node name="House5" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(216, 312)
+rotation = -1.5707964
+scale = Vector2(0.27, 0.27)
+texture = ExtResource("9_rasrj")
+
+[node name="House6" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(56, -80)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_22nf0")
+
+[node name="House7" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(160, -80.00001)
+rotation = 1.5707964
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("9_rasrj")
+
+[node name="House8" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(296, -80)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("10_g8htv")
+
+[node name="House9" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(200, 40)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("10_g8htv")
+
+[node name="House10" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(400, 48)
+rotation = 1.5707964
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_22nf0")
+
+[node name="House12" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(400, 208)
+rotation = -3.1415925
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_22nf0")
+
+[node name="House13" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(328, 336)
+rotation = 1.5707964
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("10_g8htv")
+
+[node name="House14" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(-64, 216)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_22nf0")
+
+[node name="House15" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(96, 296.00003)
+rotation = 3.1415925
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("9_rasrj")
+
+[node name="House16" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(-48, 360.00003)
+rotation = 1.0297443
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("10_g8htv")
+
+[node name="House17" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(-112.00001, -56.00001)
+rotation = -0.54105204
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("10_g8htv")
+
+[node name="House18" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(112, 424)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_22nf0")
+
+[node name="House19" type="Sprite2D" parent="Mapa/Domki"]
+position = Vector2(168, 424)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_22nf0")
+
+[node name="Kamienie" type="Node2D" parent="Mapa"]
+
+[node name="Rocks1" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(200, 264)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks2" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(224, 264)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks3" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(232, 80)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks4" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(40, 48)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks5" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(496, 112)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks6" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(472, 136)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks7" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(448, 160)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks8" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(504, 144)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks9" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(480, 168)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks10" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(-96, 168)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks11" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(-40, 272)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Rocks12" type="Sprite2D" parent="Mapa/Kamienie"]
+position = Vector2(-40, 296)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("11_3h8bx")
+
+[node name="Droga" type="Node2D" parent="Mapa"]
+
+[node name="Road2" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(2.2737368e-13, -24.000002)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road3" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(96.000015, -23.999985)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road4" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(192.00002, -23.999985)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road5" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(288, -23.999996)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road1" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(360, -23.999996)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_d5l5x")
+
+[node name="Corner1" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(-95.99997, 56)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("4_84mch")
+
+[node name="Corner2" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(432, 55.999996)
+rotation = -3.1415925
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("4_84mch")
+
+[node name="Corner3" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(-24, 104.00001)
+rotation = -1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Corner4" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(32.000008, 103.999985)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Corner5" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(32.000015, 160)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Corner6" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(-23.999985, 159.99998)
+rotation = -3.1415925
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Corner7" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(360, 104)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Corner8" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(360, 160)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Corner9" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(304, 103.99999)
+rotation = -1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Corner10" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(304, 159.99998)
+rotation = 3.1415925
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Road6" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(104, 136)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road7" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(200, 136)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road8" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(264, 136)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_d5l5x")
+
+[node name="Road9" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(3.8146973e-06, 232)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road10" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(0, 304)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_d5l5x")
+
+[node name="Corner11" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(10, 359)
+rotation = 3.1415925
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Curve1" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(304.525, 257.725)
+scale = Vector2(0.09895105, 0.115547575)
+texture = ExtResource("6_jlxi8")
+
+[node name="Corner12" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(265, 359)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_mkvsu")
+
+[node name="Road11" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(89.049995, 369.05)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road12" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(185.04999, 369.05)
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Road13" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(152, 205.02501)
+scale = Vector2(0.1, 0.10594405)
+texture = ExtResource("2_5l22i")
+
+[node name="Road14" type="Sprite2D" parent="Mapa/Droga"]
+position = Vector2(152, 304)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5l22i")
+
+[node name="Stacja Paliw" type="Node2D" parent="Mapa"]
+
+[node name="WhitePixel" type="Sprite2D" parent="Mapa/Stacja Paliw"]
+modulate = Color(1, 0.09019608, 0, 1)
+position = Vector2(87.6875, 176)
+scale = Vector2(0.029374996, 0.029499989)
+texture = ExtResource("15_5l22i")
+
+[node name="WhitePixel2" type="Sprite2D" parent="Mapa/Stacja Paliw"]
+modulate = Color(0.5803922, 0.09019608, 0, 1)
+position = Vector2(112.5, 176)
+scale = Vector2(0.029, 0.029749997)
+texture = ExtResource("15_5l22i")
+
+[node name="Napis" type="Label" parent="Mapa/Stacja Paliw"]
+offset_left = 75.0
+offset_top = 161.0
+offset_right = 167.0
+offset_bottom = 184.0
+theme_override_font_sizes/font_size = 9
+text = "Stacja Paliw"
+
+[node name="WhitePixel3" type="Sprite2D" parent="Mapa/Stacja Paliw"]
+modulate = Color(0.74509805, 0.09019608, 0, 1)
+position = Vector2(108.99999, 203)
+scale = Vector2(0.031375, 0.015250002)
+texture = ExtResource("15_5l22i")
+
+[node name="Salon Samochodowy" type="Node2D" parent="Mapa"]
+
+[node name="Road1" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+position = Vector2(-82.485, 52.5)
+rotation = 1.5707964
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_d5l5x")
+
+[node name="Road2" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+position = Vector2(-82.485, 40.500004)
+rotation = 1.5707964
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_d5l5x")
+
+[node name="Road3" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+position = Vector2(-82.485, 28.5)
+rotation = 1.5707964
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_d5l5x")
+
+[node name="WhitePixel" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+modulate = Color(0.7254902, 1, 1, 1)
+position = Vector2(-53.375, 48)
+scale = Vector2(0.042749994, 0.06949999)
+texture = ExtResource("15_5l22i")
+
+[node name="Label" type="Label" parent="Mapa/Salon Samochodowy/WhitePixel"]
+offset_left = -459.06436
+offset_top = -474.8202
+offset_right = 494.93564
+offset_bottom = -342.8202
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 94
+text = "Salon Samochodowy"
+
+[node name="Road4" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+position = Vector2(-82.485, 76.5)
+rotation = 1.5707964
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_d5l5x")
+
+[node name="Road5" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+position = Vector2(-82.485, 64.5)
+rotation = 1.5707964
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_d5l5x")
