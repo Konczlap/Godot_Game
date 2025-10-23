@@ -6,9 +6,15 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 324)
+
+[node name="Kar" type="Node2D" parent="."]
+script = ExtResource("2_jgjqi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Kar"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_gaqdb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(579, 326)
+position = Vector2(0, -140)
+scale = Vector2(0.27999967, 0.31999952)
 texture = ExtResource("1_gaqdb")
-script = ExtResource("2_jgjqi")
