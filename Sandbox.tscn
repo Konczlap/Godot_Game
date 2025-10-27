@@ -1,6 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=17 format=3 uid="uid://bd5evck3edtjv"]
 
+[ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://MovementScript.cs" id="1_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://uwhbgey80wmu" path="res://Assety do gry/Road 2.png" id="2_5l22i"]
+[ext_resource type="Texture2D" uid="uid://dkekhok0e207p" path="res://Assety do gry/Car.png" id="2_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://c2dh3bqf6u33n" path="res://Assety do gry/Road 1.png" id="3_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://c7apv4ec58nip" path="res://Assety do gry/Corner 1.png" id="4_84mch"]
 [ext_resource type="Texture2D" uid="uid://d3uojx3eoqf0k" path="res://Assety do gry/Corner 3.png" id="5_mkvsu"]
@@ -17,14 +19,31 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 324)
+[node name="Node2D" type="Node2D" parent="."]
+z_index = 1
+position = Vector2(346, 219)
+scale = Vector2(0.25, 0.25)
+script = ExtResource("1_d5l5x")
+MaxForwardSpeed = 75.0
+MaxBackwardSpeed = -37.5
+Acceleration = 150.0
+BrakePower = 400.0
+EngineBraking = 75.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("2_d5l5x")
+
+[node name="Camera2D" type="Camera2D" parent="Node2D"]
+zoom = Vector2(4, 4)
 
 [node name="Mapa" type="Node2D" parent="."]
 
 [node name="Tlo" type="Sprite2D" parent="Mapa"]
 modulate = Color(0.35686275, 0.41960785, 0.21176471, 1)
 self_modulate = Color(0.35686275, 0.972549, 0.21176471, 1)
+light_mask = 512
+visibility_layer = 512
 position = Vector2(24, 8)
 scale = Vector2(4, 4)
 texture = ExtResource("15_5l22i")
