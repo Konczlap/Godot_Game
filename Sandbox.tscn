@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=27 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://uwhbgey80wmu" path="res://Assety do gry/Road 2.png" id="2_5l22i"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://ckn2ce3pckd0f" path="res://Skrypty/PlayerMoney.cs" id="4_vss32"]
 [ext_resource type="Texture2D" uid="uid://d3uojx3eoqf0k" path="res://Assety do gry/Corner 3.png" id="5_mkvsu"]
 [ext_resource type="Script" uid="uid://dwy06l2didufv" path="res://Skrypty/Package.cs" id="5_nux3x"]
+[ext_resource type="Script" uid="uid://dt2qyc3o2d7uk" path="res://Skrypty/Gas.cs" id="5_rasrj"]
 [ext_resource type="Texture2D" uid="uid://bi6okjjj6fbdh" path="res://Assety do gry/Curve 1.png" id="6_jlxi8"]
 [ext_resource type="Script" uid="uid://c8wtu00f2bl2l" path="res://Skrypty/Customer.cs" id="6_nux3x"]
 [ext_resource type="Texture2D" uid="uid://dbbhbajy8rsfq" path="res://Assety do gry/Tree 3.png" id="7_nux3x"]
@@ -21,15 +22,18 @@
 [ext_resource type="Texture2D" uid="uid://dy2pydtefnd0f" path="res://Assety do gry/Tree 2.png" id="13_1sjgv"]
 [ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
+[ext_resource type="Script" uid="uid://cy7nwoy1mnpc4" path="res://Skrypty/Refueling.cs" id="23_g8htv"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nux3x"]
 size = Vector2(19.505005, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rasrj"]
+
 [node name="Node2D" type="Node2D"]
 
-[node name="Player" type="Node2D" parent="."]
+[node name="Player" type="Node2D" parent="." groups=["Player"]]
 z_index = 1
 position = Vector2(346, 217)
 scale = Vector2(0.25, 0.25)
@@ -40,13 +44,13 @@ Acceleration = 150.0
 BrakePower = 225.0
 EngineBraking = 25.0
 
-[node name="Car" type="Sprite2D" parent="Player"]
+[node name="Car" type="Sprite2D" parent="Player" groups=["Player"]]
 z_index = 10
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_84mch")
 
-[node name="Delivery" type="Area2D" parent="Player/Car" node_paths=PackedStringArray("_movementScript", "_playerMoney")]
-collision_mask = 6
+[node name="Delivery" type="Area2D" parent="Player/Car" node_paths=PackedStringArray("_movementScript", "_playerMoney") groups=["Player"]]
+collision_mask = 14
 script = ExtResource("3_nux3x")
 _movementScript = NodePath("../..")
 _playerMoney = NodePath("../PlayerMoney")
@@ -57,13 +61,18 @@ scale = Vector2(17, 23.63)
 shape = SubResource("CapsuleShape2D_84mch")
 debug_color = Color(0.85870856, 0.3643496, 1.92523e-07, 0.41960785)
 
-[node name="PlayerMoney" type="Node2D" parent="Player/Car"]
+[node name="PlayerMoney" type="Node2D" parent="Player/Car" groups=["Player"]]
 script = ExtResource("4_vss32")
+_money = 50.0
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Gas" type="Node2D" parent="Player/Car" node_paths=PackedStringArray("_fuelStationSpawn", "_movementScript") groups=["Player"]]
+script = ExtResource("5_rasrj")
+_fuelConsumptionRate = 50.0
+_fuelStationSpawn = NodePath("../../../Mapa/Stacja Paliw/WhitePixel3")
+_movementScript = NodePath("../..")
+
+[node name="Camera2D" type="Camera2D" parent="Player" groups=["Player"]]
 zoom = Vector2(4, 4)
-
-[node name="Money" type="Node2D" parent="Player"]
 
 [node name="Paczki" type="Node2D" parent="." groups=["Package"]]
 scale = Vector2(0.25, 0.25)
@@ -1239,6 +1248,15 @@ modulate = Color(0.74509805, 0.09019608, 0, 1)
 position = Vector2(108.99999, 203)
 scale = Vector2(0.031375, 0.015250002)
 texture = ExtResource("15_5l22i")
+
+[node name="Area2D" type="Area2D" parent="Mapa/Stacja Paliw/WhitePixel3" node_paths=PackedStringArray("_playerMoney")]
+collision_layer = 8
+script = ExtResource("23_g8htv")
+_playerMoney = NodePath("../../../../Player/Car/PlayerMoney")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Stacja Paliw/WhitePixel3/Area2D"]
+scale = Vector2(50, 50)
+shape = SubResource("RectangleShape2D_rasrj")
 
 [node name="Salon Samochodowy" type="Node2D" parent="Mapa"]
 
