@@ -13,6 +13,7 @@ public partial class MovementScript : Node2D
 	private float _currentSpeed = 0f;                 // aktualna prędkość
 	private float _rotationInput = 0f;                // wejście dla skrętu
 	
+	public bool CanMove = true;
 	private bool IsStanding = true;
 
 	public override void _PhysicsProcess(double delta)
@@ -26,6 +27,13 @@ public partial class MovementScript : Node2D
 
 	private void HandleInput(float dt)
 	{
+		if (!CanMove)
+		{
+			_currentSpeed = 0f; // zatrzymaj auto natychmiast
+			IsStanding = true;
+			return; // zablokuj sterowanie
+		}
+		
 		bool forward = Input.IsActionPressed("move_forward");
 		bool backward = Input.IsActionPressed("move_backward");
 		bool brake = Input.IsActionPressed("brake");
