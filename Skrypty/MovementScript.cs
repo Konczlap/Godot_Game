@@ -3,15 +3,17 @@ using System;
 
 public partial class MovementScript : Node2D
 {
-	[Export] public float MaxForwardSpeed = 300f;     // maksymalna prędkość do przodu (px/s)
-	[Export] public float MaxBackwardSpeed = -150f;   // maksymalna prędkość do tyłu
-	[Export] public float Acceleration = 400f;        // moc przyspieszenia
-	[Export] public float BrakePower = 600f;          // moc hamowania
-	[Export] public float EngineBraking = 200f;       // hamowanie silnikiem
-	[Export] public float RotationSpeed = 90f;        // maksymalna prędkość obrotu (stopnie/sek)
+	[Export] public float MaxForwardSpeed = 300f;     // (75) maksymalna prędkość do przodu (px/s)
+	[Export] public float MaxBackwardSpeed = -150f;   // (-37.5) maksymalna prędkość do tyłu
+	[Export] public float Acceleration = 400f;        // (150) moc przyspieszenia
+	[Export] public float BrakePower = 600f;          // (225) moc hamowania
+	[Export] public float EngineBraking = 200f;       // (10) hamowanie silnikiem
+	[Export] public float RotationSpeed = 90f;        // (90) maksymalna prędkość obrotu (stopnie/sek)
 	
 	private float _currentSpeed = 0f;                 // aktualna prędkość
 	private float _rotationInput = 0f;                // wejście dla skrętu
+	
+	private bool IsStanding = true;
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -19,6 +21,7 @@ public partial class MovementScript : Node2D
 
 		HandleInput(dt);
 		MoveCar(dt);
+		UpdateStandingState(); // czy auto stoi?
 	}
 
 	private void HandleInput(float dt)
@@ -33,14 +36,10 @@ public partial class MovementScript : Node2D
 
 		// Jazda do przodu
 		if (forward && _currentSpeed < MaxForwardSpeed && !brake)
-		{
 			_currentSpeed += Acceleration * dt;
-		}
 		// Jazda do tyłu
 		else if (backward && _currentSpeed > MaxBackwardSpeed && !brake)
-		{
 			_currentSpeed -= Acceleration * dt;
-		}
 		// Hamowanie
 		else if (brake)
 		{
@@ -75,5 +74,18 @@ public partial class MovementScript : Node2D
 		// Ruch w przód/tył w lokalnym układzie
 		Vector2 forwardDir = new Vector2(0, -1).Rotated(Rotation); // lokalny kierunek przodu
 		Position += forwardDir * _currentSpeed * dt;
+	}
+	
+	private void UpdateStandingState()
+	{
+		if (_currentSpeed < 0.5 && _currentSpeed >= 0 || _currentSpeed > -0.5 && _currentSpeed <= 0)
+			IsStanding = true;
+		else
+			IsStanding = false;
+	}
+	
+	public bool GetIsStanding()
+	{
+		return IsStanding;
 	}
 }

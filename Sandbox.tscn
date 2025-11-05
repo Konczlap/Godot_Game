@@ -1,13 +1,17 @@
-[gd_scene load_steps=18 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=24 format=3 uid="uid://bd5evck3edtjv"]
 
-[ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://MovementScript.cs" id="1_d5l5x"]
+[ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://uwhbgey80wmu" path="res://Assety do gry/Road 2.png" id="2_5l22i"]
-[ext_resource type="Texture2D" uid="uid://dkekhok0e207p" path="res://Assety do gry/Car.png" id="2_d5l5x"]
+[ext_resource type="Texture2D" uid="uid://b8ixnasvuocda" path="res://Assety do gry/Car1.png" id="2_84mch"]
 [ext_resource type="Texture2D" uid="uid://bpc6vkmiwwk7h" path="res://Assety do gry/Package.png" id="3_84mch"]
 [ext_resource type="Texture2D" uid="uid://c2dh3bqf6u33n" path="res://Assety do gry/Road 1.png" id="3_d5l5x"]
+[ext_resource type="Script" uid="uid://dnmyhv3u3ln17" path="res://Skrypty/Delivery.cs" id="3_nux3x"]
 [ext_resource type="Texture2D" uid="uid://c7apv4ec58nip" path="res://Assety do gry/Corner 1.png" id="4_84mch"]
+[ext_resource type="Script" uid="uid://ckn2ce3pckd0f" path="res://Skrypty/PlayerMoney.cs" id="4_vss32"]
 [ext_resource type="Texture2D" uid="uid://d3uojx3eoqf0k" path="res://Assety do gry/Corner 3.png" id="5_mkvsu"]
+[ext_resource type="Script" uid="uid://dwy06l2didufv" path="res://Skrypty/Package.cs" id="5_nux3x"]
 [ext_resource type="Texture2D" uid="uid://bi6okjjj6fbdh" path="res://Assety do gry/Curve 1.png" id="6_jlxi8"]
+[ext_resource type="Script" uid="uid://c8wtu00f2bl2l" path="res://Skrypty/Customer.cs" id="6_nux3x"]
 [ext_resource type="Texture2D" uid="uid://dbbhbajy8rsfq" path="res://Assety do gry/Tree 3.png" id="7_nux3x"]
 [ext_resource type="Texture2D" uid="uid://b3sgiwuqyqo72" path="res://Assety do gry/Tree 1.png" id="8_vss32"]
 [ext_resource type="Texture2D" uid="uid://d4lm6d4nudoam" path="res://Assety do gry/House 2.png" id="9_rasrj"]
@@ -17,6 +21,11 @@
 [ext_resource type="Texture2D" uid="uid://dy2pydtefnd0f" path="res://Assety do gry/Tree 2.png" id="13_1sjgv"]
 [ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nux3x"]
+size = Vector2(19.505005, 20)
 
 [node name="Node2D" type="Node2D"]
 
@@ -28,121 +37,565 @@ script = ExtResource("1_d5l5x")
 MaxForwardSpeed = 75.0
 MaxBackwardSpeed = -37.5
 Acceleration = 150.0
-BrakePower = 400.0
-EngineBraking = 75.0
+BrakePower = 225.0
+EngineBraking = 10.0
 
 [node name="Car" type="Sprite2D" parent="Player"]
 z_index = 10
-scale = Vector2(0.075, 0.075)
-texture = ExtResource("2_d5l5x")
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_84mch")
+
+[node name="Delivery" type="Area2D" parent="Player/Car" node_paths=PackedStringArray("_movementScript", "_playerMoney")]
+collision_mask = 6
+script = ExtResource("3_nux3x")
+_movementScript = NodePath("../..")
+_playerMoney = NodePath("../PlayerMoney")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Car/Delivery"]
+position = Vector2(0, -3.44)
+scale = Vector2(17, 23.63)
+shape = SubResource("CapsuleShape2D_84mch")
+debug_color = Color(0.85870856, 0.3643496, 1.92523e-07, 0.41960785)
+
+[node name="PlayerMoney" type="Node2D" parent="Player/Car"]
+script = ExtResource("4_vss32")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(4, 4)
 
-[node name="Paczki" type="Node2D" parent="."]
+[node name="Money" type="Node2D" parent="Player"]
+
+[node name="Paczki" type="Node2D" parent="." groups=["Package"]]
 scale = Vector2(0.25, 0.25)
 
-[node name="Paczka1" type="Sprite2D" parent="Paczki"]
+[node name="Paczka1" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(716.00006, 828)
+position = Vector2(716, 768)
+scale = Vector2(0.024999999, 0.024999999)
+texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient17")
+
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka1"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka1/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka2" type="Sprite2D" parent="Paczki" groups=["Package"]]
+z_index = 1
+position = Vector2(792, 1376)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient16")
 
-[node name="Paczka2" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka2"]
+scale = Vector2(0.9999998, 0.9999998)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka2/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka3" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(848, 1376)
+position = Vector2(544, 1148)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient15")
 
-[node name="Paczka3" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka3"]
+scale = Vector2(0.99999976, 0.99999976)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka3/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka4" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(544, 1188)
+position = Vector2(1180, 1316)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient14")
 
-[node name="Paczka4" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka4"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka4/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka5" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(1180, 1372)
+position = Vector2(412.00003, 1544)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient13")
 
-[node name="Paczka5" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka5"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka5/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka6" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(440.00006, 1544)
+position = Vector2(640, 1544)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient12")
 
-[node name="Paczka6" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka6"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka6/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka7" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(671.99994, 1540)
+position = Vector2(-44, 1424)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient11")
 
-[node name="Paczka7" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka7"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka7/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka8" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(-55.99994, 1400)
+position = Vector2(-104, 912)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient10")
 
-[node name="Paczka8" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka8"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka8/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka9" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(-104, 876.00006)
+position = Vector2(360, 476)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient9")
 
-[node name="Paczka9" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka9"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka9/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka10" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(415.99994, 480.00003)
+position = Vector2(-592.00006, 271.99997)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient8")
 
-[node name="Paczka10" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka10"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka10/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka11" type="Sprite2D" parent="Paczki" groups=["Package"]]
 z_index = 1
-position = Vector2(-583.99994, 220.00003)
+position = Vector2(-332, -140)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient7")
 
-[node name="Paczka11" type="Sprite2D" parent="Paczki"]
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka11"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka11/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka12" type="Sprite2D" parent="Paczki" groups=["Package"]]
+z_index = 1
+position = Vector2(268, -172)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient6")
+
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka12"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka12/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka13" type="Sprite2D" parent="Paczki" groups=["Package"]]
+z_index = 1
+position = Vector2(584, -176)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient5")
+
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka13"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka13/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka14" type="Sprite2D" parent="Paczki" groups=["Package"]]
+z_index = 1
+position = Vector2(1132, -188)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient4")
+
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka14"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka14/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka15" type="Sprite2D" parent="Paczki" groups=["Package"]]
+z_index = 1
+position = Vector2(1932, 144)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient3")
+
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka15"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka15/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka16" type="Sprite2D" parent="Paczki" groups=["Package"]]
+z_index = 1
+position = Vector2(1520, 32)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient2")
+
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka16"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka16/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Paczka17" type="Sprite2D" parent="Paczki" groups=["Package"]]
+z_index = 1
+position = Vector2(740, 12)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("3_84mch")
+script = ExtResource("5_nux3x")
+CustomerPath = NodePath("../../Klienci/Klient1")
+
+[node name="Area2D" type="Area2D" parent="Paczki/Paczka17"]
+scale = Vector2(0.9999997, 0.9999997)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paczki/Paczka17/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klienci" type="Node2D" parent="." groups=["Customer"]]
+scale = Vector2(0.25, 0.25)
+
+[node name="Klient1" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0, 0.5529412, 1, 1)
+z_index = 1
+position = Vector2(716, 844)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient1"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient1/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient2" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0, 0.27450982, 1, 1)
+z_index = 1
+position = Vector2(888, 1376)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient2"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient2/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient3" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0, 0, 0.5921569, 1)
+z_index = 1
+position = Vector2(544, 1216)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient3"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient3/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient4" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(1, 1, 0, 1)
+z_index = 1
+position = Vector2(1180, 1392)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient4"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient4/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient5" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(1, 0.5921569, 0, 1)
+z_index = 1
+position = Vector2(479.99997, 1544)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient5"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient5/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient6" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(1, 0.29803923, 0, 1)
+z_index = 1
+position = Vector2(716, 1544)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient6"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient6/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient7" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(1, 0, 0, 1)
+z_index = 1
+position = Vector2(-76, 1372)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient7"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient7/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient8" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.5921569, 0, 0, 1)
+z_index = 1
+position = Vector2(-104, 844)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient8"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient8/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient9" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(1, 0, 1, 1)
+z_index = 1
+position = Vector2(448, 476)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient9"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient9/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient10" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.6901961, 0, 1, 1)
+z_index = 1
+position = Vector2(-592.00006, 199.99998)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient10"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient10/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient11" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.5254902, 0, 0.5058824, 1)
 z_index = 1
 position = Vector2(-396.00006, -100)
 scale = Vector2(0.025, 0.025)
-texture = ExtResource("3_84mch")
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
 
-[node name="Paczka12" type="Sprite2D" parent="Paczki"]
-z_index = 1
-position = Vector2(219.99994, -172)
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("3_84mch")
+[node name="Area2D" type="Area2D" parent="Klienci/Klient11"]
+collision_layer = 4
 
-[node name="Paczka13" type="Sprite2D" parent="Paczki"]
-z_index = 1
-position = Vector2(636, -176)
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("3_84mch")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient11/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
 
-[node name="Paczka14" type="Sprite2D" parent="Paczki"]
+[node name="Klient12" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(1, 0, 0.5176471, 1)
 z_index = 1
-position = Vector2(1188, -188)
+position = Vector2(176, -172)
 scale = Vector2(0.025, 0.025)
-texture = ExtResource("3_84mch")
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
 
-[node name="Paczka15" type="Sprite2D" parent="Paczki"]
-z_index = 1
-position = Vector2(1932, 175.99997)
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("3_84mch")
+[node name="Area2D" type="Area2D" parent="Klienci/Klient12"]
+collision_layer = 4
 
-[node name="Paczka16" type="Sprite2D" parent="Paczki"]
-z_index = 1
-position = Vector2(1576, 16.000015)
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("3_84mch")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient12/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
 
-[node name="Paczka17" type="Sprite2D" parent="Paczki"]
+[node name="Klient13" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.6901961, 0.24313726, 0.2784314, 1)
 z_index = 1
-position = Vector2(804.00006, 12)
+position = Vector2(684, -176)
 scale = Vector2(0.025, 0.025)
-texture = ExtResource("3_84mch")
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient13"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient13/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient14" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.67058825, 0.72156864, 0, 1)
+z_index = 1
+position = Vector2(1228, -188)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient14"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient14/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient15" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.36078432, 0.6509804, 0.33333334, 1)
+z_index = 1
+position = Vector2(1932, 236)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient15"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient15/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient16" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.7882353, 0.28627452, 0.12156863, 1)
+z_index = 1
+position = Vector2(1608, 32)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient16"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient16/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
+
+[node name="Klient17" type="Sprite2D" parent="Klienci" groups=["Customer"]]
+modulate = Color(0.49411765, 0, 0.2627451, 1)
+z_index = 1
+position = Vector2(840, 12)
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("15_5l22i")
+script = ExtResource("6_nux3x")
+
+[node name="Area2D" type="Area2D" parent="Klienci/Klient17"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Klienci/Klient17/Area2D"]
+scale = Vector2(51, 51)
+shape = SubResource("RectangleShape2D_nux3x")
 
 [node name="Mapa" type="Node2D" parent="."]
 
@@ -151,7 +604,7 @@ modulate = Color(0.35686275, 0.41960785, 0.21176471, 1)
 self_modulate = Color(0.35686275, 0.972549, 0.21176471, 1)
 light_mask = 512
 visibility_layer = 512
-position = Vector2(24, 8)
+position = Vector2(24, 6)
 scale = Vector2(4, 4)
 texture = ExtResource("15_5l22i")
 
@@ -833,3 +1286,11 @@ position = Vector2(-82.485, 64.5)
 rotation = 1.5707964
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("3_d5l5x")
+
+[node name="Dom" type="Node2D" parent="."]
+
+[node name="Dom" type="Sprite2D" parent="Dom"]
+z_index = 1
+position = Vector2(400, 169)
+scale = Vector2(0.00625, 0.00625)
+texture = ExtResource("15_5l22i")
