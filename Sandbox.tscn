@@ -38,7 +38,7 @@ MaxForwardSpeed = 75.0
 MaxBackwardSpeed = -37.5
 Acceleration = 150.0
 BrakePower = 225.0
-EngineBraking = 10.0
+EngineBraking = 25.0
 
 [node name="Car" type="Sprite2D" parent="Player"]
 z_index = 10
