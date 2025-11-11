@@ -8,6 +8,7 @@ public partial class Gas : Node2D
 	[Export] private Sprite2D _fuelStationSpawn; // np. pozycja stacji paliw
 
 	[Export] public MovementScript _movementScript;
+	public bool _isTeleporting = false;
 
 	public override async void _Process(double delta)
 	{
@@ -26,6 +27,7 @@ public partial class Gas : Node2D
 		// Gdy paliwo się skończy — można dodać reakcję (np. zatrzymanie auta)
 		if (_currentFuel <= 0f)
 		{
+			_isTeleporting = true;
 			_currentFuel = 0f;
 			_movementScript.CanMove = false;
 			GD.Print("🚫 Brak paliwa!");
@@ -33,6 +35,9 @@ public partial class Gas : Node2D
 			await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
 			TeleportToFuelStation();
 		}
+			// Przy okazji można pozwolić znowu na ruch (np. po zatankowaniu)
+		else
+			_movementScript.CanMove = true;
 	}
 
 	public void AddFuel(float amount)
@@ -48,16 +53,15 @@ public partial class Gas : Node2D
 		//GD.PrintErr("⚠️ Nie ustawiono punktu stacji paliw (FuelStationSpawn)!");
 		//return;
 	//}
+	if(_isTeleporting)
+	{
+		_isTeleporting = false;
+		Node2D player = GetParent<Node2D>().GetParent<Node2D>();
+		player.GlobalPosition = _fuelStationSpawn.GlobalPosition;
+		player.GlobalRotation = -90f;
 
-	Node2D player = GetParent<Node2D>().GetParent<Node2D>();
-	player.GlobalPosition = _fuelStationSpawn.GlobalPosition;
-	player.Rotation = -90f;
-
-	GD.Print("⛽ Teleportowano na stację paliw.");
-
-	// Przy okazji można pozwolić znowu na ruch (np. po zatankowaniu)
-	if (_currentFuel > 0f)
-		_movementScript.CanMove = true;
+		GD.Print("⛽ Teleportowano na stację paliw.");
+	}
 }
 
 	public float GetFuel()

@@ -1,8 +1,10 @@
 using Godot;
 using System;
 
-public partial class MovementScript : Node2D
+public partial class MovementScript : CharacterBody2D
 {
+	[Export] private Collisions _collisions;
+	
 	[Export] public float MaxForwardSpeed = 300f;     // (75) maksymalna prędkość do przodu (px/s)
 	[Export] public float MaxBackwardSpeed = -150f;   // (-37.5) maksymalna prędkość do tyłu
 	[Export] public float Acceleration = 400f;        // (150) moc przyspieszenia
@@ -23,6 +25,7 @@ public partial class MovementScript : Node2D
 		HandleInput(dt);
 		MoveCar(dt);
 		UpdateStandingState(); // czy auto stoi?
+		_collisions.CheckCollisionStop(this);
 	}
 
 	private void HandleInput(float dt)
@@ -81,7 +84,10 @@ public partial class MovementScript : Node2D
 
 		// Ruch w przód/tył w lokalnym układzie
 		Vector2 forwardDir = new Vector2(0, -1).Rotated(Rotation); // lokalny kierunek przodu
-		Position += forwardDir * _currentSpeed * dt;
+		Velocity = forwardDir * _currentSpeed;
+		MoveAndSlide();
+		
+		//Position += forwardDir * _currentSpeed * dt;
 	}
 	
 	private void UpdateStandingState()
@@ -90,6 +96,11 @@ public partial class MovementScript : Node2D
 			IsStanding = true;
 		else
 			IsStanding = false;
+	}
+	
+	public void SetCurrentSpeed(float speed)
+	{
+		_currentSpeed = speed;
 	}
 	
 	public bool GetIsStanding()
