@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bovf27kvcnuqq"]
+
+[ext_resource type="PackedScene" uid="uid://bd5evck3edtjv" path="res://Sandbox.tscn" id="1_wtcfe"]
+
+[node name="Node2D" instance=ExtResource("1_wtcfe")]

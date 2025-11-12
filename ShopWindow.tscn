@@ -1,0 +1,122 @@
+[gd_scene load_steps=4 format=3 uid="uid://5fw8ll30mur4"]
+
+[ext_resource type="Texture2D" uid="uid://1araqj27yhsb" path="res://Assety do gry/samochod.png" id="1_ouowt"]
+[ext_resource type="Texture2D" uid="uid://donry0td7khne" path="res://Assety do gry/kombi.png" id="2_vget2"]
+[ext_resource type="Texture2D" uid="uid://dsw8e3glg0ai1" path="res://Assety do gry/ciezarowka.png" id="3_ndhej"]
+
+[node name="ShopWindow" type="Panel"]
+offset_right = 48.0
+offset_bottom = 48.0
+
+[node name="VBoxMain" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TopBar" type="Panel" parent="VBoxMain"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="HBoxTop" type="HBoxContainer" parent="VBoxMain/TopBar"]
+layout_mode = 0
+offset_left = 450.0
+offset_top = 20.0
+offset_right = 735.0
+offset_bottom = 59.0
+
+[node name="SpacerLeft" type="Control" parent="VBoxMain/TopBar/HBoxTop"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxMain/TopBar/HBoxTop"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Salon samochodowy"
+horizontal_alignment = 1
+
+[node name="Spacer_Right" type="Control" parent="VBoxMain/TopBar/HBoxTop"]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="VBoxMain/TopBar"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 48.0
+text = "X"
+
+[node name="MoneyLabel" type="Label" parent="VBoxMain/TopBar"]
+layout_mode = 0
+offset_left = 976.0
+offset_top = 21.0
+offset_right = 1105.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 28
+text = "$:               "
+horizontal_alignment = 2
+
+[node name="ContentHBox" type="HBoxContainer" parent="VBoxMain"]
+layout_mode = 2
+
+[node name="LeftPanel" type="Panel" parent="VBoxMain/ContentHBox"]
+custom_minimum_size = Vector2(360, 564)
+layout_mode = 2
+
+[node name="LeftBox" type="VBoxContainer" parent="VBoxMain/ContentHBox/LeftPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Btn_Car" type="Button" parent="VBoxMain/ContentHBox/LeftPanel/LeftBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "Samochód"
+icon = ExtResource("1_ouowt")
+
+[node name="Btn_Kombi" type="Button" parent="VBoxMain/ContentHBox/LeftPanel/LeftBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "Kombi"
+icon = ExtResource("2_vget2")
+
+[node name="Btn_Truck" type="Button" parent="VBoxMain/ContentHBox/LeftPanel/LeftBox"]
+layout_mode = 2
+text = "Ciężarówka"
+icon = ExtResource("3_ndhej")
+
+[node name="RightPanel" type="Panel" parent="VBoxMain/ContentHBox"]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+
+[node name="RightVBox" type="VBoxContainer" parent="VBoxMain/ContentHBox/RightPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PreviewTexture" type="TextureRect" parent="VBoxMain/ContentHBox/RightPanel/RightVBox"]
+layout_mode = 2
+texture = ExtResource("1_ouowt")
+stretch_mode = 3
+
+[node name="StatsVBox" type="VBoxContainer" parent="VBoxMain/ContentHBox/RightPanel/RightVBox"]
+layout_mode = 2
+
+[node name="LabelEngine" type="Label" parent="VBoxMain/ContentHBox/RightPanel/RightVBox/StatsVBox"]
+layout_mode = 2
+text = "Pojemność silnika:    L"
+
+[node name="LabelSpeed" type="Label" parent="VBoxMain/ContentHBox/RightPanel/RightVBox/StatsVBox"]
+layout_mode = 2
+text = "Prędkość max:   km/h"
+
+[node name="LabelConsumption" type="Label" parent="VBoxMain/ContentHBox/RightPanel/RightVBox/StatsVBox"]
+layout_mode = 2
+text = "Spalanie:     l/100km"
+
+[node name="BuyButton" type="Button" parent="VBoxMain/ContentHBox/RightPanel/RightVBox"]
+custom_minimum_size = Vector2(220, 35)
+layout_mode = 2
+text = "KUP"
+
+[node name="Label" type="Label" parent="VBoxMain/ContentHBox/RightPanel/RightVBox"]
+layout_mode = 2
+text = "Cena: "
+horizontal_alignment = 1
