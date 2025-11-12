@@ -1,8 +1,9 @@
-[gd_scene load_steps=40 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=44 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://uwhbgey80wmu" path="res://Assety do gry/Road 2.png" id="2_5l22i"]
 [ext_resource type="Texture2D" uid="uid://b8ixnasvuocda" path="res://Assety do gry/Car1.png" id="2_84mch"]
+[ext_resource type="Script" uid="uid://cqtlxk5x8h5eo" path="res://Skrypty/Car.cs" id="3_1sjgv"]
 [ext_resource type="Texture2D" uid="uid://bpc6vkmiwwk7h" path="res://Assety do gry/Package.png" id="3_84mch"]
 [ext_resource type="Texture2D" uid="uid://c2dh3bqf6u33n" path="res://Assety do gry/Road 1.png" id="3_d5l5x"]
 [ext_resource type="Script" uid="uid://dnmyhv3u3ln17" path="res://Skrypty/Delivery.cs" id="3_nux3x"]
@@ -14,7 +15,9 @@
 [ext_resource type="Script" uid="uid://c6jk5wtcqk8kq" path="res://Skrypty/Collisions.cs" id="6_3h8bx"]
 [ext_resource type="Texture2D" uid="uid://bi6okjjj6fbdh" path="res://Assety do gry/Curve 1.png" id="6_jlxi8"]
 [ext_resource type="Script" uid="uid://c8wtu00f2bl2l" path="res://Skrypty/Customer.cs" id="6_nux3x"]
+[ext_resource type="Texture2D" uid="uid://cllo2qprphmb" path="res://Assety do gry/sw.png" id="7_1sjgv"]
 [ext_resource type="Texture2D" uid="uid://dbbhbajy8rsfq" path="res://Assety do gry/Tree 3.png" id="7_nux3x"]
+[ext_resource type="Texture2D" uid="uid://nsdsjrksr5bc" path="res://Assety do gry/tylnesw.png" id="8_22nf0"]
 [ext_resource type="Texture2D" uid="uid://b3sgiwuqyqo72" path="res://Assety do gry/Tree 1.png" id="8_vss32"]
 [ext_resource type="Texture2D" uid="uid://d4lm6d4nudoam" path="res://Assety do gry/House 2.png" id="9_rasrj"]
 [ext_resource type="Texture2D" uid="uid://cv0yrrrqndxvc" path="res://Assety do gry/House 1.png" id="10_g8htv"]
@@ -24,6 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
 [ext_resource type="Script" uid="uid://cy7nwoy1mnpc4" path="res://Skrypty/Refueling.cs" id="23_g8htv"]
+[ext_resource type="Script" uid="uid://bd8b1gxsts0tf" path="res://Skrypty/SpawnManager.cs" id="24_3h8bx"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -83,10 +87,15 @@ Acceleration = 150.0
 BrakePower = 225.0
 EngineBraking = 25.0
 
-[node name="Car" type="Sprite2D" parent="Player" groups=["Player"]]
+[node name="Car" type="Sprite2D" parent="Player" node_paths=PackedStringArray("FrontLeftLight", "FrontRightLight", "BackLeftLight", "BackRightLight") groups=["Player"]]
 z_index = 10
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_84mch")
+script = ExtResource("3_1sjgv")
+FrontLeftLight = NodePath("FrontLeftLight")
+FrontRightLight = NodePath("FrontRightLight")
+BackLeftLight = NodePath("BackLeftLight")
+BackRightLight = NodePath("BackRightLight")
 
 [node name="Delivery" type="Area2D" parent="Player/Car" node_paths=PackedStringArray("_movementScript", "_playerMoney") groups=["Player"]]
 collision_mask = 30
@@ -109,6 +118,54 @@ script = ExtResource("5_rasrj")
 _fuelConsumptionRate = 4.0
 _fuelStationSpawn = NodePath("../../../Mapa/Stacja Paliw/WhitePixel3")
 _movementScript = NodePath("../..")
+
+[node name="FrontLeftLight" type="PointLight2D" parent="Player/Car"]
+visible = false
+light_mask = 16
+z_index = 100
+position = Vector2(-110, -900)
+scale = Vector2(-4.137607, -1.6293532)
+color = Color(1, 0.9647059, 0.8, 1)
+energy = 2.0
+range_z_min = 0
+texture = ExtResource("7_1sjgv")
+texture_scale = 0.8
+
+[node name="BackLeftLight" type="PointLight2D" parent="Player/Car"]
+visible = false
+light_mask = 16
+z_index = 100
+position = Vector2(-108, 341)
+rotation = -6.1208696
+scale = Vector2(-2.2, -2)
+color = Color(0.7921569, 0, 0.0627451, 1)
+energy = 2.0
+range_z_min = 0
+texture = ExtResource("8_22nf0")
+
+[node name="BackRightLight" type="PointLight2D" parent="Player/Car"]
+visible = false
+light_mask = 16
+z_index = 100
+position = Vector2(105, 341)
+rotation = 6.1208696
+scale = Vector2(-2.2, -2)
+color = Color(0.793305, 0, 0.06438363, 1)
+energy = 5.42
+range_z_min = 0
+texture = ExtResource("8_22nf0")
+
+[node name="FrontRightLight" type="PointLight2D" parent="Player/Car"]
+visible = false
+light_mask = 16
+z_index = 100
+position = Vector2(110, -900)
+scale = Vector2(-4.137607, -1.6293532)
+color = Color(1, 0.9647059, 0.8, 1)
+energy = 1.8
+range_z_min = 0
+texture = ExtResource("7_1sjgv")
+texture_scale = 0.8
 
 [node name="Collisions" type="Node2D" parent="Player/Car"]
 script = ExtResource("6_3h8bx")
@@ -656,8 +713,6 @@ shape = SubResource("RectangleShape2D_nux3x")
 [node name="Tlo" type="Sprite2D" parent="Mapa"]
 modulate = Color(0.35686275, 0.41960785, 0.21176471, 1)
 self_modulate = Color(0.35686275, 0.972549, 0.21176471, 1)
-light_mask = 512
-visibility_layer = 512
 position = Vector2(24, 6)
 scale = Vector2(4, 4)
 texture = ExtResource("15_5l22i")
@@ -1398,6 +1453,7 @@ shape = SubResource("RectangleShape2D_pfgrx")
 [node name="Domki" type="Node2D" parent="Mapa"]
 
 [node name="House2" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(-184, 56)
 scale = Vector2(0.3, 0.3)
@@ -1411,6 +1467,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_3h8bx")
 
 [node name="House3" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(520, 48)
 rotation = -3.1415925
@@ -1425,6 +1482,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_3h8bx")
 
 [node name="House1" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(104, 88)
 scale = Vector2(0.3, 0.3)
@@ -1438,6 +1496,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_1sjgv")
 
 [node name="House4" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(216, 208)
 scale = Vector2(0.3, 0.3)
@@ -1451,6 +1510,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_3h8bx")
 
 [node name="House5" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(216, 312)
 rotation = -1.5707964
@@ -1465,6 +1525,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_3h8bx")
 
 [node name="House6" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(56, -80)
 scale = Vector2(0.3, 0.3)
@@ -1478,6 +1539,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_22nf0")
 
 [node name="House7" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(160, -80.00001)
 rotation = 1.5707964
@@ -1492,6 +1554,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_3h8bx")
 
 [node name="House8" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(296, -80)
 scale = Vector2(0.3, 0.3)
@@ -1505,6 +1568,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_1sjgv")
 
 [node name="House9" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(200, 40)
 scale = Vector2(0.3, 0.3)
@@ -1518,6 +1582,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_1sjgv")
 
 [node name="House10" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(400, 48)
 rotation = 1.5707964
@@ -1532,6 +1597,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_22nf0")
 
 [node name="House12" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(400, 208)
 rotation = -3.1415925
@@ -1546,6 +1612,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_22nf0")
 
 [node name="House13" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(328, 336)
 rotation = 1.5707964
@@ -1560,6 +1627,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_1sjgv")
 
 [node name="House14" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(-64, 216)
 scale = Vector2(0.3, 0.3)
@@ -1573,6 +1641,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_22nf0")
 
 [node name="House15" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(96, 296.00003)
 rotation = 3.1415925
@@ -1587,6 +1656,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_3h8bx")
 
 [node name="House16" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(-48, 360.00003)
 rotation = 1.0297443
@@ -1601,6 +1671,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_1sjgv")
 
 [node name="House17" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(-112.00001, -56.00001)
 rotation = -0.54105204
@@ -1615,6 +1686,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_1sjgv")
 
 [node name="House18" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(112, 424)
 scale = Vector2(0.3, 0.3)
@@ -1628,6 +1700,7 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 shape = SubResource("RectangleShape2D_22nf0")
 
 [node name="House19" type="Sprite2D" parent="Mapa/Domki"]
+light_mask = 32
 z_index = 11
 position = Vector2(168, 424)
 scale = Vector2(0.3, 0.3)
@@ -1946,6 +2019,7 @@ texture = ExtResource("2_5l22i")
 
 [node name="WhitePixel" type="Sprite2D" parent="Mapa/Stacja Paliw"]
 modulate = Color(1, 0.09019608, 0, 1)
+light_mask = 32
 z_index = 11
 position = Vector2(87.6875, 176)
 scale = Vector2(0.029374996, 0.029499989)
@@ -1960,6 +2034,7 @@ shape = SubResource("RectangleShape2D_75nqk")
 
 [node name="WhitePixel2" type="Sprite2D" parent="Mapa/Stacja Paliw"]
 modulate = Color(0.5803922, 0.09019608, 0, 1)
+light_mask = 32
 z_index = 11
 position = Vector2(112.5, 176)
 scale = Vector2(0.029, 0.029749997)
@@ -2018,6 +2093,7 @@ texture = ExtResource("3_d5l5x")
 
 [node name="WhitePixel" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
 modulate = Color(0.7254902, 1, 1, 1)
+light_mask = 32
 z_index = 11
 position = Vector2(-53.375, 48)
 scale = Vector2(0.042749994, 0.06949999)
@@ -2059,3 +2135,8 @@ z_index = 1
 position = Vector2(400, 169)
 scale = Vector2(0.00625, 0.00625)
 texture = ExtResource("15_5l22i")
+
+[node name="SpawnManager" type="Node2D" parent="."]
+script = ExtResource("24_3h8bx")
+_packagesParentPath = NodePath("../Paczki")
+_customersParentPath = NodePath("../Klienci")
