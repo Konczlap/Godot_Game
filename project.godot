@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Wars"
-run/main_scene="uid://bd5evck3edtjv"
+run/main_scene="uid://q3g1r7ghd600"
 config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="res://icon.svg"
 
