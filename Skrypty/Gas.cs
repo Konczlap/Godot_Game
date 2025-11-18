@@ -21,7 +21,7 @@ public partial class Gas : Node2D
 			_currentFuel -= _fuelConsumptionRate * (float)delta;
 			_currentFuel = Mathf.Max(_currentFuel, 0f);
 
-			GD.Print($"⛽ Paliwo: {_currentFuel:0.0}/{_maxFuel}");
+			//GD.Print($"⛽ Paliwo: {_currentFuel:0.0}/{_maxFuel}");
 		}
 
 		// Gdy paliwo się skończy — można dodać reakcję (np. zatrzymanie auta)

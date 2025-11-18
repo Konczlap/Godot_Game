@@ -29,7 +29,7 @@
 [ext_resource type="Script" uid="uid://cy7nwoy1mnpc4" path="res://Skrypty/Refueling.cs" id="23_g8htv"]
 [ext_resource type="Script" uid="uid://bd8b1gxsts0tf" path="res://Skrypty/SpawnManager.cs" id="24_3h8bx"]
 [ext_resource type="PackedScene" uid="uid://bbst3dcnjiq8p" path="res://Sceny/FuelHUD.tscn" id="29_76lar"]
-[ext_resource type="Script" uid="uid://450afn1jogt2" path="res://Skrypty/FuelHUD.cs" id="30_3v8ch"]
+[ext_resource type="PackedScene" uid="uid://b2d7jwua5bhgl" path="res://Sceny/MoneyHUD.tscn" id="30_q4juh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -2144,5 +2144,7 @@ _packagesParentPath = NodePath("../Paczki")
 _customersParentPath = NodePath("../Klienci")
 
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
-script = ExtResource("30_3v8ch")
 GasScript = NodePath("../Player/Car/Gas")
+
+[node name="MoneyHUD" parent="." node_paths=PackedStringArray("MoneyScript") instance=ExtResource("30_q4juh")]
+MoneyScript = NodePath("../Player/Car/PlayerMoney")

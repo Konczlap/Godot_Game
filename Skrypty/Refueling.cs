@@ -60,6 +60,7 @@ public partial class Refueling : Area2D
 			_movementScript = player.GetNodeOrNull<MovementScript>(".");
 			_gas = car.GetNodeOrNull<Gas>("Gas");
 			_playerMoney = car.GetNodeOrNull<PlayerMoney>("PlayerMoney");
+			_playerMoney.ZeroingSpendMoney();
 
 			// Sprawdzamy, czy gracz/pojazd ma potrzebne komponenty
 			if (_movementScript != null && _gas != null && _playerMoney != null)
