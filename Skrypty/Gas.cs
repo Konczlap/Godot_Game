@@ -30,7 +30,7 @@ public partial class Gas : Node2D
 			_isTeleporting = true;
 			_currentFuel = 0f;
 			_movementScript.CanMove = false;
-			GD.Print("🚫 Brak paliwa!");
+			//GD.Print("🚫 Brak paliwa!");
 			
 			await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
 			TeleportToFuelStation();
@@ -43,7 +43,7 @@ public partial class Gas : Node2D
 	public void AddFuel(float amount)
 	{
 		_currentFuel = Mathf.Clamp(_currentFuel + amount, 0f, _maxFuel);
-		GD.Print($"⛽ Zatankowano {amount}L. Stan baku: {_currentFuel}/{_maxFuel}");
+		//GD.Print($"⛽ Zatankowano {amount}L. Stan baku: {_currentFuel}/{_maxFuel}");
 	}
 	
 	private void TeleportToFuelStation()
@@ -60,7 +60,7 @@ public partial class Gas : Node2D
 		player.GlobalPosition = _fuelStationSpawn.GlobalPosition;
 		player.GlobalRotation = -90f;
 
-		GD.Print("⛽ Teleportowano na stację paliw.");
+		//GD.Print("⛽ Teleportowano na stację paliw.");
 	}
 }
 

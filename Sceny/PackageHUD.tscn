@@ -1,0 +1,197 @@
+[gd_scene load_steps=4 format=3 uid="uid://cw3bvb80dnlp7"]
+
+[ext_resource type="Script" uid="uid://c2qio0xw7mriy" path="res://Skrypty/PackageHUD.cs" id="1_ufyp2"]
+[ext_resource type="Texture2D" uid="uid://bpc6vkmiwwk7h" path="res://Assety do gry/Package.png" id="2_oq2qc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa3i0"]
+bg_color = Color(0.16470589, 0.16470589, 0.16470589, 1)
+border_width_right = 2
+border_color = Color(1, 1, 1, 0.6666667)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="PackageHUD" type="CanvasLayer"]
+script = ExtResource("1_ufyp2")
+
+[node name="PackageHUDControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -600.0
+offset_top = -60.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="BarBackground" type="ColorRect" parent="PackageHUDControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Slots" type="HBoxContainer" parent="PackageHUDControl/BarBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Slot0" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot0"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot1" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot1"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot2" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot3" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot3"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot4" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot4"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot5" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot5"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot6" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot6"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot7" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot7"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot8" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot8"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot9" type="Panel" parent="PackageHUDControl/BarBackground/Slots"]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oa3i0")
+
+[node name="Icon" type="TextureRect" parent="PackageHUDControl/BarBackground/Slots/Slot9"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_oq2qc")
+expand_mode = 1
+stretch_mode = 5

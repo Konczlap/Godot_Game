@@ -30,7 +30,7 @@ public partial class Delivery : Area2D
 		{
 			_overlappingPackageNode = area.GetParent() as Package;
 			_canTakePackage = true;
-			GD.Print("Wykryto paczkę: " + area.GetParent().Name);
+			//GD.Print("Wykryto paczkę: " + area.GetParent().Name);
 		}
 
 		// Gdy gracz wjeżdża w klienta
@@ -67,7 +67,7 @@ public partial class Delivery : Area2D
 			// --- PODNOSZENIE PACZKI ---
 			if (_canTakePackage && _overlappingPackageNode != null && _overlappingPackageNode.Visible)
 			{
-				GD.Print($"Mogę podnieść paczkę?");
+				//GD.Print($"Mogę podnieść paczkę?");
 				TryTakePackage();
 			}
 
@@ -97,12 +97,12 @@ public partial class Delivery : Area2D
 			_collectedPackages.Add(_overlappingPackageNode);
 			CurrentPackageAmount++;
 
-			GD.Print($"Podniesiono paczkę. Aktualnie wieziesz: {CurrentPackageAmount}/{MaxPackageAmount}");
+			//GD.Print($"Podniesiono paczkę. Aktualnie wieziesz: {CurrentPackageAmount}/{MaxPackageAmount}");
 			PrintCollectedPackages();
 		}
 		else
 		{
-			GD.Print("Nie możesz podnieść więcej paczek, albo nie stoisz!");
+			//GD.Print("Nie możesz podnieść więcej paczek, albo nie stoisz!");
 		}
 	}
 	
@@ -125,19 +125,19 @@ public partial class Delivery : Area2D
 					_playerMoney.AddMoney(_collectedPackage.GetPackagePrice());
 					CurrentPackageAmount--;
 					_collectedPackages.Remove(_collectedPackage);
-					GD.Print($"Dostarczono paczkę. Pozostało: {CurrentPackageAmount}/{MaxPackageAmount}");
+					//GD.Print($"Dostarczono paczkę. Pozostało: {CurrentPackageAmount}/{MaxPackageAmount}");
 					return; // właściwa znaleziona
 				}
 				else
 				{
-					GD.Print("Zły klient!");
+					//GD.Print("Zły klient!");
 				}
 			}
 			
 		}
 		else
 		{
-			GD.Print("Nie masz żadnych paczek do dostarczenia, albo nie stoisz!");
+			//GD.Print("Nie masz żadnych paczek do dostarczenia, albo nie stoisz!");
 		}
 	}
 

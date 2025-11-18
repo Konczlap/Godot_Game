@@ -42,7 +42,7 @@ public partial class Refueling : Area2D
 			}
 			else
 			{
-				GD.Print("❌ Brak pieniędzy na paliwo!");
+				//GD.Print("❌ Brak pieniędzy na paliwo!");
 			}
 		}
 	}
@@ -51,11 +51,11 @@ public partial class Refueling : Area2D
 	{
 		if (area.GetParent().IsInGroup("Player"))
 		{
-			GD.Print("Wykryto pojazd na stacji paliw");
+			//GD.Print("Wykryto pojazd na stacji paliw");
 			
 			Node car = area.GetParent();
 			Node player = car.GetParent();
-			GD.Print($"{player.Name}");
+			//GD.Print($"{player.Name}");
 			
 			_movementScript = player.GetNodeOrNull<MovementScript>(".");
 			_gas = car.GetNodeOrNull<Gas>("Gas");
@@ -66,11 +66,11 @@ public partial class Refueling : Area2D
 			if (_movementScript != null && _gas != null && _playerMoney != null)
 			{
 				_canRefuel = true;
-				GD.Print("🅿️ Można tankować — naciśnij [E]");
+				//GD.Print("🅿️ Można tankować — naciśnij [E]");
 			}
 			else
 			{
-				GD.PrintErr("⚠️ Nie znaleziono któregoś z komponentów (MovementScript / Gas / PlayerMoney)");
+				//GD.PrintErr("⚠️ Nie znaleziono któregoś z komponentów (MovementScript / Gas / PlayerMoney)");
 			}
 		}
 	}
@@ -83,7 +83,7 @@ public partial class Refueling : Area2D
 			_gas = null;
 			_movementScript = null;
 			_playerMoney = null;
-			GD.Print("🚗 Opuściłeś stację paliw.");
+			//GD.Print("🚗 Opuściłeś stację paliw.");
 		}
 	}
 }

@@ -10,7 +10,7 @@ public partial class PlayerMoney : Node2D
 	{
 		_money += amount;
 		//_money = (float)Math.Round(amount, 2);
-		GD.Print($"💰 Dodano {amount}$. Aktualny stan konta: {_money}$");
+		//GD.Print($"💰 Dodano {amount}$. Aktualny stan konta: {_money}$");
 	}
 
 	public bool SpendMoney(float amount)
@@ -20,12 +20,12 @@ public partial class PlayerMoney : Node2D
 			_money -= amount;
 			_spendMoney += amount;
 			//_money = (float)Math.Round(amount, 2);
-			GD.Print($"💸 Wydano {amount}$. Pozostało: {_money}$");
+			//GD.Print($"💸 Wydano {amount}$. Pozostało: {_money}$");
 			return true;
 		}
 		else
 		{
-			GD.Print("❌ Brak środków!");
+			//GD.Print("❌ Brak środków!");
 			return false;
 		}
 	}

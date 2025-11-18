@@ -11,7 +11,7 @@ public partial class Collisions : Node2D
 		// Sprawdzenie kolizji po ruchu
 		if (_movementScript.GetSlideCollisionCount() > 0)
 		{
-			GD.Print("Kolizja!");
+			//GD.Print("Kolizja!");
 			StopCar(_movementScript);
 			// Nie blokujemy CanMove, aby możliwy był ruch w tył
 		}
