@@ -1,0 +1,136 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbst3dcnjiq8p"]
+
+[ext_resource type="Script" uid="uid://450afn1jogt2" path="res://Skrypty/FuelHUD.cs" id="1_3gsjd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_htcsu"]
+line_spacing = 0.0
+font_size = 42
+
+[node name="FuelHUD" type="CanvasLayer"]
+script = ExtResource("1_3gsjd")
+metadata/_edit_horizontal_guides_ = [-24.0]
+
+[node name="FuelHUDControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -89.0
+offset_top = 149.0
+offset_right = 31.0
+offset_bottom = 549.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_vertical = 8
+
+[node name="FuelBarContainer" type="Control" parent="FuelHUDControl"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -175.0
+offset_bottom = 175.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="FuelEmpty" type="ColorRect" parent="FuelHUDControl/FuelBarContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.1415927
+color = Color(0.26666668, 0.26666668, 0.26666668, 1)
+
+[node name="FuelFill" type="ColorRect" parent="FuelHUDControl/FuelBarContainer"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -350.0
+offset_right = 50.0
+grow_vertical = 0
+rotation = 3.1415927
+color = Color(1, 0.8509804, 0, 1)
+
+[node name="FuelVerticalLabel" type="Label" parent="FuelHUDControl/FuelBarContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -525.0
+offset_right = -30.0
+offset_bottom = -177.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "P
+A
+L
+I
+W
+O"
+label_settings = SubResource("LabelSettings_htcsu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SegmentLine1" type="ColorRect" parent="FuelHUDControl/FuelBarContainer"]
+layout_mode = 0
+offset_left = -50.0
+offset_top = -349.75
+offset_bottom = -347.75
+
+[node name="SegmentLine2" type="ColorRect" parent="FuelHUDControl/FuelBarContainer"]
+layout_mode = 0
+offset_left = -50.0
+offset_top = -87.5
+offset_bottom = -85.5
+
+[node name="SegmentLine3" type="ColorRect" parent="FuelHUDControl/FuelBarContainer"]
+layout_mode = 0
+offset_left = -50.0
+offset_top = -175.0
+offset_bottom = -173.0
+
+[node name="SegmentLine4" type="ColorRect" parent="FuelHUDControl/FuelBarContainer"]
+layout_mode = 0
+offset_left = -50.0
+offset_top = -262.5
+offset_bottom = -260.5
+
+[node name="FuelSegmentsLabel" type="Label" parent="FuelHUDControl"]
+layout_mode = 0
+offset_left = -21.0
+offset_top = -324.0
+offset_right = 19.0
+offset_bottom = -41.0
+text = "4/4
+
+
+3/4
+
+
+2/4
+
+
+
+1/4"
+horizontal_alignment = 1
+
+[node name="FuelStatusText" type="Label" parent="FuelHUDControl"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = -39.0
+offset_top = 30.0
+offset_right = 121.0
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2

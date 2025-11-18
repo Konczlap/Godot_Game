@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=46 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://uwhbgey80wmu" path="res://Assety do gry/Road 2.png" id="2_5l22i"]
@@ -28,6 +28,8 @@
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
 [ext_resource type="Script" uid="uid://cy7nwoy1mnpc4" path="res://Skrypty/Refueling.cs" id="23_g8htv"]
 [ext_resource type="Script" uid="uid://bd8b1gxsts0tf" path="res://Skrypty/SpawnManager.cs" id="24_3h8bx"]
+[ext_resource type="PackedScene" uid="uid://bbst3dcnjiq8p" path="res://Sceny/FuelHUD.tscn" id="29_76lar"]
+[ext_resource type="Script" uid="uid://450afn1jogt2" path="res://Skrypty/FuelHUD.cs" id="30_3v8ch"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -2140,3 +2142,7 @@ texture = ExtResource("15_5l22i")
 script = ExtResource("24_3h8bx")
 _packagesParentPath = NodePath("../Paczki")
 _customersParentPath = NodePath("../Klienci")
+
+[node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
+script = ExtResource("30_3v8ch")
+GasScript = NodePath("../Player/Car/Gas")
