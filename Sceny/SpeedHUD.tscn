@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://c413jleqrikbi"]
+
+[node name="SpeedHUD" type="CanvasLayer"]
+
+[node name="SpeedHUDControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 200.0
+grow_vertical = 0
+
+[node name="Background" type="ColorRect" parent="SpeedHUDControl"]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 40.0
+color = Color(0, 0, 1, 1)
+
+[node name="SpeedLabel" type="Label" parent="SpeedHUDControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0 km/h"
+horizontal_alignment = 1
+vertical_alignment = 1
