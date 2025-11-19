@@ -1,5 +1,6 @@
-[gd_scene load_steps=49 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=54 format=3 uid="uid://bd5evck3edtjv"]
 
+[ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
 [ext_resource type="Texture2D" uid="uid://uwhbgey80wmu" path="res://Assety do gry/Road 2.png" id="2_5l22i"]
 [ext_resource type="Texture2D" uid="uid://b8ixnasvuocda" path="res://Assety do gry/Car1.png" id="2_84mch"]
@@ -28,11 +29,14 @@
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
 [ext_resource type="Script" uid="uid://cy7nwoy1mnpc4" path="res://Skrypty/Refueling.cs" id="23_g8htv"]
 [ext_resource type="Script" uid="uid://bd8b1gxsts0tf" path="res://Skrypty/SpawnManager.cs" id="24_3h8bx"]
+[ext_resource type="Script" uid="uid://c3mkd81xdrbb3" path="res://Skrypty/EndDay.cs" id="28_xexbp"]
 [ext_resource type="PackedScene" uid="uid://bbst3dcnjiq8p" path="res://Sceny/FuelHUD.tscn" id="29_76lar"]
+[ext_resource type="Script" uid="uid://c46k27e6ibswc" path="res://Skrypty/DayNightCycle.cs" id="29_f744g"]
 [ext_resource type="PackedScene" uid="uid://b2d7jwua5bhgl" path="res://Sceny/MoneyHUD.tscn" id="30_q4juh"]
 [ext_resource type="PackedScene" uid="uid://cw3bvb80dnlp7" path="res://Sceny/PackageHUD.tscn" id="31_q4juh"]
 [ext_resource type="PackedScene" uid="uid://c413jleqrikbi" path="res://Sceny/SpeedHUD.tscn" id="32_820eb"]
 [ext_resource type="Script" uid="uid://cxdi4hftnducm" path="res://Skrypty/SpeedHUD.cs" id="33_f744g"]
+[ext_resource type="PackedScene" uid="uid://6w2el4o632nq" path="res://Sceny/SummaryView.tscn" id="36_pqddq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -76,7 +80,14 @@ size = Vector2(1000, 1000)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2h15"]
 size = Vector2(1100, 1050)
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_820eb"]
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("DayNightCycle", "SummaryView")]
+script = ExtResource("1_3e1ui")
+DayNightCycle = NodePath("DayNightCycle")
+SummaryView = NodePath("SummaryView")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
 
 [node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("_collisions") groups=["Player"]]
 z_index = 1
@@ -120,7 +131,7 @@ _money = 50.0
 
 [node name="Gas" type="Node2D" parent="Player/Car" node_paths=PackedStringArray("_fuelStationSpawn", "_movementScript") groups=["Player"]]
 script = ExtResource("5_rasrj")
-_fuelConsumptionRate = 4.0
+_fuelConsumptionRate = 1.0
 _fuelStationSpawn = NodePath("../../../Mapa/Stacja Paliw/WhitePixel3")
 _movementScript = NodePath("../..")
 
@@ -2133,18 +2144,42 @@ rotation = 1.5707964
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("3_d5l5x")
 
-[node name="Dom" type="Node2D" parent="."]
+[node name="Dom" type="Node2D" parent="." groups=["Home"]]
 
-[node name="Dom" type="Sprite2D" parent="Dom"]
+[node name="Dom" type="Sprite2D" parent="Dom" groups=["Home"]]
 z_index = 1
 position = Vector2(400, 169)
 scale = Vector2(0.00625, 0.00625)
 texture = ExtResource("15_5l22i")
 
+[node name="Area2D" type="Area2D" parent="Dom/Dom" node_paths=PackedStringArray("_dayNightCycle", "_movementScript", "_delivery", "PackagesContainer", "CustomersContainer")]
+collision_layer = 6
+script = ExtResource("28_xexbp")
+_dayNightCycle = NodePath("../../../DayNightCycle")
+_movementScript = NodePath("../../../Player")
+_delivery = NodePath("../../../Player/Car/Delivery")
+PackagesContainer = NodePath("../../../Paczki")
+CustomersContainer = NodePath("../../../Klienci")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dom/Dom/Area2D"]
+scale = Vector2(50, 50)
+shape = SubResource("RectangleShape2D_820eb")
+
 [node name="SpawnManager" type="Node2D" parent="."]
 script = ExtResource("24_3h8bx")
 _packagesParentPath = NodePath("../Paczki")
 _customersParentPath = NodePath("../Klienci")
+
+[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_movementScript", "_delivery", "_packageHUD")]
+script = ExtResource("29_f744g")
+RealSecondsPerGameMinute = 0.25
+CustomersContainer = NodePath("../Klienci")
+PackagesContainer = NodePath("../Paczki")
+SummaryMenu = NodePath("../SummaryView")
+GlobalModulate = NodePath("../CanvasModulate")
+_movementScript = NodePath("../Player")
+_delivery = NodePath("../Player/Car/Delivery")
+_packageHUD = NodePath("../PackageHUD")
 
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
 GasScript = NodePath("../Player/Car/Gas")
@@ -2159,3 +2194,5 @@ PackageIcon = ExtResource("3_84mch")
 [node name="SpeedHUD" parent="." node_paths=PackedStringArray("CarScript") instance=ExtResource("32_820eb")]
 script = ExtResource("33_f744g")
 CarScript = NodePath("../Player")
+
+[node name="SummaryView" parent="." instance=ExtResource("36_pqddq")]

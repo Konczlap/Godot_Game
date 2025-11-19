@@ -142,12 +142,12 @@ public partial class Delivery : Area2D
 	}
 
 	// Pomocnicza metoda (jeśli kiedyś chcesz przywracać paczki)
-	//public void ResetPackages()
-	//{
-		//foreach (var p in _collectedPackages)
-			//p.Visible = true;
-//
-		//_collectedPackages.Clear();
-		//CurrentPackageAmount = 0;
-	//}
+	public void ResetPackages()
+	{
+		foreach (var p in _collectedPackages)
+			p.Visible = true;
+			
+		_collectedPackages.Clear();
+		CurrentPackageAmount = 0;
+	}
 }

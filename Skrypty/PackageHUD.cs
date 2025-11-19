@@ -50,7 +50,7 @@ public partial class PackageHUD : CanvasLayer
 		}
 	}
 
-	private void UpdateIcons()
+	public void UpdateIcons()
 	{
 		int current = DeliveryScript.CurrentPackageAmount;
 
