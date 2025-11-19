@@ -47,7 +47,7 @@ public partial class DayNightCycle : Node2D
 	{
 		int hour = GetTimeHour();
 		int minutes = GetTimeMinute();
-		GD.Print($"Czas: {hour}:{minutes}");
+		//GD.Print($"Czas: {hour}:{minutes}");
 
 		Color dayColor = new Color(1, 1, 1);     // pełna jasność
 		Color nightColor = new Color(0.25f, 0.25f, 0.35f); // ciemno z lekkim niebieskim

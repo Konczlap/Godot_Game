@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvh5s02q6upvh"]
+
+[ext_resource type="Script" uid="uid://wr0d1ma1lg4i" path="res://Skrypty/TimeHUD.cs" id="1_ea4u2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_14nig"]
+font_size = 28
+
+[node name="TimeHUD" type="CanvasLayer"]
+script = ExtResource("1_ea4u2")
+
+[node name="TimeHUDControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -148.0
+offset_top = 8.0
+offset_right = 152.0
+offset_bottom = 56.0
+grow_horizontal = 2
+
+[node name="Background" type="ColorRect" parent="TimeHUDControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5019608)
+
+[node name="TimeLabel" type="Label" parent="TimeHUDControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "6:00"
+label_settings = SubResource("LabelSettings_14nig")
+horizontal_alignment = 1
+vertical_alignment = 1

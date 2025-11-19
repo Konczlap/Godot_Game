@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=56 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -37,6 +37,8 @@
 [ext_resource type="PackedScene" uid="uid://c413jleqrikbi" path="res://Sceny/SpeedHUD.tscn" id="32_820eb"]
 [ext_resource type="Script" uid="uid://cxdi4hftnducm" path="res://Skrypty/SpeedHUD.cs" id="33_f744g"]
 [ext_resource type="PackedScene" uid="uid://6w2el4o632nq" path="res://Sceny/SummaryView.tscn" id="36_pqddq"]
+[ext_resource type="PackedScene" uid="uid://cvh5s02q6upvh" path="res://Sceny/TimeHUD.tscn" id="38_jcakk"]
+[ext_resource type="Script" uid="uid://wr0d1ma1lg4i" path="res://Skrypty/TimeHUD.cs" id="39_665up"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -2196,3 +2198,7 @@ script = ExtResource("33_f744g")
 CarScript = NodePath("../Player")
 
 [node name="SummaryView" parent="." instance=ExtResource("36_pqddq")]
+
+[node name="TimeHUD" parent="." node_paths=PackedStringArray("TimeSource") instance=ExtResource("38_jcakk")]
+script = ExtResource("39_665up")
+TimeSource = NodePath("../DayNightCycle")
