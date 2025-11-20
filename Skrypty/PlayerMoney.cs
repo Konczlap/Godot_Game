@@ -5,12 +5,14 @@ public partial class PlayerMoney : Node2D
 {
 	[Export] private float _money = 0f;
 	private float _spendMoney = 0f;
+	
+	public float IncomePerDay = 0f;
+	public float SpendPerDay = 0f;
 
 	public void AddMoney(float amount)
 	{
 		_money += amount;
-		//_money = (float)Math.Round(amount, 2);
-		//GD.Print($"💰 Dodano {amount}$. Aktualny stan konta: {_money}$");
+		IncomePerDay += amount;
 	}
 
 	public bool SpendMoney(float amount)
@@ -19,8 +21,7 @@ public partial class PlayerMoney : Node2D
 		{
 			_money -= amount;
 			_spendMoney += amount;
-			//_money = (float)Math.Round(amount, 2);
-			//GD.Print($"💸 Wydano {amount}$. Pozostało: {_money}$");
+			SpendPerDay += amount;
 			return true;
 		}
 		else

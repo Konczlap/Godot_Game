@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://6w2el4o632nq"]
+[gd_scene load_steps=6 format=3 uid="uid://6w2el4o632nq"]
 
+[ext_resource type="Script" uid="uid://dv31rm5dpwia1" path="res://Skrypty/SummaryView.cs" id="1_0f5te"]
 [ext_resource type="Script" uid="uid://djxfo2anpk3rs" path="res://Skrypty/EndDayButton.cs" id="1_ip1l4"]
 
 [sub_resource type="FontFile" id="FontFile_skxkf"]
@@ -26,6 +27,7 @@ paragraph_spacing = 3.0
 font_size = 30
 
 [node name="SummaryView" type="CanvasLayer"]
+script = ExtResource("1_0f5te")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -59,7 +61,7 @@ offset_left = -134.0
 offset_right = 134.0
 offset_bottom = 55.0
 grow_horizontal = 2
-text = "Podsumowanie"
+text = "Podsumowanie dnia \"takiego i takiego\""
 label_settings = SubResource("LabelSettings_ip1l4")
 
 [node name="PodsumowanieLabel" type="Label" parent="Control/PodsumowaniePanel"]

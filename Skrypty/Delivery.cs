@@ -7,6 +7,7 @@ public partial class Delivery : Area2D
 	[Export] public PlayerMoney _playerMoney;
 	[Export] public int MaxPackageAmount = 2;   // maksymalna ilość paczek
 	public int CurrentPackageAmount = 0;        // aktualna ilość paczek
+	public int DeliveredPackagesPerDay = 0; 
 
 	private Package _overlappingPackageNode = null;
 	private Customer _overlappingCustomerNode = null;
@@ -125,6 +126,7 @@ public partial class Delivery : Area2D
 					_playerMoney.AddMoney(_collectedPackage.GetPackagePrice());
 					CurrentPackageAmount--;
 					_collectedPackages.Remove(_collectedPackage);
+					DeliveredPackagesPerDay++;
 					//GD.Print($"Dostarczono paczkę. Pozostało: {CurrentPackageAmount}/{MaxPackageAmount}");
 					return; // właściwa znaleziona
 				}

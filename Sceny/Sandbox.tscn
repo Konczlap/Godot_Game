@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=55 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -38,7 +38,6 @@
 [ext_resource type="Script" uid="uid://cxdi4hftnducm" path="res://Skrypty/SpeedHUD.cs" id="33_f744g"]
 [ext_resource type="PackedScene" uid="uid://6w2el4o632nq" path="res://Sceny/SummaryView.tscn" id="36_pqddq"]
 [ext_resource type="PackedScene" uid="uid://cvh5s02q6upvh" path="res://Sceny/TimeHUD.tscn" id="38_jcakk"]
-[ext_resource type="Script" uid="uid://wr0d1ma1lg4i" path="res://Skrypty/TimeHUD.cs" id="39_665up"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -131,11 +130,12 @@ debug_color = Color(0.85870856, 0.3643496, 1.92523e-07, 0.41960785)
 script = ExtResource("4_vss32")
 _money = 50.0
 
-[node name="Gas" type="Node2D" parent="Player/Car" node_paths=PackedStringArray("_fuelStationSpawn", "_movementScript") groups=["Player"]]
+[node name="Gas" type="Node2D" parent="Player/Car" node_paths=PackedStringArray("_fuelStationSpawn", "_movementScript", "_dayNightCycle") groups=["Player"]]
 script = ExtResource("5_rasrj")
 _fuelConsumptionRate = 1.0
 _fuelStationSpawn = NodePath("../../../Mapa/Stacja Paliw/WhitePixel3")
 _movementScript = NodePath("../..")
+_dayNightCycle = NodePath("../../../DayNightCycle")
 
 [node name="FrontLeftLight" type="PointLight2D" parent="Player/Car"]
 visible = false
@@ -2172,15 +2172,16 @@ script = ExtResource("24_3h8bx")
 _packagesParentPath = NodePath("../Paczki")
 _customersParentPath = NodePath("../Klienci")
 
-[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_movementScript", "_delivery", "_packageHUD")]
+[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_movementScript", "_delivery", "_playerMoney", "_packageHUD")]
 script = ExtResource("29_f744g")
-RealSecondsPerGameMinute = 0.25
+RealSecondsPerGameMinute = 0.5
 CustomersContainer = NodePath("../Klienci")
 PackagesContainer = NodePath("../Paczki")
 SummaryMenu = NodePath("../SummaryView")
 GlobalModulate = NodePath("../CanvasModulate")
 _movementScript = NodePath("../Player")
 _delivery = NodePath("../Player/Car/Delivery")
+_playerMoney = NodePath("../Player/Car/PlayerMoney")
 _packageHUD = NodePath("../PackageHUD")
 
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
@@ -2197,8 +2198,10 @@ PackageIcon = ExtResource("3_84mch")
 script = ExtResource("33_f744g")
 CarScript = NodePath("../Player")
 
-[node name="SummaryView" parent="." instance=ExtResource("36_pqddq")]
+[node name="SummaryView" parent="." node_paths=PackedStringArray("_dayNightCycle", "_delivery", "_playerMoney") instance=ExtResource("36_pqddq")]
+_dayNightCycle = NodePath("../DayNightCycle")
+_delivery = NodePath("../Player/Car/Delivery")
+_playerMoney = NodePath("../Player/Car/PlayerMoney")
 
 [node name="TimeHUD" parent="." node_paths=PackedStringArray("TimeSource") instance=ExtResource("38_jcakk")]
-script = ExtResource("39_665up")
 TimeSource = NodePath("../DayNightCycle")

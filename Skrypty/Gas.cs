@@ -8,12 +8,19 @@ public partial class Gas : Node2D
 	[Export] private Sprite2D _fuelStationSpawn; // np. pozycja stacji paliw
 
 	[Export] public MovementScript _movementScript;
+	[Export] public DayNightCycle _dayNightCycle;
 	public bool _isTeleporting = false;
 
 	public override async void _Process(double delta)
 	{
 		if (_movementScript == null)
 			return;
+		
+		if (_dayNightCycle.IsSummaryOpen)
+		{
+			_movementScript.CanMove = false;
+			return;
+		}
 
 		// Jeśli auto się rusza, spalaj paliwo
 		if (!_movementScript.GetIsStanding())

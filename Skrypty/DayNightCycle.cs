@@ -7,11 +7,13 @@ public partial class DayNightCycle : Node2D
 	//[Export] public Light2D GlobalLight;                 // globalne światło
 	[Export] public Node2D CustomersContainer;
 	[Export] public Node2D PackagesContainer;
-	[Export] public CanvasLayer SummaryMenu;
+	[Export] public /*CanvasLayer*/ SummaryView SummaryMenu;
 	[Export] public CanvasModulate GlobalModulate;
 	[Export] private MovementScript _movementScript;
 	[Export] private Delivery _delivery;
+	[Export] private PlayerMoney _playerMoney;
 	[Export] private PackageHUD _packageHUD;
+	public bool IsSummaryOpen = false;
 	
 	private float _currentMinutes = 6 * 60; // start: 6:00
 	public bool IsNight => GetTimeHour() >= 22 || GetTimeHour() < 6;
@@ -73,13 +75,16 @@ public partial class DayNightCycle : Node2D
 
 	public void EndDay()
 	{
+		IsSummaryOpen = true;
 		_movementScript.CanMove = false;
 		SummaryMenu.Visible = true;
+		SummaryMenu.UpdateSummary();
 	}
 
 	public void StartNextDay()
 	{
 		SummaryMenu.Visible = false;
+		IsSummaryOpen = false;
 		CustomersContainer.Visible = true; // TRZEBA PRZEJŚĆ PRZEZ WSZYSTKIE DZIECI I JE WŁĄCZYĆ BO
 		PackagesContainer.Visible = true; // TAKIE WŁĄCZENIE NIE WŁĄCZY TYCH KTÓRE ZOSTAŁY WEWNĄTRZ NICH WYŁĄCZONE
 		foreach (Node child in PackagesContainer.GetChildren())
@@ -101,11 +106,19 @@ public partial class DayNightCycle : Node2D
 			}
 		}
 		_delivery.CurrentPackageAmount = 0;
+		_delivery.DeliveredPackagesPerDay = 0;
+		_playerMoney.IncomePerDay = 0;
+		_playerMoney.SpendPerDay = 0;
 		//_delivery.ResetPackages();
 		_packageHUD.UpdateIcons();
 		
 		_dayNumber++;
 		_movementScript.CanMove = true;
 		_currentMinutes = 6 * 60; // 6:00 rano
+	}
+	
+	public int GetDayNumber()
+	{
+		return _dayNumber;
 	}
 }
