@@ -7,36 +7,66 @@ public partial class Car : Node2D
 	[Export] public PointLight2D FrontRightLight;
 	[Export] public PointLight2D BackLeftLight;
 	[Export] public PointLight2D BackRightLight;
+	[Export] public PointLight2D BackMiddleLight;
 
-	private bool lightsOn = false;
+	private bool lightsOn = false; // F
+	private bool spacePressed = false; // Space
 
 	public override void _Ready()
 	{
-		SetLights(false);
+		UpdateLights();
 	}
 
 	public override void _Process(double delta)
 	{
-		// Po naciśnięciu L przełączamy stan
+		// Toggle F
 		if (Input.IsActionJustPressed("toggle_lights"))
 		{
 			lightsOn = !lightsOn;
-			SetLights(lightsOn);
+			UpdateLights();
+		}
+
+		// Space wciśnięte
+		if (Input.IsActionPressed("brake") && !spacePressed)
+		{
+			spacePressed = true;
+			UpdateBrakeLights();
+		}
+		// Space puszczone
+		if (!Input.IsActionPressed("brake") && spacePressed)
+		{
+			spacePressed = false;
+			UpdateBrakeLights();
 		}
 	}
 
-	private void SetLights(bool enabled)
+	private void UpdateLights()
 	{
-		if (FrontLeftLight != null)
-			FrontLeftLight.Visible = enabled;
+		// Przednie światła
+		if (FrontLeftLight != null) FrontLeftLight.Visible = lightsOn;
+		if (FrontRightLight != null) FrontRightLight.Visible = lightsOn;
 
-		if (FrontRightLight != null)
-			FrontRightLight.Visible = enabled;
-			
-		if (BackLeftLight != null)
-			BackLeftLight.Visible = enabled;
-			
-		if (BackRightLight != null)
-			BackRightLight.Visible = enabled;
+		// Tylne boczne
+		if (BackLeftLight != null) BackLeftLight.Visible = lightsOn;
+		if (BackRightLight != null) BackRightLight.Visible = lightsOn;
+
+		// Środkowe tylne zależne od Space
+		if (BackMiddleLight != null) BackMiddleLight.Visible = spacePressed && lightsOn;
+	}
+
+	private void UpdateBrakeLights()
+	{
+		if (lightsOn)
+		{
+			// F włączone → Space włącza tylko środkowe tylne
+			if (BackMiddleLight != null) BackMiddleLight.Visible = spacePressed;
+		}
+		else
+		{
+			// F wyłączone → Space włącza wszystkie tylne
+			if (BackLeftLight != null) BackLeftLight.Visible = spacePressed;
+			if (BackRightLight != null) BackRightLight.Visible = spacePressed;
+			if (BackMiddleLight != null) BackMiddleLight.Visible = spacePressed;
+		}
 	}
 }

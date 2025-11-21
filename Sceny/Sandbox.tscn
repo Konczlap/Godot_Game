@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=59 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -23,8 +23,10 @@
 [ext_resource type="Texture2D" uid="uid://d4lm6d4nudoam" path="res://Assety do gry/House 2.png" id="9_rasrj"]
 [ext_resource type="Texture2D" uid="uid://cv0yrrrqndxvc" path="res://Assety do gry/House 1.png" id="10_g8htv"]
 [ext_resource type="Texture2D" uid="uid://dvliqmrjf140b" path="res://Assety do gry/Rocks 1.png" id="11_3h8bx"]
+[ext_resource type="Texture2D" uid="uid://gn10hjpiuw8c" path="res://Assety do gry/smoke.png" id="12_665up"]
 [ext_resource type="Texture2D" uid="uid://cba8roo8712q4" path="res://Assety do gry/Tree 4.png" id="12_s5r2j"]
 [ext_resource type="Texture2D" uid="uid://dy2pydtefnd0f" path="res://Assety do gry/Tree 2.png" id="13_1sjgv"]
+[ext_resource type="Script" uid="uid://b27k360p5yi5c" path="res://Skrypty/GasParticle.cs" id="13_gduqm"]
 [ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
 [ext_resource type="Script" uid="uid://cy7nwoy1mnpc4" path="res://Skrypty/Refueling.cs" id="23_g8htv"]
@@ -40,6 +42,26 @@
 [ext_resource type="PackedScene" uid="uid://cvh5s02q6upvh" path="res://Sceny/TimeHUD.tscn" id="38_jcakk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_665up"]
+resource_local_to_scene = true
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gduqm"]
+lifetime_randomness = 0.4
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 10.0
+inherit_velocity_ratio = 0.1
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0, 0)
+scale_min = 0.19999999
+scale_max = 0.5
+anim_speed_min = 1.0
+anim_speed_max = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s5r2j"]
 size = Vector2(0, 0)
@@ -104,7 +126,7 @@ Acceleration = 150.0
 BrakePower = 225.0
 EngineBraking = 25.0
 
-[node name="Car" type="Sprite2D" parent="Player" node_paths=PackedStringArray("FrontLeftLight", "FrontRightLight", "BackLeftLight", "BackRightLight") groups=["Player"]]
+[node name="Car" type="Sprite2D" parent="Player" node_paths=PackedStringArray("FrontLeftLight", "FrontRightLight", "BackLeftLight", "BackRightLight", "BackMiddleLight") groups=["Player"]]
 z_index = 10
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_84mch")
@@ -113,6 +135,7 @@ FrontLeftLight = NodePath("FrontLeftLight")
 FrontRightLight = NodePath("FrontRightLight")
 BackLeftLight = NodePath("BackLeftLight")
 BackRightLight = NodePath("BackRightLight")
+BackMiddleLight = NodePath("BackMiddleLight")
 
 [node name="Delivery" type="Area2D" parent="Player/Car" node_paths=PackedStringArray("_movementScript", "_playerMoney") groups=["Player"]]
 collision_mask = 30
@@ -138,7 +161,6 @@ _movementScript = NodePath("../..")
 _dayNightCycle = NodePath("../../../DayNightCycle")
 
 [node name="FrontLeftLight" type="PointLight2D" parent="Player/Car"]
-visible = false
 light_mask = 16
 z_index = 100
 position = Vector2(-110, -900)
@@ -150,7 +172,6 @@ texture = ExtResource("7_1sjgv")
 texture_scale = 0.8
 
 [node name="BackLeftLight" type="PointLight2D" parent="Player/Car"]
-visible = false
 light_mask = 16
 z_index = 100
 position = Vector2(-108, 341)
@@ -162,7 +183,6 @@ range_z_min = 0
 texture = ExtResource("8_22nf0")
 
 [node name="BackRightLight" type="PointLight2D" parent="Player/Car"]
-visible = false
 light_mask = 16
 z_index = 100
 position = Vector2(105, 341)
@@ -173,8 +193,17 @@ energy = 5.42
 range_z_min = 0
 texture = ExtResource("8_22nf0")
 
+[node name="BackMiddleLight" type="PointLight2D" parent="Player/Car"]
+light_mask = 16
+z_index = 100
+position = Vector2(0, 240)
+scale = Vector2(-2.2, -2)
+color = Color(0.793305, 0, 0.06438363, 1)
+energy = 5.42
+range_z_min = 0
+texture = ExtResource("8_22nf0")
+
 [node name="FrontRightLight" type="PointLight2D" parent="Player/Car"]
-visible = false
 light_mask = 16
 z_index = 100
 position = Vector2(110, -900)
@@ -187,6 +216,21 @@ texture_scale = 0.8
 
 [node name="Collisions" type="Node2D" parent="Player/Car"]
 script = ExtResource("6_3h8bx")
+
+[node name="Smoke" type="GPUParticles2D" parent="Player/Car"]
+physics_interpolation_mode = 2
+material = SubResource("CanvasItemMaterial_665up")
+position = Vector2(0, 360)
+amount_ratio = 0.8
+texture = ExtResource("12_665up")
+lifetime = 0.01
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_gduqm")
+
+[node name="GasParticle" type="Node2D" parent="Player/Car" node_paths=PackedStringArray("Movement")]
+script = ExtResource("13_gduqm")
+Movement = NodePath("../..")
+SmokePath = NodePath("../Smoke")
 
 [node name="Camera2D" type="Camera2D" parent="Player" groups=["Player"]]
 zoom = Vector2(4, 4)
@@ -732,7 +776,7 @@ shape = SubResource("RectangleShape2D_nux3x")
 modulate = Color(0.35686275, 0.41960785, 0.21176471, 1)
 self_modulate = Color(0.35686275, 0.972549, 0.21176471, 1)
 position = Vector2(24, 6)
-scale = Vector2(4, 4)
+scale = Vector2(8, 8)
 texture = ExtResource("15_5l22i")
 
 [node name="Drzewka" type="Node2D" parent="Mapa"]
@@ -2001,7 +2045,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("5_mkvsu")
 
 [node name="Curve1" type="Sprite2D" parent="Mapa/Droga"]
-position = Vector2(304, 257)
+position = Vector2(304, 258)
 scale = Vector2(0.09895105, 0.115547575)
 texture = ExtResource("6_jlxi8")
 
