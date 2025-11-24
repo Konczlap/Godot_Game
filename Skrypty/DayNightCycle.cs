@@ -13,6 +13,7 @@ public partial class DayNightCycle : Node2D
 	[Export] private Delivery _delivery;
 	[Export] private PlayerMoney _playerMoney;
 	[Export] private PackageHUD _packageHUD;
+	[Export] private SpawnManager _spawnManager;
 	public bool IsSummaryOpen = false;
 	
 	private float _currentMinutes = 6 * 60; // start: 6:00
@@ -87,6 +88,7 @@ public partial class DayNightCycle : Node2D
 		IsSummaryOpen = false;
 		CustomersContainer.Visible = true; // TRZEBA PRZEJŚĆ PRZEZ WSZYSTKIE DZIECI I JE WŁĄCZYĆ BO
 		PackagesContainer.Visible = true; // TAKIE WŁĄCZENIE NIE WŁĄCZY TYCH KTÓRE ZOSTAŁY WEWNĄTRZ NICH WYŁĄCZONE
+		_spawnManager.RandomizeSpawn();
 		foreach (Node child in PackagesContainer.GetChildren())
 		{
 			if (child is Node2D item)
