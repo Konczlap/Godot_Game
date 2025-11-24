@@ -33,7 +33,7 @@ public partial class SpawnManager : Node2D
 		RandomizeSpawn();
 	}
 
-	private void RandomizeSpawn()
+	public void RandomizeSpawn()
 	{
 		var rng = new RandomNumberGenerator();
 		rng.Randomize();

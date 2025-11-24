@@ -2216,7 +2216,7 @@ script = ExtResource("24_3h8bx")
 _packagesParentPath = NodePath("../Paczki")
 _customersParentPath = NodePath("../Klienci")
 
-[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_movementScript", "_delivery", "_playerMoney", "_packageHUD")]
+[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_movementScript", "_delivery", "_playerMoney", "_packageHUD", "_spawnManager")]
 script = ExtResource("29_f744g")
 RealSecondsPerGameMinute = 0.5
 CustomersContainer = NodePath("../Klienci")
@@ -2227,6 +2227,7 @@ _movementScript = NodePath("../Player")
 _delivery = NodePath("../Player/Car/Delivery")
 _playerMoney = NodePath("../Player/Car/PlayerMoney")
 _packageHUD = NodePath("../PackageHUD")
+_spawnManager = NodePath("../SpawnManager")
 
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
 GasScript = NodePath("../Player/Car/Gas")
