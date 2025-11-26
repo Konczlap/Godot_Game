@@ -2261,32 +2261,25 @@ script = ExtResource("34_xsqcf")
 PauseMenu = NodePath("../PauseMenu")
 
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
-visible = false
 GasScript = NodePath("../Player/Car/Gas")
 
 [node name="MoneyHUD" parent="." node_paths=PackedStringArray("MoneyScript") instance=ExtResource("30_q4juh")]
-visible = false
 MoneyScript = NodePath("../Player/Car/PlayerMoney")
 
 [node name="PackageHUD" parent="." node_paths=PackedStringArray("DeliveryScript") instance=ExtResource("31_q4juh")]
-visible = false
 DeliveryScript = NodePath("../Player/Car/Delivery")
 PackageIcon = ExtResource("3_84mch")
 
 [node name="SpeedHUD" parent="." node_paths=PackedStringArray("CarScript") instance=ExtResource("32_820eb")]
-visible = false
 script = ExtResource("33_f744g")
 CarScript = NodePath("../Player")
 
 [node name="SummaryView" parent="." node_paths=PackedStringArray("_dayNightCycle", "_delivery", "_playerMoney") instance=ExtResource("36_pqddq")]
-visible = false
 _dayNightCycle = NodePath("../DayNightCycle")
 _delivery = NodePath("../Player/Car/Delivery")
 _playerMoney = NodePath("../Player/Car/PlayerMoney")
 
 [node name="TimeHUD" parent="." node_paths=PackedStringArray("TimeSource") instance=ExtResource("38_jcakk")]
-visible = false
 TimeSource = NodePath("../DayNightCycle")
 
 [node name="PauseMenu" parent="." instance=ExtResource("42_ijyun")]
-visible = false
