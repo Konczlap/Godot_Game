@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=64 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -37,9 +37,13 @@
 [ext_resource type="PackedScene" uid="uid://b2d7jwua5bhgl" path="res://Sceny/MoneyHUD.tscn" id="30_q4juh"]
 [ext_resource type="PackedScene" uid="uid://cw3bvb80dnlp7" path="res://Sceny/PackageHUD.tscn" id="31_q4juh"]
 [ext_resource type="PackedScene" uid="uid://c413jleqrikbi" path="res://Sceny/SpeedHUD.tscn" id="32_820eb"]
+[ext_resource type="PackedScene" uid="uid://bv5hgtel43xen" path="res://Sceny/shopui.tscn" id="32_lsr6f"]
 [ext_resource type="Script" uid="uid://cxdi4hftnducm" path="res://Skrypty/SpeedHUD.cs" id="33_f744g"]
+[ext_resource type="Script" uid="uid://bdgct4476817u" path="res://Skrypty/PauseController.cs" id="34_xsqcf"]
 [ext_resource type="PackedScene" uid="uid://6w2el4o632nq" path="res://Sceny/SummaryView.tscn" id="36_pqddq"]
 [ext_resource type="PackedScene" uid="uid://cvh5s02q6upvh" path="res://Sceny/TimeHUD.tscn" id="38_jcakk"]
+[ext_resource type="PackedScene" uid="uid://t1lu2cgmk0pg" path="res://Sceny/PauseMenu.tscn" id="42_ijyun"]
+[ext_resource type="Script" uid="uid://e4twqdoxjrkp" path="res://Skrypty/Parking.cs" id="43_ijyun"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -102,6 +106,9 @@ size = Vector2(1000, 1000)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2h15"]
 size = Vector2(1100, 1050)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ijyun"]
+size = Vector2(12, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_820eb"]
 
@@ -2153,6 +2160,18 @@ rotation = 1.5707964
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("3_d5l5x")
 
+[node name="Road4" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+position = Vector2(-82.485, 76.5)
+rotation = 1.5707964
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_d5l5x")
+
+[node name="Road5" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
+position = Vector2(-82.485, 64.5)
+rotation = 1.5707964
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_d5l5x")
+
 [node name="WhitePixel" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
 modulate = Color(0.7254902, 1, 1, 1)
 light_mask = 32
@@ -2178,17 +2197,25 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Salon Samochodowy/WhitePixel/StaticBody2D"]
 shape = SubResource("RectangleShape2D_t2h15")
 
-[node name="Road4" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
-position = Vector2(-82.485, 76.5)
-rotation = 1.5707964
-scale = Vector2(0.03, 0.03)
-texture = ExtResource("3_d5l5x")
+[node name="parking" type="Area2D" parent="Mapa/Salon Samochodowy"]
+collision_layer = 7
+collision_mask = 31
+priority = 1
+script = ExtResource("43_ijyun")
+UiLabelPath = NodePath("CollisionShape2D/Label")
+ShopScene = ExtResource("32_lsr6f")
 
-[node name="Road5" type="Sprite2D" parent="Mapa/Salon Samochodowy"]
-position = Vector2(-82.485, 64.5)
-rotation = 1.5707964
-scale = Vector2(0.03, 0.03)
-texture = ExtResource("3_d5l5x")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Salon Samochodowy/parking"]
+position = Vector2(-83, 52)
+shape = SubResource("RectangleShape2D_ijyun")
+
+[node name="Label" type="Label" parent="Mapa/Salon Samochodowy/parking/CollisionShape2D"]
+visible = false
+offset_left = -35.0
+offset_top = -49.0
+offset_right = 5.0
+offset_bottom = -26.0
+text = "vghchc"
 
 [node name="Dom" type="Node2D" parent="." groups=["Home"]]
 
@@ -2229,24 +2256,37 @@ _playerMoney = NodePath("../Player/Car/PlayerMoney")
 _packageHUD = NodePath("../PackageHUD")
 _spawnManager = NodePath("../SpawnManager")
 
+[node name="PauseController" type="Node2D" parent="." node_paths=PackedStringArray("PauseMenu")]
+script = ExtResource("34_xsqcf")
+PauseMenu = NodePath("../PauseMenu")
+
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
+visible = false
 GasScript = NodePath("../Player/Car/Gas")
 
 [node name="MoneyHUD" parent="." node_paths=PackedStringArray("MoneyScript") instance=ExtResource("30_q4juh")]
+visible = false
 MoneyScript = NodePath("../Player/Car/PlayerMoney")
 
 [node name="PackageHUD" parent="." node_paths=PackedStringArray("DeliveryScript") instance=ExtResource("31_q4juh")]
+visible = false
 DeliveryScript = NodePath("../Player/Car/Delivery")
 PackageIcon = ExtResource("3_84mch")
 
 [node name="SpeedHUD" parent="." node_paths=PackedStringArray("CarScript") instance=ExtResource("32_820eb")]
+visible = false
 script = ExtResource("33_f744g")
 CarScript = NodePath("../Player")
 
 [node name="SummaryView" parent="." node_paths=PackedStringArray("_dayNightCycle", "_delivery", "_playerMoney") instance=ExtResource("36_pqddq")]
+visible = false
 _dayNightCycle = NodePath("../DayNightCycle")
 _delivery = NodePath("../Player/Car/Delivery")
 _playerMoney = NodePath("../Player/Car/PlayerMoney")
 
 [node name="TimeHUD" parent="." node_paths=PackedStringArray("TimeSource") instance=ExtResource("38_jcakk")]
+visible = false
 TimeSource = NodePath("../DayNightCycle")
+
+[node name="PauseMenu" parent="." instance=ExtResource("42_ijyun")]
+visible = false

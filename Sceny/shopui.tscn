@@ -1,0 +1,252 @@
+[gd_scene load_steps=9 format=3 uid="uid://bv5hgtel43xen"]
+
+[ext_resource type="Script" uid="uid://3p3h77anlvjp" path="res://Skrypty/ShopUI.cs" id="1_pjctg"]
+[ext_resource type="Texture2D" uid="uid://dh7tibobsod" path="res://Assety do gry/backgroundshop.png" id="1_xt2nm"]
+[ext_resource type="Texture2D" uid="uid://dr5cp7ahwm7yj" path="res://Assety do gry/carshop1.png" id="2_rulcg"]
+[ext_resource type="Texture2D" uid="uid://b2oiu7q5is26a" path="res://Assety do gry/kombishop1.png" id="3_nyuvw"]
+[ext_resource type="Texture2D" uid="uid://ovn46npiasyw" path="res://Assety do gry/truckshop1.png" id="4_pjctg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xt2nm"]
+bg_color = Color(0.30692267, 0.3069227, 0.3069227, 0.8235294)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nyuvw"]
+bg_color = Color(0.35686275, 0.4, 0.40784314, 0.7921569)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nyuvw"]
+
+[node name="ShopUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_pjctg")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -187.0
+offset_right = 1154.0
+offset_bottom = 837.0
+texture = ExtResource("1_xt2nm")
+stretch_mode = 6
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 116.0
+offset_right = 1075.0
+offset_bottom = 536.0
+
+[node name="CarsRow" type="HBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(1000, 420)
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="car" type="Panel" parent="CenterContainer/CarsRow"]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xt2nm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/CarsRow/car"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 297.0
+offset_bottom = 182.0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/CarsRow/car/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("2_rulcg")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/CarsRow/car"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 176.0
+offset_right = 234.0
+offset_bottom = 315.0
+theme_override_constants/separation = 20
+
+[node name="Label2" type="Label" parent="CenterContainer/CarsRow/car/VBoxContainer2"]
+layout_mode = 2
+text = "POJEMNOŚĆ: 2 PACZKI"
+
+[node name="Label3" type="Label" parent="CenterContainer/CarsRow/car/VBoxContainer2"]
+layout_mode = 2
+text = "V-MAX: 75 KM/H"
+
+[node name="Label4" type="Label" parent="CenterContainer/CarsRow/car/VBoxContainer2"]
+layout_mode = 2
+text = "L/100KM: X"
+
+[node name="Label" type="Label" parent="CenterContainer/CarsRow/car/VBoxContainer2"]
+layout_mode = 2
+text = "$: X"
+
+[node name="Button" type="Button" parent="CenterContainer/CarsRow/car/VBoxContainer2"]
+layout_mode = 2
+text = "KUP"
+
+[node name="Label" type="Label" parent="CenterContainer/CarsRow/car"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 8.0
+offset_right = 199.0
+offset_bottom = 31.0
+text = "SAMOCHÓD"
+
+[node name="kombi" type="Panel" parent="CenterContainer/CarsRow"]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xt2nm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/CarsRow/kombi"]
+layout_mode = 0
+offset_left = -66.0
+offset_top = -126.0
+offset_right = 367.0
+offset_bottom = 308.0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/CarsRow/kombi/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("3_nyuvw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/CarsRow/kombi"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 176.0
+offset_right = 234.0
+offset_bottom = 315.0
+theme_override_constants/separation = 20
+
+[node name="Label2" type="Label" parent="CenterContainer/CarsRow/kombi/VBoxContainer2"]
+layout_mode = 2
+text = "POJEMNOŚĆ: 4 PACZKI"
+
+[node name="Label3" type="Label" parent="CenterContainer/CarsRow/kombi/VBoxContainer2"]
+layout_mode = 2
+text = "V-MAX: X KM/H"
+
+[node name="Label4" type="Label" parent="CenterContainer/CarsRow/kombi/VBoxContainer2"]
+layout_mode = 2
+text = "L/100KM: X"
+
+[node name="Label" type="Label" parent="CenterContainer/CarsRow/kombi/VBoxContainer2"]
+layout_mode = 2
+text = "$: X"
+
+[node name="Button" type="Button" parent="CenterContainer/CarsRow/kombi/VBoxContainer2"]
+layout_mode = 2
+text = "KUP"
+
+[node name="Label" type="Label" parent="CenterContainer/CarsRow/kombi"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 8.0
+offset_right = 211.0
+offset_bottom = 31.0
+text = "KOMBI"
+
+[node name="truck" type="Panel" parent="CenterContainer/CarsRow"]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xt2nm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/CarsRow/truck"]
+layout_mode = 0
+offset_left = -20.0
+offset_top = -79.0
+offset_right = 325.0
+offset_bottom = 267.0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/CarsRow/truck/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("4_pjctg")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/CarsRow/truck"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 176.0
+offset_right = 234.0
+offset_bottom = 315.0
+theme_override_constants/separation = 20
+
+[node name="Label2" type="Label" parent="CenterContainer/CarsRow/truck/VBoxContainer2"]
+layout_mode = 2
+text = "POJEMNOŚĆ: 6 PACZEK"
+
+[node name="Label3" type="Label" parent="CenterContainer/CarsRow/truck/VBoxContainer2"]
+layout_mode = 2
+text = "V-MAX: X KM/H"
+
+[node name="Label4" type="Label" parent="CenterContainer/CarsRow/truck/VBoxContainer2"]
+layout_mode = 2
+text = "L/100KM: X"
+
+[node name="Label" type="Label" parent="CenterContainer/CarsRow/truck/VBoxContainer2"]
+layout_mode = 2
+text = "$: X"
+
+[node name="Button" type="Button" parent="CenterContainer/CarsRow/truck/VBoxContainer2"]
+layout_mode = 2
+text = "KUP"
+
+[node name="Label" type="Label" parent="CenterContainer/CarsRow/truck"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 8.0
+offset_right = 199.0
+offset_bottom = 31.0
+text = "CIĘŻARÓWKA"
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 458.0
+offset_top = 46.0
+offset_right = 689.0
+offset_bottom = 88.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nyuvw")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = -14.0
+offset_top = 6.0
+offset_right = 243.0
+offset_bottom = 37.0
+theme_type_variation = &"GraphFrameTitleLabel"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nyuvw")
+text = "SKLEP POJAZDÓW"
+horizontal_alignment = 1
+vertical_alignment = 1
