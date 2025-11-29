@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=65 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -44,6 +44,7 @@
 [ext_resource type="PackedScene" uid="uid://cvh5s02q6upvh" path="res://Sceny/TimeHUD.tscn" id="38_jcakk"]
 [ext_resource type="PackedScene" uid="uid://t1lu2cgmk0pg" path="res://Sceny/PauseMenu.tscn" id="42_ijyun"]
 [ext_resource type="Script" uid="uid://e4twqdoxjrkp" path="res://Skrypty/Parking.cs" id="43_ijyun"]
+[ext_resource type="PackedScene" uid="uid://beeamr1b01jnm" path="res://Sceny/minimap.tscn" id="45_xduwb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -112,10 +113,11 @@ size = Vector2(12, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_820eb"]
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("DayNightCycle", "SummaryView")]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("DayNightCycle", "SummaryView", "Player")]
 script = ExtResource("1_3e1ui")
 DayNightCycle = NodePath("DayNightCycle")
 SummaryView = NodePath("SummaryView")
+Player = NodePath("Player")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 
@@ -2202,7 +2204,7 @@ collision_layer = 7
 collision_mask = 31
 priority = 1
 script = ExtResource("43_ijyun")
-UiLabelPath = NodePath("CollisionShape2D/Label")
+UiLabelPath = NodePath("")
 ShopScene = ExtResource("32_lsr6f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Salon Samochodowy/parking"]
@@ -2211,11 +2213,11 @@ shape = SubResource("RectangleShape2D_ijyun")
 
 [node name="Label" type="Label" parent="Mapa/Salon Samochodowy/parking/CollisionShape2D"]
 visible = false
-offset_left = -35.0
-offset_top = -49.0
-offset_right = 5.0
-offset_bottom = -26.0
-text = "vghchc"
+offset_left = -48.0
+offset_top = -29.0
+offset_right = -8.0
+offset_bottom = -6.0
+text = "nacisnij"
 
 [node name="Dom" type="Node2D" parent="." groups=["Home"]]
 
@@ -2283,3 +2285,5 @@ _playerMoney = NodePath("../Player/Car/PlayerMoney")
 TimeSource = NodePath("../DayNightCycle")
 
 [node name="PauseMenu" parent="." instance=ExtResource("42_ijyun")]
+
+[node name="Minimap" parent="." instance=ExtResource("45_xduwb")]

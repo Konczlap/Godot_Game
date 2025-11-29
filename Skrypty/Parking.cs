@@ -74,13 +74,13 @@ public partial class Parking : Area2D
 
 	public override void _Process(double delta)
 	{
-		// Debug info
+		
 		if (_playerInArea && _shopInstance == null)
 		{
 			GD.Print($"[Parking] Czekam na E. Sklep: {(_shopInstance != null ? "otwarty" : "zamknięty")}");
 		}
 		
-		// Otwórz sklep na E
+		
 		if (_playerInArea && Input.IsActionJustPressed("action") && _shopInstance == null)
 		{
 			GD.Print("[Parking] E naciśnięte - otwieram sklep!");
@@ -99,19 +99,15 @@ public partial class Parking : Area2D
 		if (_uiLabel != null)
 			_uiLabel.Visible = false;
 
-		// Utwórz CanvasLayer
 		_shopCanvasLayer = new CanvasLayer();
 		_shopCanvasLayer.Layer = 100;
 		GetTree().Root.AddChild(_shopCanvasLayer);
 		
-		// Utwórz sklep
 		_shopInstance = ShopScene.Instantiate<ShopUI>();
 		_shopCanvasLayer.AddChild(_shopInstance);
 		
-		// WAŻNE: Podłącz sygnał zamknięcia
 		_shopInstance.ShopClosed += OnShopClosed;
 		
-		// Konfiguracja
 		_shopInstance.SetAnchorsPreset(Control.LayoutPreset.FullRect);
 		_shopInstance.Position = Vector2.Zero;
 		
@@ -131,14 +127,11 @@ public partial class Parking : Area2D
 			_shopCanvasLayer.QueueFree();
 		}
 		
-		// KRYTYCZNE: Wyzeruj referencje
 		_shopCanvasLayer = null;
 		_shopInstance = null;
 		
-		// Wznów grę
 		GetTree().Paused = false;
 		
-		// Pokaż prompt jeśli gracz wciąż w obszarze
 		if (_playerInArea && _uiLabel != null)
 			_uiLabel.Visible = true;
 		

@@ -12,10 +12,8 @@ public partial class PauseMenu : CanvasLayer
 	{
 		Visible = false;
 
-		// Aby menu działało podczas pauzy
 		ProcessMode = ProcessModeEnum.Always;
 
-		// Poprawne sprawdzenie czy NodePath jest pusty
 		if (!string.IsNullOrEmpty(ResumeButtonPath.ToString()))
 		{
 			resumeButton = GetNodeOrNull<Button>(ResumeButtonPath);

@@ -5,36 +5,53 @@ public partial class Delivery : Area2D
 {
 	[Export] public MovementScript _movementScript;
 	[Export] public PlayerMoney _playerMoney;
-	[Export] public int MaxPackageAmount = 2;   // maksymalna ilość paczek
-	public int CurrentPackageAmount = 0;        // aktualna ilość paczek
-	public int DeliveredPackagesPerDay = 0; 
+	[Export] public int MaxPackageAmount = 2;
+	public int CurrentPackageAmount = 0;
+	public int DeliveredPackagesPerDay = 0;
 
 	private Package _overlappingPackageNode = null;
 	private Customer _overlappingCustomerNode = null;
-
 	private bool _canTakePackage = false;
 	private bool _canDeliverPackage = false;
-
-	// Lista podniesionych paczek (możesz wykorzystać później np. do ponownego włączenia)
 	private List<Package> _collectedPackages = new List<Package>();
+	
+	private Minimap _minimap;
 
 	public override void _Ready()
 	{
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
+		
+		// Znajdź minimapę
+		_minimap = GetTree().Root.GetNode<Minimap>("Node2D/Minimap");
+		if (_minimap == null)
+		{
+			GD.PrintErr("Delivery: Nie znaleziono minimapy!");
+		}
+		else
+		{
+			// Ustaw pierwszy cel przy starcie gry
+			CallDeferred(nameof(InitializeMinimapTarget));
+		}
+	}
+
+	private void InitializeMinimapTarget()
+	{
+		// Poczekaj chwilę aż wszystko się załaduje
+		GetTree().CreateTimer(0.5).Timeout += () =>
+		{
+			UpdateMinimapTarget();
+		};
 	}
 
 	private void OnAreaEntered(Area2D area)
 	{
-		// Gdy gracz wjeżdża w paczkę
 		if (area.GetParent().IsInGroup("Package"))
 		{
 			_overlappingPackageNode = area.GetParent() as Package;
 			_canTakePackage = true;
-			//GD.Print("Wykryto paczkę: " + area.GetParent().Name);
 		}
 
-		// Gdy gracz wjeżdża w klienta
 		if (area.GetParent().IsInGroup("Customer"))
 		{
 			_overlappingCustomerNode = area.GetParent() as Customer;
@@ -45,14 +62,12 @@ public partial class Delivery : Area2D
 
 	private void OnAreaExited(Area2D area)
 	{
-		// Gdy gracz wyjeżdża z pola paczki
 		if (area.GetParent() == _overlappingPackageNode)
 		{
 			_overlappingPackageNode = null;
 			_canTakePackage = false;
 		}
 
-		// Gdy gracz wyjeżdża z pola klienta
 		if (area.GetParent() == _overlappingCustomerNode)
 		{
 			_overlappingCustomerNode = null;
@@ -62,17 +77,13 @@ public partial class Delivery : Area2D
 
 	public override void _Process(double delta)
 	{
-		// Sprawdzanie naciśnięcia przycisku akcji
 		if (Input.IsActionJustPressed("action"))
 		{
-			// --- PODNOSZENIE PACZKI ---
 			if (_canTakePackage && _overlappingPackageNode != null && _overlappingPackageNode.Visible)
 			{
-				//GD.Print($"Mogę podnieść paczkę?");
 				TryTakePackage();
 			}
 
-			// --- DOSTARCZANIE PACZKI ---
 			if (_canDeliverPackage && _overlappingCustomerNode != null)
 			{
 				TryDeliverPackage();
@@ -84,36 +95,30 @@ public partial class Delivery : Area2D
 	{
 		if (CurrentPackageAmount < MaxPackageAmount && _movementScript.GetIsStanding())
 		{
-			// Paczka "znika", ale nie jest usuwana
 			_overlappingPackageNode.Visible = false;
 			
-			// Znajdujemy Area2D w paczce i wyłączamy jej monitoring
 			var area = _overlappingPackageNode.GetNode<Area2D>("Area2D");
 			if (area != null)
 			{
 				area.Monitoring = false;
-				area.Monitorable = false; // opcjonalnie — przestaje być wykrywalna przez inne Area2D
+				area.Monitorable = false;
 			}
 			
 			_collectedPackages.Add(_overlappingPackageNode);
 			CurrentPackageAmount++;
 
-			//GD.Print($"Podniesiono paczkę. Aktualnie wieziesz: {CurrentPackageAmount}/{MaxPackageAmount}");
 			PrintCollectedPackages();
-		}
-		else
-		{
-			//GD.Print("Nie możesz podnieść więcej paczek, albo nie stoisz!");
+			UpdateMinimapTarget();
 		}
 	}
 	
 	private void PrintCollectedPackages()
-{
-	foreach (var p in _collectedPackages)
 	{
-		GD.Print($"Masz paczkę dla: {p.GetTargetCustomer()}");
+		foreach (var p in _collectedPackages)
+		{
+			GD.Print($"Masz paczkę dla: {p.GetTargetCustomer()}");
+		}
 	}
-}
 
 	private void TryDeliverPackage()
 	{	
@@ -127,23 +132,80 @@ public partial class Delivery : Area2D
 					CurrentPackageAmount--;
 					_collectedPackages.Remove(_collectedPackage);
 					DeliveredPackagesPerDay++;
-					//GD.Print($"Dostarczono paczkę. Pozostało: {CurrentPackageAmount}/{MaxPackageAmount}");
-					return; // właściwa znaleziona
-				}
-				else
-				{
-					//GD.Print("Zły klient!");
+					
+					// Aktualizuj cel na minimapie
+					UpdateMinimapTarget();
+					return;
 				}
 			}
-			
-		}
-		else
-		{
-			//GD.Print("Nie masz żadnych paczek do dostarczenia, albo nie stoisz!");
 		}
 	}
 
-	// Pomocnicza metoda (jeśli kiedyś chcesz przywracać paczki)
+	private void UpdateMinimapTarget()
+	{
+		if (_minimap == null)
+		{
+			GD.PrintErr("UpdateMinimapTarget: Minimap is null!");
+			return;
+		}
+
+		// Jeśli mamy paczki, pokaż pierwszego klienta
+		if (_collectedPackages.Count > 0)
+		{
+			var firstPackage = _collectedPackages[0];
+			var targetCustomer = firstPackage.GetTargetCustomerNode();
+			
+			if (targetCustomer != null)
+			{
+				_minimap.target_package = targetCustomer;
+				_minimap.ShowCustomerMarker();
+				GD.Print($"📍 Minimap: Cel ustawiony na klienta {targetCustomer.Name}");
+			}
+			else
+			{
+				GD.PrintErr("UpdateMinimapTarget: Target customer is null!");
+			}
+		}
+		else
+		{
+			// Jeśli nie mamy paczek, znajdź najbliższą widoczną paczkę
+			var nearestPackage = FindNearestVisiblePackage();
+			if (nearestPackage != null)
+			{
+				_minimap.target_package = nearestPackage;
+				_minimap.ShowPackageMarker();
+				GD.Print($"📦 Minimap: Cel ustawiony na paczkę {nearestPackage.Name}");
+			}
+			else
+			{
+				_minimap.target_package = null;
+				GD.Print("⚠️ Minimap: Brak widocznych paczek!");
+			}
+		}
+	}
+
+	private Node2D FindNearestVisiblePackage()
+	{
+		var packages = GetTree().GetNodesInGroup("Package");
+		Node2D nearest = null;
+		float minDistance = float.MaxValue;
+
+		foreach (Node node in packages)
+		{
+			if (node is Package pkg && pkg.Visible)
+			{
+				float distance = GlobalPosition.DistanceTo(pkg.GlobalPosition);
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					nearest = pkg;
+				}
+			}
+		}
+
+		return nearest;
+	}
+
 	public void ResetPackages()
 	{
 		foreach (var p in _collectedPackages)
@@ -151,5 +213,7 @@ public partial class Delivery : Area2D
 			
 		_collectedPackages.Clear();
 		CurrentPackageAmount = 0;
+		
+		UpdateMinimapTarget();
 	}
 }
