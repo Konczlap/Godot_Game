@@ -2204,7 +2204,7 @@ collision_layer = 7
 collision_mask = 31
 priority = 1
 script = ExtResource("43_ijyun")
-UiLabelPath = NodePath("")
+UiLabelPath = NodePath("CollisionShape2D/Label")
 ShopScene = ExtResource("32_lsr6f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Salon Samochodowy/parking"]
@@ -2215,7 +2215,7 @@ shape = SubResource("RectangleShape2D_ijyun")
 visible = false
 offset_left = -48.0
 offset_top = -29.0
-offset_right = -8.0
+offset_right = 11.0
 offset_bottom = -6.0
 text = "nacisnij"
 
