@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=3 uid="uid://tc2a4wu2y0ly"]
+
+[ext_resource type="Script" uid="uid://ded00sbffrh0d" path="res://Skrypty/FuelWarningHUD.cs" id="1_70mqa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s5td4"]
+bg_color = Color(0, 0, 0, 0.8)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_70mqa"]
+font_size = 28
+
+[sub_resource type="LabelSettings" id="LabelSettings_lwckm"]
+
+[node name="FuelWarningHUD" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_70mqa")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(520, 220)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -110.0
+offset_right = 260.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageBox" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(520, 220)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s5td4")
+
+[node name="Vertical" type="VBoxContainer" parent="CenterContainer/MessageBox"]
+layout_mode = 0
+offset_right = 520.0
+offset_bottom = 220.0
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/MessageBox/Vertical"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_70mqa")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NoteLabel" type="Label" parent="CenterContainer/MessageBox/Vertical"]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_lwckm")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonsBox" type="HBoxContainer" parent="CenterContainer/MessageBox/Vertical"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="ReloadButton" type="Button" parent="CenterContainer/MessageBox/Vertical/ButtonsBox"]
+layout_mode = 2
+text = "Wczytaj dzień"
+
+[node name="ConfirmButton" type="Button" parent="CenterContainer/MessageBox/Vertical/ButtonsBox"]
+layout_mode = 2
+text = "OK"

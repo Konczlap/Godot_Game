@@ -9,6 +9,9 @@ public partial class Gas : Node2D
 
 	[Export] public MovementScript _movementScript;
 	[Export] public DayNightCycle _dayNightCycle;
+	[Export] public FuelWarningHUD FuelHUD; // podłącz w Inspectorze naszą scenę FuelWarningHUD
+	[Export] public PlayerMoney PlayerMoney; // podłącz PlayerMoney node
+
 	public bool _isTeleporting = false;
 
 	public override async void _Process(double delta)
@@ -31,21 +34,37 @@ public partial class Gas : Node2D
 			//GD.Print($"⛽ Paliwo: {_currentFuel:0.0}/{_maxFuel}");
 		}
 
-		// Gdy paliwo się skończy — można dodać reakcję (np. zatrzymanie auta)
+		// Gdy paliwo się skończy — pokaż odpowiednie okienko (przejęcie kontroli przez HUD)
 		if (_currentFuel <= 0f)
 		{
-			_isTeleporting = true;
 			_currentFuel = 0f;
 			_movementScript.CanMove = false;
-			//GD.Print("🚫 Brak paliwa!");
-			
+
+			// Jeśli nie mamy podłączonego HUDu / systemu pieniędzy — fallback: teleportuj
+			if (FuelHUD == null || PlayerMoney == null)
+			{
+				_isTeleporting = true;
+				await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
+				TeleportToFuelStation();
+				return;
+			}
+
+			// brak środków -> pokaż porażkę
+			if (PlayerMoney.GetMoney() < 75f)
+			{
+				FuelHUD.ShowFailureMessage();
+				return;
+			}
+
+			// mamy środki -> pokaż komunikat o holowaniu (HUD przejmie wykonanie)
+			FuelHUD.ShowTowMessage();
+			_isTeleporting = true;
 			await ToSignal(GetTree().CreateTimer(2.0), SceneTreeTimer.SignalName.Timeout);
 			TeleportToFuelStation();
+			return;
 		}
-			// Przy okazji można pozwolić znowu na ruch (np. po zatankowaniu)
-		else
-			_movementScript.CanMove = true;
 	}
+
 
 	public void AddFuel(float amount)
 	{
@@ -53,7 +72,7 @@ public partial class Gas : Node2D
 		//GD.Print($"⛽ Zatankowano {amount}L. Stan baku: {_currentFuel}/{_maxFuel}");
 	}
 	
-	private void TeleportToFuelStation()
+	public void TeleportToFuelStation()
 {
 	//if (_fuelStationSpawn == null)
 	//{
