@@ -3,13 +3,15 @@ using System;
 
 public partial class TimeHUD : CanvasLayer
 {
-	[Export] public DayNightCycle TimeSource; // podłącz w Inspectorze swój node DayNightCycle
+	[Export] public DayNightCycle TimeSource;
 
 	private Label _timeLabel;
+	private Label _dayLabel;   // <-- NOWE
 
 	public override void _Ready()
 	{
 		_timeLabel = GetNode<Label>("TimeHUDControl/TimeLabel");
+		_dayLabel = GetNode<Label>("TimeHUDControl/DayLabel"); // <-- NOWE
 
 		if (TimeSource == null)
 			GD.PushWarning("TimeHUD: TimeSource (DayNightCycle) nie podłączony w Inspectorze.");
@@ -17,13 +19,16 @@ public partial class TimeHUD : CanvasLayer
 
 	public override void _Process(double delta)
 	{
-		if (TimeSource == null) return;
+		if (TimeSource == null) 
+			return;
 
+		// --- ZEGAR ---
 		int hour = TimeSource.GetTimeHour();
 		int minute = TimeSource.GetTimeMinute();
+		_timeLabel.Text = $"{hour:00}:{minute:00}";
 
-		// Formatuj zawsze dwucyfrowo, np. 06:05
-		string formatted = $"{hour:00}:{minute:00}";
-		_timeLabel.Text = formatted;
+		// --- DZIEŃ ---
+		int day = TimeSource.GetDayNumber();
+		_dayLabel.Text = $"Dzień {day}";
 	}
 }
