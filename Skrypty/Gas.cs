@@ -75,6 +75,11 @@ public partial class Gas : Node2D
 	{
 		return _currentFuel;
 	}
+	
+	public void SetFuel(float value)
+	{
+		_currentFuel = value;
+	}
 
 	public float GetMaxFuel()
 	{

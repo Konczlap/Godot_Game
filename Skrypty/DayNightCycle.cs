@@ -109,8 +109,8 @@ public partial class DayNightCycle : Node2D
 		}
 		_delivery.CurrentPackageAmount = 0;
 		_delivery.DeliveredPackagesPerDay = 0;
-		_playerMoney.IncomePerDay = 0;
-		_playerMoney.SpendPerDay = 0;
+		_playerMoney.ZeroingIncomePerDay();
+		_playerMoney.ZeroingSpendPerDay();
 		//_delivery.ResetPackages();
 		_packageHUD.UpdateIcons();
 		
@@ -119,8 +119,52 @@ public partial class DayNightCycle : Node2D
 		_currentMinutes = 6 * 60; // 6:00 rano
 	}
 	
+	public void RestartDay()
+	{
+		CustomersContainer.Visible = true; // TRZEBA PRZEJŚĆ PRZEZ WSZYSTKIE DZIECI I JE WŁĄCZYĆ BO
+		PackagesContainer.Visible = true; // TAKIE WŁĄCZENIE NIE WŁĄCZY TYCH KTÓRE ZOSTAŁY WEWNĄTRZ NICH WYŁĄCZONE
+		//_spawnManager.RandomizeSpawn();
+		foreach (Node child in PackagesContainer.GetChildren())
+		{
+			if (child is Node2D item)
+			{
+				//GD.Print("Paczki robią się widoczne");
+				item.Visible = true;
+				var area = item.GetNodeOrNull<Area2D>("Area2D");
+				if (area != null)
+				{
+					area.Monitoring = true;
+					area.Monitorable = true;
+				}
+			}
+			else
+			{
+				//GD.Print("To nie działa :(");
+			}
+		}
+		_delivery.CurrentPackageAmount = 0;
+		_delivery.DeliveredPackagesPerDay = 0;
+		_playerMoney.ZeroingIncomePerDay();
+		_playerMoney.ZeroingSpendPerDay();
+		//_delivery.ResetPackages();
+		_packageHUD.UpdateIcons();
+		
+		_movementScript.CanMove = true;
+		_currentMinutes = 6 * 60; // 6:00 rano
+	}
+	
 	public int GetDayNumber()
 	{
 		return _dayNumber;
+	}
+	
+	public void SetDayNumber(int value)
+	{
+		_dayNumber = value;
+	}
+	
+	public void TimeRestart()
+	{
+		_currentMinutes = 6 * 60;
 	}
 }

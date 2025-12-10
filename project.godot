@@ -15,6 +15,10 @@ run/main_scene="uid://q3g1r7ghd600"
 config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SaveManager="*res://Skrypty/SaveManager.cs"
+
 [dotnet]
 
 project/assembly_name="Wars"

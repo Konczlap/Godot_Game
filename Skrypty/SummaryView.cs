@@ -24,8 +24,8 @@ public partial class SummaryView : CanvasLayer
 		int day = _dayNightCycle.GetDayNumber();
 		int delivered = _delivery.DeliveredPackagesPerDay;
 		int maxPackages = 17;  // jeśli stała, można wynieść do export
-		float earned = _playerMoney.IncomePerDay;
-		float spent = _playerMoney.SpendPerDay;
+		float earned = _playerMoney.GetIncomePerDay();
+		float spent = _playerMoney.GetSpendPerDay();
 		float balance = earned - spent;
 
 		// Ustawianie tekstów w panelu

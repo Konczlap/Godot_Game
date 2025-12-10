@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=66 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -45,6 +45,7 @@
 [ext_resource type="PackedScene" uid="uid://t1lu2cgmk0pg" path="res://Sceny/PauseMenu.tscn" id="42_ijyun"]
 [ext_resource type="Script" uid="uid://e4twqdoxjrkp" path="res://Skrypty/Parking.cs" id="43_ijyun"]
 [ext_resource type="PackedScene" uid="uid://beeamr1b01jnm" path="res://Sceny/minimap.tscn" id="45_xduwb"]
+[ext_resource type="Script" uid="uid://cc558rqgwqsiw" path="res://Skrypty/Sandbox.cs" id="48_c1bnq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -2245,10 +2246,12 @@ position = Vector2(400, 169)
 scale = Vector2(0.00625, 0.00625)
 texture = ExtResource("15_5l22i")
 
-[node name="Area2D" type="Area2D" parent="Dom/Dom" node_paths=PackedStringArray("_dayNightCycle", "_movementScript", "_delivery", "PackagesContainer", "CustomersContainer")]
+[node name="Area2D" type="Area2D" parent="Dom/Dom" node_paths=PackedStringArray("_dayNightCycle", "_playerMoney", "_gas", "_movementScript", "_delivery", "PackagesContainer", "CustomersContainer")]
 collision_layer = 6
 script = ExtResource("28_xexbp")
 _dayNightCycle = NodePath("../../../DayNightCycle")
+_playerMoney = NodePath("../../../Player/Car/PlayerMoney")
+_gas = NodePath("../../../Player/Car/Gas")
 _movementScript = NodePath("../../../Player")
 _delivery = NodePath("../../../Player/Car/Delivery")
 PackagesContainer = NodePath("../../../Paczki")
@@ -2265,7 +2268,7 @@ _customersParentPath = NodePath("../Klienci")
 
 [node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_movementScript", "_delivery", "_playerMoney", "_packageHUD", "_spawnManager")]
 script = ExtResource("29_f744g")
-RealSecondsPerGameMinute = 0.5
+RealSecondsPerGameMinute = 0.05
 CustomersContainer = NodePath("../Klienci")
 PackagesContainer = NodePath("../Paczki")
 SummaryMenu = NodePath("../SummaryView")
@@ -2281,35 +2284,39 @@ script = ExtResource("34_xsqcf")
 PauseMenu = NodePath("../PauseMenu")
 
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
-visible = false
 GasScript = NodePath("../Player/Car/Gas")
 
 [node name="MoneyHUD" parent="." node_paths=PackedStringArray("MoneyScript") instance=ExtResource("30_q4juh")]
-visible = false
 MoneyScript = NodePath("../Player/Car/PlayerMoney")
 
 [node name="PackageHUD" parent="." node_paths=PackedStringArray("DeliveryScript") instance=ExtResource("31_q4juh")]
-visible = false
 DeliveryScript = NodePath("../Player/Car/Delivery")
 PackageIcon = ExtResource("3_84mch")
 
 [node name="SpeedHUD" parent="." node_paths=PackedStringArray("CarScript") instance=ExtResource("32_820eb")]
-visible = false
 script = ExtResource("33_f744g")
 CarScript = NodePath("../Player")
 
 [node name="SummaryView" parent="." node_paths=PackedStringArray("_dayNightCycle", "_delivery", "_playerMoney") instance=ExtResource("36_pqddq")]
-visible = false
 _dayNightCycle = NodePath("../DayNightCycle")
 _delivery = NodePath("../Player/Car/Delivery")
 _playerMoney = NodePath("../Player/Car/PlayerMoney")
 
 [node name="TimeHUD" parent="." node_paths=PackedStringArray("TimeSource") instance=ExtResource("38_jcakk")]
-visible = false
 TimeSource = NodePath("../DayNightCycle")
 
-[node name="PauseMenu" parent="." instance=ExtResource("42_ijyun")]
-visible = false
+[node name="PauseMenu" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "delivery") instance=ExtResource("42_ijyun")]
+player = NodePath("../Player")
+gas = NodePath("../Player/Car/Gas")
+playerMoney = NodePath("../Player/Car/PlayerMoney")
+dayNightCycle = NodePath("../DayNightCycle")
+delivery = NodePath("../Player/Car/Delivery")
 
 [node name="Minimap" parent="." instance=ExtResource("45_xduwb")]
-visible = false
+
+[node name="Sandbox" type="Node" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle")]
+script = ExtResource("48_c1bnq")
+player = NodePath("../Player")
+gas = NodePath("../Player/Car/Gas")
+playerMoney = NodePath("../Player/Car/PlayerMoney")
+dayNightCycle = NodePath("../DayNightCycle")

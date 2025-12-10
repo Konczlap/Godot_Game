@@ -4,8 +4,11 @@ using System;
 public partial class EndDay : Area2D
 {
 	[Export] private DayNightCycle _dayNightCycle;
+	[Export] private PlayerMoney _playerMoney;
+	[Export] private Gas _gas;
 	[Export] private MovementScript _movementScript;
 	[Export] private Delivery _delivery;
+	//[Export] private SaveManager _saveManager;
 	[Export] public Node2D PackagesContainer;
 	[Export] public Node2D CustomersContainer;
 	
@@ -57,6 +60,13 @@ public partial class EndDay : Area2D
 			(_dayNightCycle.IsNight || _allPackageTaken))
 		{
 			_dayNightCycle.EndDay();
+			var sm = GetNodeOrNull<SaveManager>("/root/SaveManager");
+			if (sm != null)
+				sm.SaveGame(_movementScript, _gas, _playerMoney, _dayNightCycle);
+			else
+				GD.PrintErr("❌ Nie znaleziono SaveManager!");
+			//SaveManager.SaveGame(_movementScript, _gas, _playerMoney, _dayNightCycle);
+			//Zapis
 		}
 	}
 	

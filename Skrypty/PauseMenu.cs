@@ -3,10 +3,19 @@ using System;
 
 public partial class PauseMenu : CanvasLayer
 {
-	[Export]
-	public NodePath ResumeButtonPath = "Panel/ResumeButton";
-
+	[Export] public NodePath ResumeButtonPath = "Panel/ResumeButton";
+	[Export] public NodePath RestartButtonPath = "Panel/RestartButton";
+	[Export] public NodePath MainMenuButtonPath = "Panel/MainMenuButton";
+	
+	[Export] public MovementScript player;
+	[Export] public Gas gas;
+	[Export] public PlayerMoney playerMoney;
+	[Export] public DayNightCycle dayNightCycle;
+	[Export] public Delivery delivery;
+	
 	private Button resumeButton;
+	private Button restartButton;
+	private Button mainMenuButton;
 
 	public override void _Ready()
 	{
@@ -23,12 +32,68 @@ public partial class PauseMenu : CanvasLayer
 				resumeButton.Pressed += OnResumeButtonPressed;
 			}
 		}
+		
+		if (!string.IsNullOrEmpty(RestartButtonPath.ToString()))
+		{
+			restartButton = GetNodeOrNull<Button>(RestartButtonPath);
+
+			if (restartButton != null)
+			{
+				restartButton.Pressed += OnRestartButtonPressed;
+			}
+		}
+		
+		if (!string.IsNullOrEmpty(MainMenuButtonPath.ToString()))
+		{
+			mainMenuButton = GetNodeOrNull<Button>(MainMenuButtonPath);
+
+			if (mainMenuButton != null)
+			{
+				mainMenuButton.Pressed += OnMainMenuButtonPressed;
+			}
+		}
 	}
 
 	private void OnResumeButtonPressed()
 	{
 		GetTree().Paused = false;
 		Visible = false;
+	}
+	
+	private void OnRestartButtonPressed()
+	{
+		var sm = GetNodeOrNull<SaveManager>("/root/SaveManager");
+		if (sm == null)
+		{
+			GD.PrintErr("SaveManager singleton nie znaleziony!");
+			return;
+		}
+		
+		if (sm == null)
+		{
+			GD.PrintErr("❌ Brak SaveManager!");
+			return;
+		}
+		
+		sm.LoadSave();
+		
+		// ustawienie wartości w grze
+		player.GlobalPosition = sm.PlayerPosition;
+		player.SetCurrentSpeed(0f);
+		gas.SetFuel(sm.Fuel);
+		playerMoney.SetMoney(sm.Money);
+		dayNightCycle.SetDayNumber(sm.Day);
+		dayNightCycle.RestartDay();
+		delivery.ResetPackages();
+		
+		GD.Print("🔄 Gra zrestartowana od początku dnia!");
+		
+		OnResumeButtonPressed(); // ukryj menu pauzy i odblokuj grę
+	}
+	
+	private void OnMainMenuButtonPressed()
+	{
+		// przejście do Main Menu
 	}
 
 	public void OnContinuePressed()

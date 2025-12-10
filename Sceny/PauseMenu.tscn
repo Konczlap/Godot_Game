@@ -39,7 +39,8 @@ shadow_offset = Vector2(0, 3.41)
 
 [node name="PauseMenu" type="CanvasLayer"]
 script = ExtResource("1_b656d")
-ResumeButtonPath = NodePath("VBoxContainer/Button1")
+ResumeButtonPath = NodePath("VBoxContainer/Continue")
+RestartButtonPath = NodePath("VBoxContainer/Restart")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
@@ -67,7 +68,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 9
 
-[node name="Button1" type="Button" parent="VBoxContainer"]
+[node name="Continue" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -82,7 +83,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_7vrkn")
 text = "Continue
 "
 
-[node name="Button2" type="Button" parent="VBoxContainer"]
+[node name="Restart" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -97,7 +98,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_7vrkn")
 text = "Restart
 "
 
-[node name="Button3" type="Button" parent="VBoxContainer"]
+[node name="MainMenu" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
