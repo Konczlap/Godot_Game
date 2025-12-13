@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://q3g1r7ghd600"]
+[gd_scene load_steps=12 format=3 uid="uid://q3g1r7ghd600"]
 
 [ext_resource type="Texture2D" uid="uid://ccm7b8eoc6mf5" path="res://Assety do gry/CarMenu.png" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://wcippehbyffy" path="res://Skrypty/main_menu.gd" id="1_fu7sn"]
 [ext_resource type="FontFile" uid="uid://dm1s1o5tfvbod" path="res://Assety do gry/GrapeSoda.ttf" id="2_7vrkn"]
+[ext_resource type="Script" uid="uid://w3eyxsovnqsm" path="res://Skrypty/fullscreen_control.gd" id="4_33ai8"]
+[ext_resource type="Texture2D" uid="uid://crep35dslcbkc" path="res://Assety do gry/PauseMenu.png" id="4_s0l4g"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7vrkn"]
 texture = ExtResource("1_06t4h")
@@ -37,6 +39,9 @@ shadow_offset = Vector2(0, 3.41)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7vrkn"]
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b46r3"]
+texture = ExtResource("4_s0l4g")
+
 [node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -59,7 +64,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_7vrkn")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MainButtons" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -74,7 +79,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 9
 
-[node name="StartGame" type="Button" parent="VBoxContainer"]
+[node name="StartGame" type="Button" parent="MainButtons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -89,7 +94,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_7vrkn")
 text = "Start game
 "
 
-[node name="Continue" type="Button" parent="VBoxContainer"]
+[node name="Continue" type="Button" parent="MainButtons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -104,7 +109,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_7vrkn")
 text = "Continue
 "
 
-[node name="Options" type="Button" parent="VBoxContainer"]
+[node name="Options" type="Button" parent="MainButtons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -119,7 +124,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_7vrkn")
 text = "Options
 "
 
-[node name="Creators" type="Button" parent="VBoxContainer"]
+[node name="Creators" type="Button" parent="MainButtons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -134,7 +139,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_7vrkn")
 text = "Creators
 "
 
-[node name="Exit" type="Button" parent="VBoxContainer"]
+[node name="Exit" type="Button" parent="MainButtons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -164,8 +169,89 @@ text = "Symulator Kuriera"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="VBoxContainer/StartGame" to="." method="_on_startgame_pressed"]
-[connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="VBoxContainer/Creators" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[node name="Options" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -259.0
+offset_top = -164.5
+offset_right = 269.0
+offset_bottom = 148.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -322.0
+offset_top = -165.0
+offset_right = 307.0
+offset_bottom = 168.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_b46r3")
+
+[node name="Label" type="Label" parent="Options"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 7.0
+offset_top = -95.0
+offset_right = 7.0
+offset_bottom = -31.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_font_sizes/font_size = 64
+text = "OPTIONS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Back" type="Button" parent="Options/Label"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 353.0
+offset_right = 403.0
+offset_bottom = 411.0
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_rhts7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fu7sn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7vrkn")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_7vrkn")
+text = "Back
+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Options"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 12.0
+offset_right = 460.0
+offset_bottom = 94.0
+theme_override_constants/separation = 18
+
+[node name="FullscreenControl" type="CheckButton" parent="Options/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Fullscreen"
+script = ExtResource("4_33ai8")
+
+[node name="OptionButton" type="OptionButton" parent="Options/VBoxContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="MainButtons/StartGame" to="." method="_on_startgame_pressed"]
+[connection signal="pressed" from="MainButtons/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="MainButtons/Options" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MainButtons/Creators" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MainButtons/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Options/Label/Back" to="." method="_on_back_options_pressed"]
+[connection signal="toggled" from="Options/VBoxContainer/FullscreenControl" to="Options/VBoxContainer/FullscreenControl" method="_on_toggled"]
+[connection signal="item_selected" from="Options/VBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]

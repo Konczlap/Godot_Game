@@ -41,6 +41,7 @@ shadow_offset = Vector2(0, 3.41)
 script = ExtResource("1_b656d")
 ResumeButtonPath = NodePath("VBoxContainer/Continue")
 RestartButtonPath = NodePath("VBoxContainer/Restart")
+MainMenuButtonPath = NodePath("VBoxContainer/MainMenu")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15

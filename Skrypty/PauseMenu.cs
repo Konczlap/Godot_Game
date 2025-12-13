@@ -16,7 +16,12 @@ public partial class PauseMenu : CanvasLayer
 	private Button resumeButton;
 	private Button restartButton;
 	private Button mainMenuButton;
-
+	
+	//public override void _ExitTree()
+	//{
+		//GD.Print("PauseMenu usunięte");
+	//}
+	
 	public override void _Ready()
 	{
 		Visible = false;
@@ -93,7 +98,17 @@ public partial class PauseMenu : CanvasLayer
 	
 	private void OnMainMenuButtonPressed()
 	{
-		// przejście do Main Menu
+		// Zawsze najpierw zdejmujemy pauzę
+		GetTree().Paused = false;
+
+		// (opcjonalnie) ukryj menu pauzy
+		Visible = false;
+		
+		// 🔴 Odłącz menu od drzewa
+		//QueueFree();
+
+		// Przejście do Main Menu
+		GetTree().ChangeSceneToFile("res://Sceny/main_menu.tscn");
 	}
 
 	public void OnContinuePressed()
