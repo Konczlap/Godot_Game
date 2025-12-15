@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b00gbsmhd0al8"
+path="res://.godot/imported/caridle.mp3-d06b27b854cc7ba2ac0e3aa02d5c923d.mp3str"
+
+[deps]
+
+source_file="res://Assety do gry/caridle.mp3"
+dest_files=["res://.godot/imported/caridle.mp3-d06b27b854cc7ba2ac0e3aa02d5c923d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -11,6 +11,10 @@ public partial class MovementScript : CharacterBody2D
 	[Export] public float BrakePower = 600f;          // (225) moc hamowania
 	[Export] public float EngineBraking = 200f;       // (10) hamowanie silnikiem
 	[Export] public float RotationSpeed = 90f;        // (90) maksymalna prędkość obrotu (stopnie/sek)
+	[Export] private AudioStreamPlayer2D _engineIdle;
+	[Export] private AudioStreamPlayer2D _engineDrive;
+	[Export] private AudioStreamPlayer2D _brakeSound;
+	[Export] private AudioStreamPlayer2D _refuelSound;
 	
 	private float _currentSpeed = 0f;                 // aktualna prędkość
 	private float _rotationInput = 0f;                // wejście dla skrętu
@@ -26,6 +30,8 @@ public partial class MovementScript : CharacterBody2D
 		MoveCar(dt);
 		UpdateStandingState(); // czy auto stoi?
 		_collisions.CheckCollisionStop(this);
+		UpdateEngineSound();
+		UpdateBrakeSound();
 	}
 
 	private void HandleInput(float dt)
@@ -98,13 +104,66 @@ public partial class MovementScript : CharacterBody2D
 			IsStanding = false;
 	}
 	
+	private void UpdateEngineSound()
+	{
+		float absSpeed = Mathf.Abs(_currentSpeed);
+
+		// AUTO STOI → IDLE
+		if (absSpeed < 5f)
+		{
+			if (!_engineIdle.Playing)
+				_engineIdle.Play();
+
+			_engineDrive.Stop();
+		}
+		else
+		{
+			if (!_engineDrive.Playing)
+				_engineDrive.Play();
+
+			_engineIdle.Stop();
+
+			float speedRatio = absSpeed / MaxForwardSpeed;
+			_engineDrive.PitchScale = Mathf.Lerp(0.9f, 1.3f, speedRatio);
+		}
+	}
+	
+	private void UpdateBrakeSound()
+	{
+		bool isBraking = Input.IsActionPressed("brake");
+		float absSpeed = Mathf.Abs(_currentSpeed);
+
+		if (isBraking && absSpeed > 30f)
+		{
+			if (!_brakeSound.Playing)
+				_brakeSound.Play();
+		}
+		else
+		{
+			if (_brakeSound.Playing)
+				_brakeSound.Stop();
+		}
+	}
+
 	public void SetCurrentSpeed(float speed)
 	{
 		_currentSpeed = speed;
 	}
-	
+	 
 	public bool GetIsStanding()
 	{
 		return IsStanding;
+	}
+	
+	public void StartRefuel()
+	{
+		if (!_refuelSound.Playing)
+			_refuelSound.Play();
+	}
+
+	public void StopRefuel()
+	{
+		if (_refuelSound.Playing)
+			_refuelSound.Stop();
 	}
 }

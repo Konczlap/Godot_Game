@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=71 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -27,8 +27,12 @@
 [ext_resource type="Texture2D" uid="uid://cba8roo8712q4" path="res://Assety do gry/Tree 4.png" id="12_s5r2j"]
 [ext_resource type="Texture2D" uid="uid://dy2pydtefnd0f" path="res://Assety do gry/Tree 2.png" id="13_1sjgv"]
 [ext_resource type="Script" uid="uid://b27k360p5yi5c" path="res://Skrypty/GasParticle.cs" id="13_gduqm"]
+[ext_resource type="AudioStream" uid="uid://b00gbsmhd0al8" path="res://Assety do gry/caridle.mp3" id="13_i65k0"]
 [ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
+[ext_resource type="AudioStream" uid="uid://v70vqmw18at5" path="res://Assety do gry/cardrive.mp3" id="14_i65k0"]
+[ext_resource type="AudioStream" uid="uid://be8d2ncrxa8x" path="res://Assety do gry/carbrake.mp3" id="15_4rfhh"]
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
+[ext_resource type="AudioStream" uid="uid://u70w7yx1r7ov" path="res://Assety do gry/carrefuel.mp3" id="16_ius1y"]
 [ext_resource type="Script" uid="uid://cy7nwoy1mnpc4" path="res://Skrypty/Refueling.cs" id="23_g8htv"]
 [ext_resource type="Script" uid="uid://bd8b1gxsts0tf" path="res://Skrypty/SpawnManager.cs" id="24_3h8bx"]
 [ext_resource type="Script" uid="uid://c3mkd81xdrbb3" path="res://Skrypty/EndDay.cs" id="28_xexbp"]
@@ -123,7 +127,7 @@ Player = NodePath("Player")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 
-[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("_collisions") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("_collisions", "_engineIdle", "_engineDrive", "_brakeSound", "_refuelSound") groups=["Player"]]
 z_index = 1
 position = Vector2(346, 217)
 scale = Vector2(0.25, 0.25)
@@ -136,6 +140,10 @@ MaxBackwardSpeed = -37.5
 Acceleration = 150.0
 BrakePower = 225.0
 EngineBraking = 25.0
+_engineIdle = NodePath("Car/AudioEngineIdle")
+_engineDrive = NodePath("Car/AudioEngineDrive")
+_brakeSound = NodePath("Car/AudioBrake")
+_refuelSound = NodePath("Car/AudioRefuel")
 
 [node name="Car" type="Sprite2D" parent="Player" node_paths=PackedStringArray("FrontLeftLight", "FrontRightLight", "BackLeftLight", "BackRightLight", "BackMiddleLight") groups=["Player"]]
 z_index = 10
@@ -243,6 +251,22 @@ process_material = SubResource("ParticleProcessMaterial_gduqm")
 script = ExtResource("13_gduqm")
 Movement = NodePath("../..")
 SmokePath = NodePath("../Smoke")
+
+[node name="AudioEngineIdle" type="AudioStreamPlayer2D" parent="Player/Car"]
+stream = ExtResource("13_i65k0")
+volume_db = 5.0
+
+[node name="AudioEngineDrive" type="AudioStreamPlayer2D" parent="Player/Car"]
+stream = ExtResource("14_i65k0")
+volume_db = -10.0
+
+[node name="AudioBrake" type="AudioStreamPlayer2D" parent="Player/Car"]
+scale = Vector2(0.99999994, 0.99999994)
+stream = ExtResource("15_4rfhh")
+
+[node name="AudioRefuel" type="AudioStreamPlayer2D" parent="Player/Car"]
+scale = Vector2(0.99999976, 0.99999976)
+stream = ExtResource("16_ius1y")
 
 [node name="Camera2D" type="Camera2D" parent="Player" groups=["Player"]]
 zoom = Vector2(4, 4)
