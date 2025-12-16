@@ -11,7 +11,6 @@ public partial class MovementScript : CharacterBody2D
 	[Export] public float BrakePower = 600f;          // (225) moc hamowania
 	[Export] public float EngineBraking = 200f;       // (10) hamowanie silnikiem
 	[Export] public float RotationSpeed = 90f;        // (90) maksymalna prędkość obrotu (stopnie/sek)
-	[Export] private AudioStreamPlayer2D _engineIdle;
 	[Export] private AudioStreamPlayer2D _engineDrive;
 	[Export] private AudioStreamPlayer2D _brakeSound;
 	[Export] private AudioStreamPlayer2D _refuelSound;
@@ -108,25 +107,41 @@ public partial class MovementScript : CharacterBody2D
 	{
 		float absSpeed = Mathf.Abs(_currentSpeed);
 
-		// AUTO STOI → IDLE
-		if (absSpeed < 5f)
-		{
-			if (!_engineIdle.Playing)
-				_engineIdle.Play();
+		float minVolume = -25f;
+		float maxVolume = 0f;
+		float fadeSpeed = 20f;
 
-			_engineDrive.Stop();
-		}
-		else
+		if (absSpeed > 5f)
 		{
 			if (!_engineDrive.Playing)
 				_engineDrive.Play();
 
-			_engineIdle.Stop();
+			float speedRatio = Mathf.Clamp(absSpeed / MaxForwardSpeed, 0f, 1f);
+			float targetVolume = Mathf.Lerp(minVolume, maxVolume, speedRatio);
 
-			float speedRatio = absSpeed / MaxForwardSpeed;
+			_engineDrive.VolumeDb = Mathf.MoveToward(
+				_engineDrive.VolumeDb,
+				targetVolume,
+				fadeSpeed * (float)GetPhysicsProcessDeltaTime()
+			);
+
 			_engineDrive.PitchScale = Mathf.Lerp(0.9f, 1.3f, speedRatio);
 		}
+		else
+		{
+			_engineDrive.VolumeDb = Mathf.MoveToward(
+				_engineDrive.VolumeDb,
+				minVolume,
+				fadeSpeed * (float)GetPhysicsProcessDeltaTime()
+			);
+
+			if (_engineDrive.VolumeDb <= minVolume + 1f)
+			{
+				_engineDrive.Stop();
+			}
+		}
 	}
+
 	
 	private void UpdateBrakeSound()
 	{

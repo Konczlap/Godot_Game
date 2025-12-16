@@ -9,6 +9,7 @@ public partial class DayNightCycle : Node2D
 	[Export] public Node2D PackagesContainer;
 	[Export] public /*CanvasLayer*/ SummaryView SummaryMenu;
 	[Export] public CanvasModulate GlobalModulate;
+	[Export] private AudioStreamPlayer _cityAmbient;
 	[Export] private MovementScript _movementScript;
 	[Export] private Delivery _delivery;
 	[Export] private PlayerMoney _playerMoney;
@@ -30,6 +31,7 @@ public partial class DayNightCycle : Node2D
 		UpdateTime(delta);
 		UpdateLight();
 		HandleNightTransition();
+		UpdateCityAmbient(delta);
 	}
 
 	private void UpdateTime(double delta)
@@ -63,6 +65,41 @@ public partial class DayNightCycle : Node2D
 			target = nightColor;
 
 		GlobalModulate.Color = GlobalModulate.Color.Lerp(target, 0.02f);
+	}
+	
+	private void UpdateCityAmbient(double delta)
+	{
+		if (_cityAmbient == null)
+			return;
+
+		float dayVolume = -20f;
+		float nightVolume = -35f;
+		float fadeSpeed = 10f;
+
+		int hour = GetTimeHour();
+		int minute = GetTimeMinute();
+
+		float targetVolume;
+
+		if (hour >= 6 && hour < 18)
+		{
+			targetVolume = dayVolume;
+		}
+		else if (hour >= 18 && hour < 22)
+		{
+			float t = (hour * 60 + minute - 18 * 60) / (float)(4 * 60);
+			targetVolume = Mathf.Lerp(dayVolume, nightVolume, t);
+		}
+		else
+		{
+			targetVolume = nightVolume;
+		}
+
+		_cityAmbient.VolumeDb = Mathf.MoveToward(
+			_cityAmbient.VolumeDb,
+			targetVolume,
+			fadeSpeed * (float)delta
+		);
 	}
 
 	private void HandleNightTransition()

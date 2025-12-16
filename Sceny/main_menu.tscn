@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://q3g1r7ghd600"]
+[gd_scene load_steps=15 format=3 uid="uid://q3g1r7ghd600"]
 
 [ext_resource type="Texture2D" uid="uid://ccm7b8eoc6mf5" path="res://Assety do gry/CarMenu.png" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://wcippehbyffy" path="res://Skrypty/main_menu.gd" id="1_fu7sn"]
 [ext_resource type="FontFile" uid="uid://dm1s1o5tfvbod" path="res://Assety do gry/GrapeSoda.ttf" id="2_7vrkn"]
 [ext_resource type="Script" uid="uid://w3eyxsovnqsm" path="res://Skrypty/fullscreen_control.gd" id="4_33ai8"]
+[ext_resource type="Script" uid="uid://ci1ybbvsu2grn" path="res://Sceny/Options.cs" id="4_b46r3"]
 [ext_resource type="Texture2D" uid="uid://crep35dslcbkc" path="res://Assety do gry/PauseMenu.png" id="4_s0l4g"]
+[ext_resource type="AudioStream" uid="uid://cy3tcp2mewo15" path="res://Assety do gry/menu.mp3" id="6_s0l4g"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7vrkn"]
 texture = ExtResource("1_06t4h")
@@ -41,6 +43,11 @@ shadow_offset = Vector2(0, 3.41)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b46r3"]
 texture = ExtResource("4_s0l4g")
+
+[sub_resource type="LabelSettings" id="LabelSettings_b46r3"]
+font_size = 40
+outline_size = 6
+outline_color = Color(0.8431839, 0.8431839, 0.84318376, 1)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -182,6 +189,7 @@ offset_right = 269.0
 offset_bottom = 148.5
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_b46r3")
 
 [node name="Panel" type="Panel" parent="Options"]
 layout_mode = 1
@@ -246,6 +254,28 @@ script = ExtResource("4_33ai8")
 
 [node name="OptionButton" type="OptionButton" parent="Options/VBoxContainer"]
 layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="Options/VBoxContainer"]
+layout_mode = 2
+text = "Volume"
+label_settings = SubResource("LabelSettings_b46r3")
+horizontal_alignment = 1
+
+[node name="MasterSlider" type="HSlider" parent="Options/VBoxContainer/VolumeLabel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 37.0
+offset_right = 391.0
+offset_bottom = 99.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MenuAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_s0l4g")
+volume_db = -15.0
+autoplay = true
+parameters/looping = true
 
 [connection signal="pressed" from="MainButtons/StartGame" to="." method="_on_startgame_pressed"]
 [connection signal="pressed" from="MainButtons/Continue" to="." method="_on_continue_pressed"]

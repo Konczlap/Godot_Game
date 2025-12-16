@@ -21,28 +21,38 @@ public partial class Refueling : Area2D
 	public override void _Process(double delta)
 	{
 		if (!_canRefuel || _gas == null || _movementScript == null)
+		{
+			_movementScript?.StopRefuel();
 			return;
+		}
 
-		// Tankowanie po naciśnięciu "E"
-		if (Input.IsActionPressed("action") && _movementScript.GetIsStanding())
+		bool wantsToRefuel =
+			Input.IsActionPressed("action") &&
+			_movementScript.GetIsStanding();
+
+		if (wantsToRefuel)
+			_movementScript.StartRefuel();
+		else
+			_movementScript.StopRefuel();
+
+		if (wantsToRefuel)
 		{
 			float fuelToAdd = _refuelRate * (float)delta;
 			float cost = fuelToAdd * _fuelPrice;
 
-			// Sprawdź, czy gracz ma pieniądze
 			if (_playerMoney.GetMoney() >= cost)
 			{
 				_playerMoney.SpendMoney(cost);
 				_gas.AddFuel(fuelToAdd);
-				if (_gas.GetFuel() == _gas.GetMaxFuel())
+
+				if (_gas.GetFuel() >= _gas.GetMaxFuel())
 				{
 					_canRefuel = false;
-					return;
 				}
 			}
 			else
 			{
-				//GD.Print("❌ Brak pieniędzy na paliwo!");
+				GD.Print("❌ Brak pieniędzy na paliwo!");
 			}
 		}
 	}
@@ -79,6 +89,8 @@ public partial class Refueling : Area2D
 	{
 		if (area.GetParent().IsInGroup("Player"))
 		{
+			_movementScript?.StopRefuel();
+			
 			_canRefuel = false;
 			_gas = null;
 			_movementScript = null;

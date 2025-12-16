@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=73 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -27,9 +27,8 @@
 [ext_resource type="Texture2D" uid="uid://cba8roo8712q4" path="res://Assety do gry/Tree 4.png" id="12_s5r2j"]
 [ext_resource type="Texture2D" uid="uid://dy2pydtefnd0f" path="res://Assety do gry/Tree 2.png" id="13_1sjgv"]
 [ext_resource type="Script" uid="uid://b27k360p5yi5c" path="res://Skrypty/GasParticle.cs" id="13_gduqm"]
-[ext_resource type="AudioStream" uid="uid://b00gbsmhd0al8" path="res://Assety do gry/caridle.mp3" id="13_i65k0"]
+[ext_resource type="AudioStream" uid="uid://c0k1xfiv8qd07" path="res://Assety do gry/ford-mustang-engine-1985-78386 (mp3cut.net).mp3" id="13_ius1y"]
 [ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
-[ext_resource type="AudioStream" uid="uid://v70vqmw18at5" path="res://Assety do gry/cardrive.mp3" id="14_i65k0"]
 [ext_resource type="AudioStream" uid="uid://be8d2ncrxa8x" path="res://Assety do gry/carbrake.mp3" id="15_4rfhh"]
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
 [ext_resource type="AudioStream" uid="uid://u70w7yx1r7ov" path="res://Assety do gry/carrefuel.mp3" id="16_ius1y"]
@@ -51,6 +50,9 @@
 [ext_resource type="PackedScene" uid="uid://beeamr1b01jnm" path="res://Sceny/minimap.tscn" id="45_xduwb"]
 [ext_resource type="PackedScene" uid="uid://tc2a4wu2y0ly" path="res://Sceny/FuelWarningHUD.tscn" id="47_c1bnq"]
 [ext_resource type="Script" uid="uid://cc558rqgwqsiw" path="res://Skrypty/Sandbox.cs" id="48_c1bnq"]
+[ext_resource type="AudioStream" uid="uid://baho2dqqo7rwp" path="res://Assety do gry/miasto.mp3" id="52_ius1y"]
+[ext_resource type="Script" uid="uid://ddnl3sd0ik3c0" path="res://Sceny/AmbientAudio.cs" id="53_6m4gp"]
+[ext_resource type="AudioStream" uid="uid://cqulq000ftyoy" path="res://Assety do gry/game.mp3" id="53_ius1y"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -127,7 +129,7 @@ Player = NodePath("Player")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 
-[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("_collisions", "_engineIdle", "_engineDrive", "_brakeSound", "_refuelSound") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("_collisions", "_engineDrive", "_brakeSound", "_refuelSound") groups=["Player"]]
 z_index = 1
 position = Vector2(346, 217)
 scale = Vector2(0.25, 0.25)
@@ -140,7 +142,6 @@ MaxBackwardSpeed = -37.5
 Acceleration = 150.0
 BrakePower = 225.0
 EngineBraking = 25.0
-_engineIdle = NodePath("Car/AudioEngineIdle")
 _engineDrive = NodePath("Car/AudioEngineDrive")
 _brakeSound = NodePath("Car/AudioBrake")
 _refuelSound = NodePath("Car/AudioRefuel")
@@ -252,17 +253,13 @@ script = ExtResource("13_gduqm")
 Movement = NodePath("../..")
 SmokePath = NodePath("../Smoke")
 
-[node name="AudioEngineIdle" type="AudioStreamPlayer2D" parent="Player/Car"]
-stream = ExtResource("13_i65k0")
-volume_db = 5.0
-
 [node name="AudioEngineDrive" type="AudioStreamPlayer2D" parent="Player/Car"]
-stream = ExtResource("14_i65k0")
-volume_db = -10.0
+stream = ExtResource("13_ius1y")
 
 [node name="AudioBrake" type="AudioStreamPlayer2D" parent="Player/Car"]
 scale = Vector2(0.99999994, 0.99999994)
 stream = ExtResource("15_4rfhh")
+volume_db = -20.0
 
 [node name="AudioRefuel" type="AudioStreamPlayer2D" parent="Player/Car"]
 scale = Vector2(0.99999976, 0.99999976)
@@ -2292,13 +2289,14 @@ script = ExtResource("24_3h8bx")
 _packagesParentPath = NodePath("../Paczki")
 _customersParentPath = NodePath("../Klienci")
 
-[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_movementScript", "_delivery", "_playerMoney", "_packageHUD", "_spawnManager")]
+[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_cityAmbient", "_movementScript", "_delivery", "_playerMoney", "_packageHUD", "_spawnManager")]
 script = ExtResource("29_f744g")
 RealSecondsPerGameMinute = 0.15
 CustomersContainer = NodePath("../Klienci")
 PackagesContainer = NodePath("../Paczki")
 SummaryMenu = NodePath("../SummaryView")
 GlobalModulate = NodePath("../CanvasModulate")
+_cityAmbient = NodePath("../AmbientAudio")
 _movementScript = NodePath("../Player")
 _delivery = NodePath("../Player/Car/Delivery")
 _playerMoney = NodePath("../Player/Car/PlayerMoney")
@@ -2353,3 +2351,16 @@ GasScript = NodePath("../Player/Car/Gas")
 PlayerMoney = NodePath("../Player/Car/PlayerMoney")
 Delivery = NodePath("../Player/Car/Delivery")
 DayNight = NodePath("../DayNightCycle")
+
+[node name="AmbientAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("52_ius1y")
+volume_db = -7.0
+parameters/looping = true
+script = ExtResource("53_6m4gp")
+dayVolume = -10.0
+
+[node name="GameAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("53_ius1y")
+volume_db = -15.0
+autoplay = true
+parameters/looping = true
