@@ -27,7 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://cba8roo8712q4" path="res://Assety do gry/Tree 4.png" id="12_s5r2j"]
 [ext_resource type="Texture2D" uid="uid://dy2pydtefnd0f" path="res://Assety do gry/Tree 2.png" id="13_1sjgv"]
 [ext_resource type="Script" uid="uid://b27k360p5yi5c" path="res://Skrypty/GasParticle.cs" id="13_gduqm"]
-[ext_resource type="AudioStream" uid="uid://c0k1xfiv8qd07" path="res://Assety do gry/ford-mustang-engine-1985-78386 (mp3cut.net).mp3" id="13_ius1y"]
+[ext_resource type="AudioStream" uid="uid://c0k1xfiv8qd07" path="res://Assety do gry/cardrive.mp3" id="13_ius1y"]
 [ext_resource type="Texture2D" uid="uid://cfcbai0bg88gp" path="res://Assety do gry/House 3.png" id="14_22nf0"]
 [ext_resource type="AudioStream" uid="uid://be8d2ncrxa8x" path="res://Assety do gry/carbrake.mp3" id="15_4rfhh"]
 [ext_resource type="Texture2D" uid="uid://ce7fypedgossh" path="res://Assety do gry/WhitePixel.jpg" id="15_5l22i"]
