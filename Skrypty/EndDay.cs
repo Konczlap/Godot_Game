@@ -1,3 +1,4 @@
+// endday.cs
 using Godot;
 using System;
 

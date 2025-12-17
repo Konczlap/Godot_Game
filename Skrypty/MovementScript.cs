@@ -1,3 +1,4 @@
+// MovementScript.cs
 using Godot;
 using System;
 
@@ -5,21 +6,41 @@ public partial class MovementScript : CharacterBody2D
 {
 	[Export] private Collisions _collisions;
 	
-	[Export] public float MaxForwardSpeed = 300f;     // (75) maksymalna prędkość do przodu (px/s)
-	[Export] public float MaxBackwardSpeed = -150f;   // (-37.5) maksymalna prędkość do tyłu
-	[Export] public float Acceleration = 400f;        // (150) moc przyspieszenia
-	[Export] public float BrakePower = 600f;          // (225) moc hamowania
-	[Export] public float EngineBraking = 200f;       // (10) hamowanie silnikiem
-	[Export] public float RotationSpeed = 90f;        // (90) maksymalna prędkość obrotu (stopnie/sek)
+	public float MaxForwardSpeed = 300f;
+	public float MaxBackwardSpeed = -150f;
+	[Export] public float Acceleration = 400f;
+	[Export] public float BrakePower = 600f;
+	[Export] public float EngineBraking = 200f;
+	[Export] public float RotationSpeed = 90f;
 	[Export] private AudioStreamPlayer2D _engineDrive;
 	[Export] private AudioStreamPlayer2D _brakeSound;
 	[Export] private AudioStreamPlayer2D _refuelSound;
 	
-	private float _currentSpeed = 0f;                 // aktualna prędkość
-	private float _rotationInput = 0f;                // wejście dla skrętu
+	private float _currentSpeed = 0f;
+	private float _rotationInput = 0f;
+	private VehicleManager _vehicleManager;
 	
 	public bool CanMove = true;
 	private bool IsStanding = true;
+
+	public override void _Ready()
+	{
+		_vehicleManager = VehicleManager.Instance;
+		UpdateVehicleStats();
+	}
+
+	public void UpdateVehicleStats()
+	{
+		if (_vehicleManager == null) return;
+		
+		var vehicleData = _vehicleManager.GetActiveVehicleData();
+		MaxForwardSpeed = vehicleData.MaxSpeed;
+		MaxBackwardSpeed = -vehicleData.MaxSpeed / 2f;
+		
+		GD.Print($"🚗 Statystyki zaktualizowane:");
+		GD.Print($"   MaxSpeed: {MaxForwardSpeed}");
+		GD.Print($"   BackwardSpeed: {MaxBackwardSpeed}");
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -27,7 +48,7 @@ public partial class MovementScript : CharacterBody2D
 
 		HandleInput(dt);
 		MoveCar(dt);
-		UpdateStandingState(); // czy auto stoi?
+		UpdateStandingState();
 		_collisions.CheckCollisionStop(this);
 		UpdateEngineSound();
 		UpdateBrakeSound();
@@ -37,9 +58,9 @@ public partial class MovementScript : CharacterBody2D
 	{
 		if (!CanMove)
 		{
-			_currentSpeed = 0f; // zatrzymaj auto natychmiast
+			_currentSpeed = 0f;
 			IsStanding = true;
-			return; // zablokuj sterowanie
+			return;
 		}
 		
 		bool forward = Input.IsActionPressed("move_forward");
@@ -50,13 +71,10 @@ public partial class MovementScript : CharacterBody2D
 		if (Input.IsActionPressed("turn_left")) _rotationInput -= 1f;
 		if (Input.IsActionPressed("turn_right")) _rotationInput += 1f;
 
-		// Jazda do przodu
 		if (forward && _currentSpeed < MaxForwardSpeed && !brake)
 			_currentSpeed += Acceleration * dt;
-		// Jazda do tyłu
 		else if (backward && _currentSpeed > MaxBackwardSpeed && !brake)
 			_currentSpeed -= Acceleration * dt;
-		// Hamowanie
 		else if (brake)
 		{
 			if (_currentSpeed > 0)
@@ -64,7 +82,6 @@ public partial class MovementScript : CharacterBody2D
 			else if (_currentSpeed < 0)
 				_currentSpeed += BrakePower * dt;
 		}
-		// Hamowanie silnikiem (gdy nic nie wciskasz)
 		else
 		{
 			if (_currentSpeed > 0)
@@ -73,26 +90,21 @@ public partial class MovementScript : CharacterBody2D
 				_currentSpeed += EngineBraking * dt;
 		}
 
-		// Utrzymuj zero prędkości (niech auto nie "pełznie")
 		if (Mathf.Abs(_currentSpeed) < 1f)
 			_currentSpeed = 0f;
 	}
 
 	private void MoveCar(float dt)
 	{
-		// Obrót tylko jeśli samochód się porusza
 		if (Mathf.Abs(_currentSpeed) > 1f)
 		{
 			float rotationAmount = _rotationInput * RotationSpeed * dt * (_currentSpeed / MaxForwardSpeed);
 			RotationDegrees += rotationAmount;
 		}
 
-		// Ruch w przód/tył w lokalnym układzie
-		Vector2 forwardDir = new Vector2(0, -1).Rotated(Rotation); // lokalny kierunek przodu
+		Vector2 forwardDir = new Vector2(0, -1).Rotated(Rotation);
 		Velocity = forwardDir * _currentSpeed;
 		MoveAndSlide();
-		
-		//Position += forwardDir * _currentSpeed * dt;
 	}
 	
 	private void UpdateStandingState()
@@ -106,7 +118,6 @@ public partial class MovementScript : CharacterBody2D
 	private void UpdateEngineSound()
 	{
 		float absSpeed = Mathf.Abs(_currentSpeed);
-
 		float minVolume = -25f;
 		float maxVolume = 0f;
 		float fadeSpeed = 20f;
@@ -141,7 +152,6 @@ public partial class MovementScript : CharacterBody2D
 			}
 		}
 	}
-
 	
 	private void UpdateBrakeSound()
 	{

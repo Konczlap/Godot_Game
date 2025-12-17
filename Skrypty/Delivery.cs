@@ -1,3 +1,4 @@
+// Delivery.cs
 using Godot;
 using System.Collections.Generic;
 
@@ -5,7 +6,7 @@ public partial class Delivery : Area2D
 {
 	[Export] public MovementScript _movementScript;
 	[Export] public PlayerMoney _playerMoney;
-	[Export] public int MaxPackageAmount = 2;
+	public int MaxPackageAmount = 2;
 	public int CurrentPackageAmount = 0;
 	public int DeliveredPackagesPerDay = 0;
 
@@ -16,13 +17,16 @@ public partial class Delivery : Area2D
 	private List<Package> _collectedPackages = new List<Package>();
 	
 	private Minimap _minimap;
+	private VehicleManager _vehicleManager;
 
 	public override void _Ready()
 	{
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
 		
-		// Znajdź minimapę
+		_vehicleManager = VehicleManager.Instance;
+		UpdateMaxPackageAmount();
+		
 		_minimap = GetTree().Root.GetNode<Minimap>("Node2D/Minimap");
 		if (_minimap == null)
 		{
@@ -30,14 +34,22 @@ public partial class Delivery : Area2D
 		}
 		else
 		{
-			// Ustaw pierwszy cel przy starcie gry
 			CallDeferred(nameof(InitializeMinimapTarget));
+		}
+	}
+	
+	public void UpdateMaxPackageAmount()
+	{
+		if (_vehicleManager != null)
+		{
+			var vehicleData = _vehicleManager.GetActiveVehicleData();
+			MaxPackageAmount = vehicleData.PackageCapacity;
+			GD.Print($"📦 Delivery: Pojemność ustawiona na {MaxPackageAmount} paczek");
 		}
 	}
 
 	private void InitializeMinimapTarget()
 	{
-		// Poczekaj chwilę aż wszystko się załaduje
 		GetTree().CreateTimer(0.5).Timeout += () =>
 		{
 			UpdateMinimapTarget();
@@ -133,7 +145,6 @@ public partial class Delivery : Area2D
 					_collectedPackages.Remove(_collectedPackage);
 					DeliveredPackagesPerDay++;
 					
-					// Aktualizuj cel na minimapie
 					UpdateMinimapTarget();
 					return;
 				}
@@ -149,7 +160,6 @@ public partial class Delivery : Area2D
 			return;
 		}
 
-		// Jeśli mamy paczki, pokaż pierwszego klienta
 		if (_collectedPackages.Count > 0)
 		{
 			var firstPackage = _collectedPackages[0];
@@ -168,7 +178,6 @@ public partial class Delivery : Area2D
 		}
 		else
 		{
-			// Jeśli nie mamy paczek, znajdź najbliższą widoczną paczkę
 			var nearestPackage = FindNearestVisiblePackage();
 			if (nearestPackage != null)
 			{
@@ -216,4 +225,14 @@ public partial class Delivery : Area2D
 		
 		UpdateMinimapTarget();
 	}
+	public void UpdateMinimapAfterReset()
+{
+	// Wyczyść zebrane paczki
+	_collectedPackages.Clear();
+	CurrentPackageAmount = 0;
+	
+	// Zaktualizuj cel minimapy
+	UpdateMinimapTarget();
+	GD.Print("🗺️ Delivery: Minimap zaktualizowana po resecie");
+}
 }

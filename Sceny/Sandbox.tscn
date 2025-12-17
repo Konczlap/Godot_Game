@@ -137,8 +137,6 @@ collision_mask = 31
 safe_margin = 0.001
 script = ExtResource("1_d5l5x")
 _collisions = NodePath("Car/Collisions")
-MaxForwardSpeed = 75.0
-MaxBackwardSpeed = -37.5
 Acceleration = 150.0
 BrakePower = 225.0
 EngineBraking = 25.0
@@ -171,7 +169,6 @@ debug_color = Color(0.85870856, 0.3643496, 1.92523e-07, 0.41960785)
 
 [node name="PlayerMoney" type="Node2D" parent="Player/Car" groups=["Player"]]
 script = ExtResource("4_vss32")
-_money = 50.0
 
 [node name="Gas" type="Node2D" parent="Player/Car" node_paths=PackedStringArray("_fuelStationSpawn", "_movementScript", "_dayNightCycle", "FuelHUD", "PlayerMoney") groups=["Player"]]
 script = ExtResource("5_rasrj")
@@ -2303,15 +2300,17 @@ _playerMoney = NodePath("../Player/Car/PlayerMoney")
 _packageHUD = NodePath("../PackageHUD")
 _spawnManager = NodePath("../SpawnManager")
 
-[node name="PauseController" type="Node2D" parent="." node_paths=PackedStringArray("PauseMenu")]
+[node name="PauseController" type="Node2D" parent="." node_paths=PackedStringArray("PauseMenu", "GameMinimap")]
 script = ExtResource("34_xsqcf")
 PauseMenu = NodePath("../PauseMenu")
+GameMinimap = NodePath("../Minimap")
 
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
 GasScript = NodePath("../Player/Car/Gas")
 
 [node name="MoneyHUD" parent="." node_paths=PackedStringArray("MoneyScript") instance=ExtResource("30_q4juh")]
 MoneyScript = NodePath("../Player/Car/PlayerMoney")
+autoDelay = 0.0
 
 [node name="PackageHUD" parent="." node_paths=PackedStringArray("DeliveryScript") instance=ExtResource("31_q4juh")]
 DeliveryScript = NodePath("../Player/Car/Delivery")
