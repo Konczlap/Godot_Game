@@ -9,11 +9,19 @@ public partial class Refueling : Area2D
 	private Gas _gas;
 	private MovementScript _movementScript;
 	private bool _canRefuel = false;
+	private MoneyHUD _moneyHUD; // ✅ DODANE
 
 	public override void _Ready()
 	{
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
+		
+		// ✅ NAPRAWIONE - Poprawna ścieżka do MoneyHUD
+		_moneyHUD = GetNode<MoneyHUD>("/root/Node2D/MoneyHUD");
+		if (_moneyHUD == null)
+		{
+			GD.PrintErr("⚠️ Refueling: Nie znaleziono MoneyHUD!");
+		}
 	}
 
 	public override void _Process(double delta)
@@ -41,9 +49,11 @@ public partial class Refueling : Area2D
 				_playerMoney.SpendMoney(cost);
 				_gas.AddFuel(fuelToAdd);
 
-				// DODANE - odśwież HUD
-				var moneyHUD = GetTree().Root.GetNode<MoneyHUD>("Main/MoneyHUD");
-				if (moneyHUD != null) moneyHUD.ForceUpdate();
+				// ✅ NAPRAWIONE - Aktualizuj HUD po tankowaniu
+				if (_moneyHUD != null)
+				{
+					_moneyHUD.ForceUpdate();
+				}
 
 				if (_gas.GetFuel() >= _gas.GetMaxFuel())
 				{

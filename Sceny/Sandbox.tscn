@@ -155,11 +155,10 @@ BackLeftLight = NodePath("BackLeftLight")
 BackRightLight = NodePath("BackRightLight")
 BackMiddleLight = NodePath("BackMiddleLight")
 
-[node name="Delivery" type="Area2D" parent="Player/Car" node_paths=PackedStringArray("_movementScript", "_playerMoney") groups=["Player"]]
+[node name="Delivery" type="Area2D" parent="Player/Car" node_paths=PackedStringArray("_movementScript") groups=["Player"]]
 collision_mask = 30
 script = ExtResource("3_nux3x")
 _movementScript = NodePath("../..")
-_playerMoney = NodePath("../PlayerMoney")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Car/Delivery"]
 position = Vector2(0, -3.44)
@@ -2243,7 +2242,6 @@ collision_layer = 7
 collision_mask = 31
 priority = 1
 script = ExtResource("43_ijyun")
-UiLabelPath = NodePath("CollisionShape2D/Label")
 ShopScene = ExtResource("32_lsr6f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Salon Samochodowy/parking"]
@@ -2308,8 +2306,7 @@ GameMinimap = NodePath("../Minimap")
 [node name="FuelHUD" parent="." node_paths=PackedStringArray("GasScript") instance=ExtResource("29_76lar")]
 GasScript = NodePath("../Player/Car/Gas")
 
-[node name="MoneyHUD" parent="." node_paths=PackedStringArray("MoneyScript") instance=ExtResource("30_q4juh")]
-MoneyScript = NodePath("../Player/Car/PlayerMoney")
+[node name="MoneyHUD" parent="." instance=ExtResource("30_q4juh")]
 autoDelay = 0.0
 
 [node name="PackageHUD" parent="." node_paths=PackedStringArray("DeliveryScript") instance=ExtResource("31_q4juh")]
@@ -2337,11 +2334,10 @@ delivery = NodePath("../Player/Car/Delivery")
 
 [node name="Minimap" parent="." instance=ExtResource("45_xduwb")]
 
-[node name="Sandbox" type="Node" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle")]
+[node name="Sandbox" type="Node" parent="." node_paths=PackedStringArray("player", "gas", "dayNightCycle")]
 script = ExtResource("48_c1bnq")
 player = NodePath("../Player")
 gas = NodePath("../Player/Car/Gas")
-playerMoney = NodePath("../Player/Car/PlayerMoney")
 dayNightCycle = NodePath("../DayNightCycle")
 
 [node name="FuelWarningHUD" parent="." node_paths=PackedStringArray("Movement", "GasScript", "PlayerMoney", "Delivery", "DayNight") instance=ExtResource("47_c1bnq")]

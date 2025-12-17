@@ -1,4 +1,3 @@
-// Sandbox.cs
 using Godot;
 using System;
 
@@ -6,16 +5,22 @@ public partial class Sandbox : Node
 {
 	[Export] private CharacterBody2D player;
 	[Export] private Gas gas;
-	[Export] private PlayerMoney playerMoney;
+	// ❌ USUŃ: [Export] private PlayerMoney playerMoney;
+	
 	[Export] private DayNightCycle dayNightCycle;
 	[Export] private MovementScript movementScript;
 	[Export] private Delivery delivery;
 	[Export] private Car car;
 	
+	private PlayerMoney playerMoney; // ✅ Będzie pobrane z singletona
+	
 	public override void _Ready()
 	{
 		var sm = GetNodeOrNull<SaveManager>("/root/SaveManager");
 		var vehicleManager = GetNodeOrNull<VehicleManager>("/root/VehicleManager");
+		
+		// ✅ NAPRAWIONE - Pobierz singleton
+		playerMoney = PlayerMoney.Instance;
 		
 		if (sm == null)
 		{
@@ -29,6 +34,15 @@ public partial class Sandbox : Node
 			return;
 		}
 		
+		if (playerMoney == null)
+		{
+			GD.PrintErr("PlayerMoney singleton nie znaleziony!");
+			return;
+		}
+		
+		// ✅ DEBUG
+		GD.Print($"✅ SANDBOX: Używam PlayerMoney.Instance (ID: {playerMoney.GetInstanceId()})");
+		
 		if (sm.StartNewGame)
 		{
 			GD.Print("🌱 Nowa gra!");
@@ -36,7 +50,10 @@ public partial class Sandbox : Node
 			
 			player.GlobalPosition = new Vector2(346, 217);
 			gas.SetFuel(100f);
+			
+			GD.Print($"🔍 NOWA GRA: Ustawiam pieniądze na 50$ przez singleton");
 			playerMoney.SetMoney(50f);
+			
 			dayNightCycle.SetDayNumber(1);
 			
 			vehicleManager.LoadOwnedVehicles("0");
@@ -48,19 +65,24 @@ public partial class Sandbox : Node
 		
 		if (sm.LoadSave())
 		{
+			GD.Print($"🔍 LOAD SAVE: sm.Money = {sm.Money}$");
+			
 			player.GlobalPosition = sm.PlayerPosition;
 			gas.SetFuel(sm.Fuel);
+			
+			GD.Print($"🔍 LOAD SAVE: Ustawiam pieniądze na {sm.Money}$ przez singleton");
 			playerMoney.SetMoney(sm.Money);
+			
 			dayNightCycle.SetDayNumber(sm.Day);
 			
 			vehicleManager.LoadOwnedVehicles(sm.OwnedVehicles);
 			vehicleManager.LoadActiveVehicle(sm.ActiveVehicle);
 			
 			var moneyHUD = GetNodeOrNull<MoneyHUD>("../MoneyHUD");
-		if (moneyHUD != null)
-			moneyHUD.ForceUpdate();
-		
-		GD.Print($"📂 Save wczytany! Aktywny pojazd: {vehicleManager.GetActiveVehicle()}");
+			if (moneyHUD != null)
+				moneyHUD.ForceUpdate();
+			
+			GD.Print($"📂 Save wczytany! Aktywny pojazd: {vehicleManager.GetActiveVehicle()}");
 		}
 		else
 		{
@@ -68,7 +90,10 @@ public partial class Sandbox : Node
 			
 			player.GlobalPosition = new Vector2(346, 217);
 			gas.SetFuel(100f);
+			
+			GD.Print($"🔍 BRAK SAVE: Ustawiam pieniądze na 50$ przez singleton");
 			playerMoney.SetMoney(50f);
+			
 			dayNightCycle.SetDayNumber(1);
 			
 			vehicleManager.LoadOwnedVehicles("0");
@@ -98,9 +123,9 @@ public partial class Sandbox : Node
 		
 		if (gas != null)
 		{
-		gas._fuelConsumptionRate = vehicleData.FuelConsumption;
-		gas.UpdateFuelConsumption(); // DODAJ TĘ LINIJKĘ
-		GD.Print($"⛽ Ustawiono spalanie: {vehicleData.FuelConsumption} L/s");
+			gas._fuelConsumptionRate = vehicleData.FuelConsumption;
+			gas.UpdateFuelConsumption();
+			GD.Print($"⛽ Ustawiono spalanie: {vehicleData.FuelConsumption} L/s");
 		}
 		
 		if (car != null)

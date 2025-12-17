@@ -1,4 +1,3 @@
-// ShopUI.cs
 using Godot;
 
 public partial class ShopUI : Control
@@ -8,6 +7,7 @@ public partial class ShopUI : Control
 	
 	private PlayerMoney _playerMoney;
 	private VehicleManager _vehicleManager;
+	private MoneyHUD _moneyHUD; // ✅ DODANE
 	
 	private VBoxContainer _carContainer;
 	private VBoxContainer _kombiContainer;
@@ -24,12 +24,22 @@ public partial class ShopUI : Control
 		_playerMoney = PlayerMoney.Instance;
 		_vehicleManager = VehicleManager.Instance;
 		
+		// ✅ NAPRAWIONE - Poprawna ścieżka do MoneyHUD
+		_moneyHUD = GetNode<MoneyHUD>("/root/Node2D/MoneyHUD");
+		if (_moneyHUD == null)
+		{
+			GD.PrintErr("⚠️ ShopUI: Nie znaleziono MoneyHUD!");
+		}
+		else
+		{
+			GD.Print("✅ ShopUI: MoneyHUD połączony!");
+		}
+		
 		var carsRow = GetNode<HBoxContainer>("CenterContainer/CarsRow");
 		_carContainer = carsRow.GetNode<VBoxContainer>("car");
 		_kombiContainer = carsRow.GetNode<VBoxContainer>("kombi");
 		_truckContainer = carsRow.GetNode<VBoxContainer>("truck");
 		
-		// Nowe ścieżki do Stats
 		var carStats = _carContainer.GetNode<VBoxContainer>("Panel/Content/Stats");
 		_carSpeed = carStats.GetNode<Label>("Label2");
 		_carCapacity = carStats.GetNode<Label>("Label3");
@@ -55,7 +65,6 @@ public partial class ShopUI : Control
 		_kombiButton.Pressed += OnKombiButtonPressed;
 		_truckButton.Pressed += OnTruckButtonPressed;
 		
-		// MouseFilter
 		GetNode<CenterContainer>("CenterContainer").MouseFilter = MouseFilterEnum.Ignore;
 		GetNode<HBoxContainer>("CenterContainer/CarsRow").MouseFilter = MouseFilterEnum.Ignore;
 		_carContainer.MouseFilter = MouseFilterEnum.Ignore;
@@ -148,11 +157,31 @@ public partial class ShopUI : Control
 		}
 		else
 		{
+			// ✅ DODANE - Debug przed zakupem
+			float moneyBefore = _playerMoney.GetMoney();
+			GD.Print($"🛒 SKLEP PRZED: Pieniądze={moneyBefore}$, Cena={data.Price}$");
+			
 			if (_playerMoney.SpendMoney(data.Price))
 			{
+				// ✅ DODANE - Debug po zakupie
+				float moneyAfter = _playerMoney.GetMoney();
+				GD.Print($"🛒 SKLEP PO: Pieniądze={moneyAfter}$, Różnica={moneyBefore - moneyAfter}$");
+				
 				_vehicleManager.PurchaseVehicle(type);
 				_vehicleManager.SetActiveVehicle(type);
+				
+				// ✅ NAPRAWIONE - Wymuś aktualizację HUD
+				if (_moneyHUD != null)
+				{
+					_moneyHUD.ForceUpdate();
+					GD.Print("💰 HUD zaktualizowany po zakupie!");
+				}
+				
 				UpdateUI();
+			}
+			else
+			{
+				GD.Print("❌ Zakup nieudany - brak środków!");
 			}
 		}
 	}
@@ -169,6 +198,13 @@ public partial class ShopUI : Control
 	public void OnShopOpened()
 	{
 		_playerMoney = PlayerMoney.Instance;
+		
+		// ✅ NAPRAWIONE - Wymuś aktualizację HUD przy otwieraniu
+		if (_moneyHUD != null)
+		{
+			_moneyHUD.ForceUpdate();
+		}
+		
 		UpdateUI();
 	}
 }
