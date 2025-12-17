@@ -51,7 +51,7 @@ case VehicleType.Kombi:
 		10f,
 		62f,  // proporcjonalnie wolniejsze
 		4,
-		1f,
+		1.5f,
         "res://Assety do gry/kombi.png"
 	);
 
@@ -62,7 +62,7 @@ case VehicleType.Truck:
 		15f,
 		45f,  // najwolniejsze
 		8,
-		1f,
+		3.5f,
         "res://Assety do gry/truck.png"
 	);
 			

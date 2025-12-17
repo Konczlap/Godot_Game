@@ -1,4 +1,3 @@
-// moneyhud.cs
 using Godot;
 using System;
 

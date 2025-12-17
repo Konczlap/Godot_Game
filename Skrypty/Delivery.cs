@@ -1,13 +1,11 @@
+// Delivery.cs
 using Godot;
 using System.Collections.Generic;
 
 public partial class Delivery : Area2D
 {
 	[Export] public MovementScript _movementScript;
-	// ❌ USUŃ: [Export] public PlayerMoney _playerMoney;
-	
-	private PlayerMoney _playerMoney; // ✅ Będzie pobrane z singletona
-	
+	[Export] public PlayerMoney _playerMoney;
 	public int MaxPackageAmount = 2;
 	public int CurrentPackageAmount = 0;
 	public int DeliveredPackagesPerDay = 0;
@@ -20,46 +18,14 @@ public partial class Delivery : Area2D
 	
 	private Minimap _minimap;
 	private VehicleManager _vehicleManager;
-	private MoneyHUD _moneyHUD;
 
 	public override void _Ready()
 	{
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
 		
-		// ✅ NAPRAWIONE - Pobierz singleton
-		_playerMoney = PlayerMoney.Instance;
-		if (_playerMoney == null)
-		{
-			GD.PrintErr("❌ Delivery: PlayerMoney.Instance jest NULL!");
-		}
-		else
-		{
-			GD.Print($"✅ Delivery: Połączono z PlayerMoney.Instance (ID: {_playerMoney.GetInstanceId()})");
-		}
-		
 		_vehicleManager = VehicleManager.Instance;
 		UpdateMaxPackageAmount();
-		
-		// Pobierz MoneyHUD
-		_moneyHUD = GetTree().Root.GetNodeOrNull<MoneyHUD>("Node2D/MoneyHUD");
-		if (_moneyHUD == null)
-		{
-			var allNodes = GetTree().GetNodesInGroup("HUD");
-			foreach (Node node in allNodes)
-			{
-				if (node is MoneyHUD hud)
-				{
-					_moneyHUD = hud;
-					break;
-				}
-			}
-			
-			if (_moneyHUD == null)
-			{
-				GD.PrintErr("⚠️ Delivery: Nie znaleziono MoneyHUD!");
-			}
-		}
 		
 		_minimap = GetTree().Root.GetNode<Minimap>("Node2D/Minimap");
 		if (_minimap == null)
@@ -174,15 +140,7 @@ public partial class Delivery : Area2D
 			{
 				if (_collectedPackage.GetTargetCustomer() == _overlappingCustomerNode.Name)
 				{
-					// ✅ TERAZ UŻYWA TEGO SAMEGO PLAYERMONEY CO SKLEP
 					_playerMoney.AddMoney(_collectedPackage.GetPackagePrice());
-					
-					if (_moneyHUD != null)
-					{
-						_moneyHUD.ForceUpdate();
-						GD.Print("💰 HUD zaktualizowany po dostawie!");
-					}
-					
 					CurrentPackageAmount--;
 					_collectedPackages.Remove(_collectedPackage);
 					DeliveredPackagesPerDay++;
@@ -267,12 +225,14 @@ public partial class Delivery : Area2D
 		
 		UpdateMinimapTarget();
 	}
-	
 	public void UpdateMinimapAfterReset()
-	{
-		_collectedPackages.Clear();
-		CurrentPackageAmount = 0;
-		UpdateMinimapTarget();
-		GD.Print("🗺️ Delivery: Minimap zaktualizowana po resecie");
-	}
+{
+	// Wyczyść zebrane paczki
+	_collectedPackages.Clear();
+	CurrentPackageAmount = 0;
+	
+	// Zaktualizuj cel minimapy
+	UpdateMinimapTarget();
+	GD.Print("🗺️ Delivery: Minimap zaktualizowana po resecie");
+}
 }

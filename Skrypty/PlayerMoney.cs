@@ -1,4 +1,4 @@
-// PlayerMoney.cs - WERSJA Z PEŁNYM DEBUGIEM
+// PlayerMoney.cs
 using Godot;
 using System;
 
@@ -30,37 +30,27 @@ public partial class PlayerMoney : Node2D
 	
 	public void AddMoney(float amount)
 	{
-		float before = _money;
 		_money += amount;
 		incomePerDay += amount;
-		
-		// ✅ ROZSZERZONY DEBUG
-		GD.Print($"💰 AddMoney: {before}$ + {amount}$ = {_money}$");
-		
-		// ✅ STACK TRACE - pokaż kto wywołał tę funkcję
-		GD.Print($"   └─ Wywołane z: {new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name}");
+		GD.Print($"💰 +{amount}$ | Stan: {_money}$");
 	}
 	
 	public bool SpendMoney(float amount)
 	{
-		float before = _money;
-		
-		// ✅ ROZSZERZONY DEBUG
-		GD.Print($"🔍 SpendMoney wywołane: _money={before}$, amount={amount}$");
-		GD.Print($"   └─ Wywołane z: {new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name}");
+		GD.Print($"🔍 PRZED: _money={_money}, amount={amount}");
 		
 		if (_money >= amount)
 		{
 			_money -= amount;
 			_spendMoney += amount;
 			spendPerDay += amount;
-			
-			GD.Print($"✅ Wydano: {before}$ - {amount}$ = {_money}$");
+			GD.Print($"🔍 PO: _money={_money}");
+			GD.Print($"💸 -{amount}$ | Stan: {_money}$ | Wydano dziś: {_spendMoney}$");
 			return true;
 		}
 		else
 		{
-			GD.Print($"❌ Brak kasy! Potrzebujesz {amount}$, masz {before}$");
+			GD.Print($"❌ Brak kasy! Potrzebujesz {amount}$, masz {_money}$");
 			return false;
 		}
 	}
@@ -93,12 +83,7 @@ public partial class PlayerMoney : Node2D
 	
 	public void SetMoney(float value)
 	{
-		float before = _money;
 		_money = value;
-		
-		// ✅ ROZSZERZONY DEBUG
-		GD.Print($"💵 SetMoney: {before}$ → {value}$");
-		GD.Print($"   └─ Wywołane z: {new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name}");
 	}
 	
 	public float GetIncomePerDay()
