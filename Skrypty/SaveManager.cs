@@ -1,4 +1,3 @@
-// SaveManager.cs
 using Godot;
 using System;
 using Godot.Collections;
@@ -11,8 +10,6 @@ public partial class SaveManager : Node
 	public Vector2 PlayerPosition { get; set; } = Vector2.Zero;
 	public float Fuel { get; set; } = 100f;
 	public float Money { get; set; } = 0f;
-	public string OwnedVehicles { get; set; } = "0"; // "0" = tylko Car
-	public int ActiveVehicle { get; set; } = 0; // 0 = Car
 	
 	public bool StartNewGame = false;
 	
@@ -45,27 +42,8 @@ public partial class SaveManager : Node
 
 		Fuel = Convert.ToSingle((double)loaded["fuel"]);
 		Money = Convert.ToSingle((double)loaded["money"]);
-		
-		// Nowe pola - z fallbackiem dla starych zapisów
-		if (loaded.ContainsKey("owned_vehicles"))
-		{
-			OwnedVehicles = loaded["owned_vehicles"].ToString();
-		}
-		else
-		{
-			OwnedVehicles = "0"; // Tylko Car
-		}
-		
-		if (loaded.ContainsKey("active_vehicle"))
-		{
-			ActiveVehicle = Convert.ToInt32((double)loaded["active_vehicle"]);
-		}
-		else
-		{
-			ActiveVehicle = 0; // Car
-		}
 
-		GD.Print($"📂 Save wczytany! Day: {Day}, Money: {Money}, Active Vehicle: {ActiveVehicle}");
+		GD.Print($"📂 Save wczytany! {loaded}");
 		return true;
 	}
 
@@ -75,14 +53,6 @@ public partial class SaveManager : Node
 		Fuel = gas.GetFuel();
 		Money = money.GetMoney();
 		Day = dayNight.GetDayNumber() + 1;
-		
-		// Pobierz dane z VehicleManager
-		var vehicleManager = GetNodeOrNull<VehicleManager>("/root/VehicleManager");
-		if (vehicleManager != null)
-		{
-			OwnedVehicles = vehicleManager.GetOwnedVehiclesString();
-			ActiveVehicle = vehicleManager.GetActiveVehicleId();
-		}
 
 		var saveData = new Dictionary
 		{
@@ -90,14 +60,12 @@ public partial class SaveManager : Node
 			{ "player_x", (double)PlayerPosition.X },
 			{ "player_y", (double)PlayerPosition.Y },
 			{ "fuel", (double)Fuel },
-			{ "money", (double)Money },
-			{ "owned_vehicles", OwnedVehicles },
-			{ "active_vehicle", ActiveVehicle }
+			{ "money", (double)Money }
 		};
 
 		using var file = FileAccess.Open(saveFile, FileAccess.ModeFlags.Write);
 		file.StoreString(Json.Stringify(saveData, "\t"));
 
-		GD.Print($"💾 Save zapisany! Owned: {OwnedVehicles}, Active: {ActiveVehicle}");
+		GD.Print("💾 Save zapisany!");
 	}
 }

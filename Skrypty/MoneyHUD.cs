@@ -3,24 +3,21 @@ using System;
 
 public partial class MoneyHUD : CanvasLayer
 {
-	private PlayerMoney MoneyScript;
-	[Export] private float autoDelay = 0.5f;
+	[Export] public PlayerMoney MoneyScript; // podłącz w Inspectorze
+	[Export] private float autoDelay = 0.5f; // czas w sekundach po ostatniej zmianie, zanim pokazuje animację
 
 	private Label _moneyLabel;
 	private Label _floatingChange;
 	private float _lastMoney = 0f;
 
-	private float _pendingChange = 0f;
-	private double _timeSinceChange = 0f;
+	private float _pendingChange = 0f;       // bufor zmian pieniędzy
+	private double _timeSinceChange = 0f;    // licznik od ostatniej zmiany
 	private bool _isAnimating = false;
 
 	public override void _Ready()
 	{
 		_moneyLabel = GetNode<Label>("MoneyHUDControl/MoneyLabel");
 		_floatingChange = GetNode<Label>("MoneyHUDControl/FloatingChange");
-
-			MoneyScript = PlayerMoney.Instance;
-
 
 		if (MoneyScript == null)
 		{
@@ -33,49 +30,36 @@ public partial class MoneyHUD : CanvasLayer
 
 		_floatingChange.Visible = false;
 	}
-	
-	public void ForceUpdate()
-	{
-		if (MoneyScript == null) return;
-		
-		_lastMoney = MoneyScript.GetMoney();
-		UpdateMoneyLabel();
-		_pendingChange = 0f;
-		_timeSinceChange = 0f;
-	}
-	
+
 	public override void _Process(double delta)
 	{
-	if (MoneyScript == null)
-	{
-		GD.Print("❌ MoneyHUD: MoneyScript jest NULL!");
-		return;
-	}
-	
-	if (_isAnimating)
-		return;
+		if (MoneyScript == null || _isAnimating)
+			return;
 
-	float current = MoneyScript.GetMoney();
-	float diff = current - _lastMoney;
-	
+		float current = MoneyScript.GetMoney();
+		float diff = current - _lastMoney;
 
-	if (Math.Abs(diff) > 0.001f)
-	{
-		GD.Print($"✅ HUD: Wykryto zmianę! Aktualizuję...");
-		_pendingChange += diff;
-		_lastMoney = current;
-		UpdateMoneyLabel();
-		_timeSinceChange = 0f;
-	}
-	else if (Math.Abs(_pendingChange) > 0.001f)
-	{
-		_timeSinceChange += delta;
-		if (_timeSinceChange >= autoDelay)
+		if (Math.Abs(diff) > 0.001f)
 		{
-			PlayPendingChange();
+			_pendingChange += diff;
+			_lastMoney = current;
+			UpdateMoneyLabel();
+			_timeSinceChange = 0f; // reset licznika
+		}
+		else
+		{
+			// jeżeli bufor jest niepusty, zwiększamy licznik czasu
+			if (Math.Abs(_pendingChange) > 0.001f)
+			{
+				_timeSinceChange += delta;
+				if (_timeSinceChange >= autoDelay)
+				{
+					// czas minął, startujemy animację
+					PlayPendingChange();
+				}
+			}
 		}
 	}
-}
 
 	private void UpdateMoneyLabel()
 	{
@@ -89,6 +73,7 @@ public partial class MoneyHUD : CanvasLayer
 
 		_isAnimating = true;
 
+		// ustaw tekst i kolor
 		if (_pendingChange > 0f)
 		{
 			_floatingChange.Text = $"+{_pendingChange:0.##} $";
@@ -102,6 +87,7 @@ public partial class MoneyHUD : CanvasLayer
 
 		_floatingChange.Visible = true;
 
+		// animacja unoszenia i zanikania
 		Vector2 startPos = _floatingChange.Position;
 		Vector2 endPos = startPos + new Vector2(0, -24);
 		float duration = 0.6f;
@@ -121,6 +107,7 @@ public partial class MoneyHUD : CanvasLayer
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		}
 
+		// reset
 		_floatingChange.Visible = false;
 		_floatingChange.Position = startPos;
 		_floatingChange.Modulate = new Color(_floatingChange.Modulate.R, _floatingChange.Modulate.G, _floatingChange.Modulate.B, 1f);

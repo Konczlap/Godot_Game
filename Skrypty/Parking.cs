@@ -1,60 +1,49 @@
-// Parking.cs
 using Godot;
 using System;
 
 public partial class Parking : Area2D
 {
-	[Export] public PackedScene ShopScene { get; set; } = null;
+	[Export]
+	public NodePath UiLabelPath { get; set; } = null;
+	
+	[Export]
+	public string PromptText { get; set; } = "Kliknij E";
+	
+	[Export]
+	public PackedScene ShopScene { get; set; } = null;
 	
 	private Label _uiLabel;
-	private Panel _uiPanel;
 	private bool _playerInArea = false;
 	private ShopUI _shopInstance = null;
 	private CanvasLayer _shopCanvasLayer = null;
 
 	public override void _Ready()
 	{
-		CreatePromptUI();
+		GD.Print($"[Parking] Inicjalizacja węzła: {Name}");
+		
+		if (UiLabelPath != null)
+		{
+			_uiLabel = GetNode<Label>(UiLabelPath);
+			if (_uiLabel != null)
+			{
+				_uiLabel.Visible = false;
+				_uiLabel.Text = PromptText;
+				GD.Print($"[Parking] Label znaleziony: {_uiLabel.Name}");
+			}
+			else
+			{
+				GD.PrintErr("[Parking] Nie można znaleźć Label na ścieżce: " + UiLabelPath);
+			}
+		}
+		else
+		{
+			GD.PrintErr("[Parking] UiLabelPath nie został ustawiony w inspektorze!");
+		}
+
 		BodyEntered += OnBodyEntered;
 		BodyExited += OnBodyExited;
-	}
-
-	private void CreatePromptUI()
-	{
-		_uiPanel = new Panel();
 		
-		var styleBox = new StyleBoxFlat();
-		styleBox.BgColor = new Color(0.1f, 0.1f, 0.15f, 0.85f);
-		styleBox.BorderColor = new Color(1f, 0.8f, 0.2f, 1f);
-		styleBox.SetBorderWidthAll(3);
-		styleBox.SetCornerRadiusAll(12);
-		
-		_uiPanel.AddThemeStyleboxOverride("panel", styleBox);
-		_uiPanel.AnchorLeft = 0.5f;
-		_uiPanel.AnchorTop = 1.0f;
-		_uiPanel.AnchorRight = 0.5f;
-		_uiPanel.AnchorBottom = 1.0f;
-		_uiPanel.OffsetLeft = -150;
-		_uiPanel.OffsetTop = -120;
-		_uiPanel.OffsetRight = 150;
-		_uiPanel.OffsetBottom = -50;
-		_uiPanel.ZIndex = 100;
-		_uiPanel.Visible = false;
-		
-		_uiLabel = new Label();
-		_uiLabel.Text = "🚗 [E] SKLEP MOTORYZACYJNY";
-		_uiLabel.HorizontalAlignment = HorizontalAlignment.Center;
-		_uiLabel.VerticalAlignment = VerticalAlignment.Center;
-		_uiLabel.SetAnchorsPreset(Control.LayoutPreset.FullRect);
-		_uiLabel.AddThemeFontSizeOverride("font_size", 20);
-		
-		_uiPanel.AddChild(_uiLabel);
-		
-		// Użyj CallDeferred żeby uniknąć błędu
-		var canvasLayer = new CanvasLayer();
-		canvasLayer.Layer = 100;
-		GetTree().CurrentScene.CallDeferred("add_child", canvasLayer);
-		canvasLayer.CallDeferred("add_child", _uiPanel);
+		GD.Print("[Parking] Sygnały podłączone.");
 	}
 
 	private void OnBodyEntered(Node body)
@@ -62,8 +51,11 @@ public partial class Parking : Area2D
 		if (body.IsInGroup("Player"))
 		{
 			_playerInArea = true;
-			if (_uiPanel != null)
-				_uiPanel.Visible = true;
+			if (_uiLabel != null)
+			{
+				_uiLabel.Visible = true;
+				GD.Print("[Parking] ✓ Gracz wszedł na parking - Label widoczny!");
+			}
 		}
 	}
 
@@ -72,25 +64,40 @@ public partial class Parking : Area2D
 		if (body.IsInGroup("Player"))
 		{
 			_playerInArea = false;
-			if (_uiPanel != null)
-				_uiPanel.Visible = false;
+			if (_uiLabel != null)
+			{
+				_uiLabel.Visible = false;
+				GD.Print("[Parking] ✓ Gracz opuścił parking - Label ukryty.");
+			}
 		}
 	}
 
 	public override void _Process(double delta)
 	{
+		
+		if (_playerInArea && _shopInstance == null)
+		{
+			GD.Print($"[Parking] Czekam na E. Sklep: {(_shopInstance != null ? "otwarty" : "zamknięty")}");
+		}
+		
+		
 		if (_playerInArea && Input.IsActionJustPressed("action") && _shopInstance == null)
 		{
+			GD.Print("[Parking] E naciśnięte - otwieram sklep!");
 			OpenShop();
 		}
 	}
 
 	private void OpenShop()
 	{
-		if (ShopScene == null) return;
+		if (ShopScene == null)
+		{
+			GD.PrintErr("[Parking] ShopScene nie został przypisany w inspektorze!");
+			return;
+		}
 
-		if (_uiPanel != null)
-			_uiPanel.Visible = false;
+		if (_uiLabel != null)
+			_uiLabel.Visible = false;
 
 		_shopCanvasLayer = new CanvasLayer();
 		_shopCanvasLayer.Layer = 100;
@@ -100,25 +107,21 @@ public partial class Parking : Area2D
 		_shopCanvasLayer.AddChild(_shopInstance);
 		
 		_shopInstance.ShopClosed += OnShopClosed;
+		
 		_shopInstance.SetAnchorsPreset(Control.LayoutPreset.FullRect);
 		_shopInstance.Position = Vector2.Zero;
 		
 		GetTree().Paused = true;
 		_shopCanvasLayer.ProcessMode = ProcessModeEnum.WhenPaused;
-		SetProcessModeRecursive(_shopInstance, ProcessModeEnum.WhenPaused);
-	}
-
-	private void SetProcessModeRecursive(Node node, ProcessModeEnum mode)
-	{
-		node.ProcessMode = mode;
-		foreach (Node child in node.GetChildren())
-		{
-			SetProcessModeRecursive(child, mode);
-		}
+		_shopInstance.ProcessMode = ProcessModeEnum.WhenPaused;
+		
+		GD.Print("[Parking] ✓ Sklep otwarty.");
 	}
 
 	private void OnShopClosed()
 	{
+		GD.Print("[Parking] Sygnał ShopClosed otrzymany!");
+		
 		if (_shopCanvasLayer != null && IsInstanceValid(_shopCanvasLayer))
 		{
 			_shopCanvasLayer.QueueFree();
@@ -126,18 +129,12 @@ public partial class Parking : Area2D
 		
 		_shopCanvasLayer = null;
 		_shopInstance = null;
+		
 		GetTree().Paused = false;
 		
-		var player = GetTree().CurrentScene.GetNodeOrNull("Player");
-		if (player != null)
-		{
-			player.GetNodeOrNull<Car>("Car")?.UpdateCarAppearance();
-			player.GetNodeOrNull<MovementScript>(".")?.UpdateVehicleStats();
-			player.GetNodeOrNull<Delivery>("Car/Delivery")?.UpdateMaxPackageAmount();
-			player.GetNodeOrNull<Gas>("Car/Gas")?.UpdateFuelConsumption();
-		}
+		if (_playerInArea && _uiLabel != null)
+			_uiLabel.Visible = true;
 		
-		if (_playerInArea && _uiPanel != null)
-			_uiPanel.Visible = true;
+		GD.Print("[Parking] ✓ Sklep zamknięty, flagi zresetowane.");
 	}
 }

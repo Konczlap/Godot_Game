@@ -1,13 +1,13 @@
-// DayNightCycle.cs
 using Godot;
 using System;
 
 public partial class DayNightCycle : Node2D
 {
-	[Export] public float RealSecondsPerGameMinute = 1f;
+	[Export] public float RealSecondsPerGameMinute = 1f; // tempo czasu
+	//[Export] public Light2D GlobalLight;                 // globalne światło
 	[Export] public Node2D CustomersContainer;
 	[Export] public Node2D PackagesContainer;
-	[Export] public SummaryView SummaryMenu;
+	[Export] public /*CanvasLayer*/ SummaryView SummaryMenu;
 	[Export] public CanvasModulate GlobalModulate;
 	[Export] private AudioStreamPlayer _cityAmbient;
 	[Export] private MovementScript _movementScript;
@@ -17,7 +17,7 @@ public partial class DayNightCycle : Node2D
 	[Export] private SpawnManager _spawnManager;
 	public bool IsSummaryOpen = false;
 	
-	private float _currentMinutes = 6 * 60;
+	private float _currentMinutes = 6 * 60; // start: 6:00
 	public bool IsNight => GetTimeHour() >= 22 || GetTimeHour() < 6;
 	private int _dayNumber = 1;
 
@@ -40,6 +40,7 @@ public partial class DayNightCycle : Node2D
 
 		if (_currentMinutes >= 22 * 60)
 		{
+			//_currentMinutes = 6 * 60; // następny dzień od 6:00
 			_currentMinutes = 22 * 60;
 		}
 	}
@@ -50,9 +51,11 @@ public partial class DayNightCycle : Node2D
 	private void UpdateLight()
 	{
 		int hour = GetTimeHour();
+		int minutes = GetTimeMinute();
+		//GD.Print($"Czas: {hour}:{minutes}");
 
-		Color dayColor = new Color(1, 1, 1);
-		Color nightColor = new Color(0.25f, 0.25f, 0.35f);
+		Color dayColor = new Color(1, 1, 1);     // pełna jasność
+		Color nightColor = new Color(0.25f, 0.25f, 0.35f); // ciemno z lekkim niebieskim
 
 		Color target;
 
@@ -105,12 +108,6 @@ public partial class DayNightCycle : Node2D
 		{
 			CustomersContainer.Visible = false;
 			PackagesContainer.Visible = false;
-			
-			var minimap = GetTree().Root.GetNodeOrNull<Minimap>("Node2D/Minimap");
-			if (minimap != null)
-			{
-				minimap.ClearTarget();
-			}
 		}
 	}
 
@@ -126,14 +123,14 @@ public partial class DayNightCycle : Node2D
 	{
 		SummaryMenu.Visible = false;
 		IsSummaryOpen = false;
-		CustomersContainer.Visible = true;
-		PackagesContainer.Visible = true;
+		CustomersContainer.Visible = true; // TRZEBA PRZEJŚĆ PRZEZ WSZYSTKIE DZIECI I JE WŁĄCZYĆ BO
+		PackagesContainer.Visible = true; // TAKIE WŁĄCZENIE NIE WŁĄCZY TYCH KTÓRE ZOSTAŁY WEWNĄTRZ NICH WYŁĄCZONE
 		_spawnManager.RandomizeSpawn();
-		
 		foreach (Node child in PackagesContainer.GetChildren())
 		{
 			if (child is Node2D item)
 			{
+				//GD.Print("Paczki robią się widoczne");
 				item.Visible = true;
 				var area = item.GetNodeOrNull<Area2D>("Area2D");
 				if (area != null)
@@ -142,30 +139,33 @@ public partial class DayNightCycle : Node2D
 					area.Monitorable = true;
 				}
 			}
+			else
+			{
+				//GD.Print("To nie działa :(");
+			}
 		}
-		
 		_delivery.CurrentPackageAmount = 0;
 		_delivery.DeliveredPackagesPerDay = 0;
 		_playerMoney.ZeroingIncomePerDay();
 		_playerMoney.ZeroingSpendPerDay();
+		//_delivery.ResetPackages();
 		_packageHUD.UpdateIcons();
-		
-		_delivery.UpdateMinimapAfterReset();
 		
 		_dayNumber++;
 		_movementScript.CanMove = true;
-		_currentMinutes = 6 * 60;
+		_currentMinutes = 6 * 60; // 6:00 rano
 	}
 	
 	public void RestartDay()
 	{
-		CustomersContainer.Visible = true;
-		PackagesContainer.Visible = true;
-		
+		CustomersContainer.Visible = true; // TRZEBA PRZEJŚĆ PRZEZ WSZYSTKIE DZIECI I JE WŁĄCZYĆ BO
+		PackagesContainer.Visible = true; // TAKIE WŁĄCZENIE NIE WŁĄCZY TYCH KTÓRE ZOSTAŁY WEWNĄTRZ NICH WYŁĄCZONE
+		//_spawnManager.RandomizeSpawn();
 		foreach (Node child in PackagesContainer.GetChildren())
 		{
 			if (child is Node2D item)
 			{
+				//GD.Print("Paczki robią się widoczne");
 				item.Visible = true;
 				var area = item.GetNodeOrNull<Area2D>("Area2D");
 				if (area != null)
@@ -174,18 +174,20 @@ public partial class DayNightCycle : Node2D
 					area.Monitorable = true;
 				}
 			}
+			else
+			{
+				//GD.Print("To nie działa :(");
+			}
 		}
-		
 		_delivery.CurrentPackageAmount = 0;
 		_delivery.DeliveredPackagesPerDay = 0;
 		_playerMoney.ZeroingIncomePerDay();
 		_playerMoney.ZeroingSpendPerDay();
+		//_delivery.ResetPackages();
 		_packageHUD.UpdateIcons();
 		
-		_delivery.UpdateMinimapAfterReset();
-		
 		_movementScript.CanMove = true;
-		_currentMinutes = 6 * 60;
+		_currentMinutes = 6 * 60; // 6:00 rano
 	}
 	
 	public int GetDayNumber()

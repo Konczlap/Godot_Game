@@ -2,10 +2,10 @@ using Godot;
 
 public partial class Refueling : Area2D
 {
-	[Export] private float _fuelPrice = 0.1f;
-	[Export] private float _refuelRate = 5f;
+	[Export] private float _fuelPrice = 0.1f; // koszt 0.1 golda za jednostkę paliwa
+	[Export] private float _refuelRate = 5f;  // ile paliwa wlewa się na sekundę
+
 	[Export] private PlayerMoney _playerMoney;
-	
 	private Gas _gas;
 	private MovementScript _movementScript;
 	private bool _canRefuel = false;
@@ -14,6 +14,8 @@ public partial class Refueling : Area2D
 	{
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
+		//// Szukamy referencji (zakładamy, że są w tym samym drzewie lub wyżej)
+		//_playerMoney = GetTree().Root.GetNode<PlayerMoney>("/root/PlayerMoney");
 	}
 
 	public override void _Process(double delta)
@@ -24,7 +26,9 @@ public partial class Refueling : Area2D
 			return;
 		}
 
-		bool wantsToRefuel = Input.IsActionPressed("action") && _movementScript.GetIsStanding();
+		bool wantsToRefuel =
+			Input.IsActionPressed("action") &&
+			_movementScript.GetIsStanding();
 
 		if (wantsToRefuel)
 			_movementScript.StartRefuel();
@@ -41,50 +45,57 @@ public partial class Refueling : Area2D
 				_playerMoney.SpendMoney(cost);
 				_gas.AddFuel(fuelToAdd);
 
-				// DODANE - odśwież HUD
-				var moneyHUD = GetTree().Root.GetNode<MoneyHUD>("Main/MoneyHUD");
-				if (moneyHUD != null) moneyHUD.ForceUpdate();
-
 				if (_gas.GetFuel() >= _gas.GetMaxFuel())
 				{
 					_canRefuel = false;
 				}
+			}
+			else
+			{
+				GD.Print("❌ Brak pieniędzy na paliwo!");
 			}
 		}
 	}
 
 	public void OnAreaEntered(Area2D area)
 	{
-		var parent = area.GetParentOrNull<Node>();
-		if (parent != null && parent.IsInGroup("Player"))
+		if (area.GetParent().IsInGroup("Player"))
 		{
-			Node car = parent;
-			Node player = car.GetParentOrNull<Node>();
+			//GD.Print("Wykryto pojazd na stacji paliw");
 			
-			if (player != null)
-			{
-				_movementScript = player.GetNodeOrNull<MovementScript>(".");
-				_gas = car.GetNodeOrNull<Gas>("Gas");
-				_playerMoney = PlayerMoney.Instance;
+			Node car = area.GetParent();
+			Node player = car.GetParent();
+			//GD.Print($"{player.Name}");
+			
+			_movementScript = player.GetNodeOrNull<MovementScript>(".");
+			_gas = car.GetNodeOrNull<Gas>("Gas");
+			_playerMoney = car.GetNodeOrNull<PlayerMoney>("PlayerMoney");
+			_playerMoney.ZeroingSpendMoney();
 
-				if (_movementScript != null && _gas != null && _playerMoney != null)
-				{
-					_canRefuel = true;
-				}
+			// Sprawdzamy, czy gracz/pojazd ma potrzebne komponenty
+			if (_movementScript != null && _gas != null && _playerMoney != null)
+			{
+				_canRefuel = true;
+				//GD.Print("🅿️ Można tankować — naciśnij [E]");
+			}
+			else
+			{
+				//GD.PrintErr("⚠️ Nie znaleziono któregoś z komponentów (MovementScript / Gas / PlayerMoney)");
 			}
 		}
 	}
 
 	public void OnAreaExited(Area2D area)
 	{
-		var parent = area.GetParentOrNull<Node>();
-		if (parent != null && parent.IsInGroup("Player"))
+		if (area.GetParent().IsInGroup("Player"))
 		{
 			_movementScript?.StopRefuel();
+			
 			_canRefuel = false;
 			_gas = null;
 			_movementScript = null;
 			_playerMoney = null;
+			//GD.Print("🚗 Opuściłeś stację paliw.");
 		}
 	}
 }

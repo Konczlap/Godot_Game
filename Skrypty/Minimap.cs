@@ -1,4 +1,3 @@
-// Minimap.cs
 using Godot;
 using System;
 
@@ -297,14 +296,6 @@ public partial class Minimap : CanvasLayer
 		{
 			_edgeMarker.Color = new Color(0.0f, 0.8f, 0.0f, 1.0f); 
 		}
-	}
-	
-	public void ClearTarget()
-	{
-		target_package = null;
-		if (_packageMarker != null) _packageMarker.Visible = false;
-		if (_edgeMarker != null) _edgeMarker.Visible = false;
-		GD.Print("🗺️ Minimap: Cel wyczyszczony");
 	}
 
 	private void SetMinimapLimitsFromNode(Node roadNode)

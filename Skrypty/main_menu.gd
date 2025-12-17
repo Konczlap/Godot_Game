@@ -14,6 +14,8 @@ func update_button_values():
 	var resolutions_index = GUI.resolutions.keys().find(window_size_string)
 	resolutions_option_button.selected = resolutions_index
 	
+	
+
 func _process(_delta: float) -> void:
 	pass
 
@@ -37,13 +39,16 @@ func _on_settings_pressed() -> void:
 	main_buttons.visible = false
 	options.visible = true
 
+
 func _on_exit_pressed() -> void:
 	get_tree().quit()
+
 
 func _on_back_options_pressed() -> void:
 	main_buttons.visible = true
 	options.visible = false
 
+
 func _on_option_button_item_selected(index: int) -> void:
-	var _key = resolutions_option_button.get_item_text(index)
+	var key = resolutions_option_button.get_item_text(index)
 	get_window().set_size(GUI.resolutions[index])

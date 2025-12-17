@@ -19,8 +19,6 @@ config/icon="res://icon.svg"
 
 SaveManager="*res://Skrypty/SaveManager.cs"
 GUI="*res://Skrypty/GUI.gd"
-VehicleManager="*res://Skrypty/VehicleManager.cs"
-PlayerMoney="*res://Skrypty/PlayerMoney.cs"
 
 [display]
 
