@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="VehicleData" load_steps=3 format=3 uid="uid://1lu0jd20r0vu"]
+
+[ext_resource type="Texture2D" uid="uid://b8ixnasvuocda" path="res://Assety do gry/Car1.png" id="1_28a3c"]
+[ext_resource type="Script" uid="uid://yaf0cs5mrrik" path="res://Skrypty/VehicleData.cs" id="1_ul3w5"]
+
+[resource]
+script = ExtResource("1_ul3w5")
+MaxForwardSpeed = 75.0
+MaxBackwardSpeed = -37.5
+Acceleration = 150.0
+BrakePower = 225.0
+EngineBraking = 25.0
+RotationSpeed = 90.0
+FuelConsumptionRate = 2.0
+MaxPackageAmount = 2
+Price = 150
+Sprite = ExtResource("1_28a3c")
+metadata/_custom_type_script = "uid://yaf0cs5mrrik"

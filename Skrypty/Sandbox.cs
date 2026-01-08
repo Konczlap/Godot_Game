@@ -7,6 +7,7 @@ public partial class Sandbox : Node
 	[Export] private Gas gas;
 	[Export] private PlayerMoney playerMoney;
 	[Export] private DayNightCycle dayNightCycle;
+	[Export] private VehicleManager vehicleManager;
 
 	public override void _Ready()
 	{
@@ -27,6 +28,8 @@ public partial class Sandbox : Node
 			gas.SetFuel(100f);
 			playerMoney.SetMoney(50f); // albo startowe 50$
 			dayNightCycle.SetDayNumber(1);
+			vehicleManager.LoadOwnedVehicles("");
+			vehicleManager.LoadActiveVehicle((int)VehicleType.Personal);
 			return; // WAŻNE — przerwij dalsze ładowanie zapisu
 		}
 
@@ -37,6 +40,8 @@ public partial class Sandbox : Node
 			gas.SetFuel(sm.Fuel);
 			playerMoney.SetMoney(sm.Money);
 			dayNightCycle.SetDayNumber(sm.Day);
+			vehicleManager.LoadOwnedVehicles(sm.OwnedVehicles);
+			vehicleManager.LoadActiveVehicle(sm.ActiveVehicleId);
 			GD.Print("📂 Save wczytany!");
 		}
 		else

@@ -8,6 +8,7 @@ public partial class EndDay : Area2D
 	[Export] private Gas _gas;
 	[Export] private MovementScript _movementScript;
 	[Export] private Delivery _delivery;
+	[Export] private VehicleManager _vehicleManager;
 	//[Export] private SaveManager _saveManager;
 	[Export] public Node2D PackagesContainer;
 	[Export] public Node2D CustomersContainer;
@@ -61,8 +62,10 @@ public partial class EndDay : Area2D
 		{
 			_dayNightCycle.EndDay();
 			var sm = GetNodeOrNull<SaveManager>("/root/SaveManager");
+			GD.Print($"SaveManager: {sm}");
+			GD.Print($"VehicleManager: {_vehicleManager}");
 			if (sm != null)
-				sm.SaveGame(_movementScript, _gas, _playerMoney, _dayNightCycle);
+				sm.SaveGame(_movementScript, _gas, _playerMoney, _dayNightCycle, _vehicleManager);
 			else
 				GD.PrintErr("❌ Nie znaleziono SaveManager!");
 			//SaveManager.SaveGame(_movementScript, _gas, _playerMoney, _dayNightCycle);

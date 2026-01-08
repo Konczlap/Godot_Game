@@ -216,4 +216,9 @@ public partial class Delivery : Area2D
 		
 		UpdateMinimapTarget();
 	}
+	
+	public void SetMaxPackages(int value)
+	{
+		MaxPackageAmount = value;
+	}
 }

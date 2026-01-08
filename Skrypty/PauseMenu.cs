@@ -90,6 +90,12 @@ public partial class PauseMenu : CanvasLayer
 		dayNightCycle.SetDayNumber(sm.Day);
 		dayNightCycle.RestartDay();
 		delivery.ResetPackages();
+		var vm = GetNodeOrNull<VehicleManager>("/root/VehicleManager");
+		if (vm != null)
+			{
+				vm.LoadOwnedVehicles(sm.OwnedVehicles);
+				vm.LoadActiveVehicle(sm.ActiveVehicleId);
+			}
 		
 		GD.Print("🔄 Gra zrestartowana od początku dnia!");
 		

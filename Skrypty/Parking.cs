@@ -3,138 +3,63 @@ using System;
 
 public partial class Parking : Area2D
 {
-	[Export]
-	public NodePath UiLabelPath { get; set; } = null;
-	
-	[Export]
-	public string PromptText { get; set; } = "Kliknij E";
-	
-	[Export]
-	public PackedScene ShopScene { get; set; } = null;
-	
-	private Label _uiLabel;
-	private bool _playerInArea = false;
-	private ShopUI _shopInstance = null;
-	private CanvasLayer _shopCanvasLayer = null;
+	[Export] private ShopUI shopUI;
+	[Export] private Label hintLabel;   // "[E] SKLEP MOTORYZACYJNY"
+
+	private bool _playerInside = false;
 
 	public override void _Ready()
 	{
-		GD.Print($"[Parking] Inicjalizacja węzła: {Name}");
-		
-		if (UiLabelPath != null)
-		{
-			_uiLabel = GetNode<Label>(UiLabelPath);
-			if (_uiLabel != null)
-			{
-				_uiLabel.Visible = false;
-				_uiLabel.Text = PromptText;
-				GD.Print($"[Parking] Label znaleziony: {_uiLabel.Name}");
-			}
-			else
-			{
-				GD.PrintErr("[Parking] Nie można znaleźć Label na ścieżce: " + UiLabelPath);
-			}
-		}
-		else
-		{
-			GD.PrintErr("[Parking] UiLabelPath nie został ustawiony w inspektorze!");
-		}
+		AreaEntered += OnAreaEntered;
+		AreaExited += OnAreaExited;
 
-		BodyEntered += OnBodyEntered;
-		BodyExited += OnBodyExited;
-		
-		GD.Print("[Parking] Sygnały podłączone.");
-	}
+		if (hintLabel != null)
+			hintLabel.Visible = false;
 
-	private void OnBodyEntered(Node body)
-	{
-		if (body.IsInGroup("Player"))
-		{
-			_playerInArea = true;
-			if (_uiLabel != null)
-			{
-				_uiLabel.Visible = true;
-				GD.Print("[Parking] ✓ Gracz wszedł na parking - Label widoczny!");
-			}
-		}
-	}
-
-	private void OnBodyExited(Node body)
-	{
-		if (body.IsInGroup("Player"))
-		{
-			_playerInArea = false;
-			if (_uiLabel != null)
-			{
-				_uiLabel.Visible = false;
-				GD.Print("[Parking] ✓ Gracz opuścił parking - Label ukryty.");
-			}
-		}
+		if (shopUI != null)
+			shopUI.HideShop();
 	}
 
 	public override void _Process(double delta)
 	{
-		
-		if (_playerInArea && _shopInstance == null)
-		{
-			GD.Print($"[Parking] Czekam na E. Sklep: {(_shopInstance != null ? "otwarty" : "zamknięty")}");
-		}
-		
-		
-		if (_playerInArea && Input.IsActionJustPressed("action") && _shopInstance == null)
-		{
-			GD.Print("[Parking] E naciśnięte - otwieram sklep!");
-			OpenShop();
-		}
-	}
-
-	private void OpenShop()
-	{
-		if (ShopScene == null)
-		{
-			GD.PrintErr("[Parking] ShopScene nie został przypisany w inspektorze!");
+		if (!_playerInside)
 			return;
+
+		if (Input.IsActionJustPressed("action")) // E
+		{
+			if (shopUI != null)
+				shopUI.OpenShop();
+			
+			GD.Print("Wjechałeś do sklepu");
 		}
-
-		if (_uiLabel != null)
-			_uiLabel.Visible = false;
-
-		_shopCanvasLayer = new CanvasLayer();
-		_shopCanvasLayer.Layer = 100;
-		GetTree().Root.AddChild(_shopCanvasLayer);
-		
-		_shopInstance = ShopScene.Instantiate<ShopUI>();
-		_shopCanvasLayer.AddChild(_shopInstance);
-		
-		_shopInstance.ShopClosed += OnShopClosed;
-		
-		_shopInstance.SetAnchorsPreset(Control.LayoutPreset.FullRect);
-		_shopInstance.Position = Vector2.Zero;
-		
-		GetTree().Paused = true;
-		_shopCanvasLayer.ProcessMode = ProcessModeEnum.WhenPaused;
-		_shopInstance.ProcessMode = ProcessModeEnum.WhenPaused;
-		
-		GD.Print("[Parking] ✓ Sklep otwarty.");
 	}
 
-	private void OnShopClosed()
+	private void OnAreaEntered(Area2D area)
 	{
-		GD.Print("[Parking] Sygnał ShopClosed otrzymany!");
-		
-		if (_shopCanvasLayer != null && IsInstanceValid(_shopCanvasLayer))
-		{
-			_shopCanvasLayer.QueueFree();
-		}
-		
-		_shopCanvasLayer = null;
-		_shopInstance = null;
-		
-		GetTree().Paused = false;
-		
-		if (_playerInArea && _uiLabel != null)
-			_uiLabel.Visible = true;
-		
-		GD.Print("[Parking] ✓ Sklep zamknięty, flagi zresetowane.");
+		if (!area.GetParent().IsInGroup("Player"))
+			return;
+
+		_playerInside = true;
+
+		if (hintLabel != null)
+			hintLabel.Visible = true;
+
+		GD.Print("🅿️ Możesz wejść do sklepu (E)");
+	}
+
+	private void OnAreaExited(Area2D area)
+	{
+		if (!area.GetParent().IsInGroup("Player"))
+			return;
+
+		_playerInside = false;
+
+		if (hintLabel != null)
+			hintLabel.Visible = false;
+
+		if (shopUI != null && shopUI.IsOpen)
+			shopUI.CloseShop();
+
+		GD.Print("🚗 Opuściłeś parking sklepu");
 	}
 }

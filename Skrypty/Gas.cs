@@ -104,4 +104,9 @@ public partial class Gas : Node2D
 	{
 		return _maxFuel;
 	}
+	
+	public void SetFuelConsumptionRate(float value)
+	{
+		_fuelConsumptionRate = value;
+	}
 }
