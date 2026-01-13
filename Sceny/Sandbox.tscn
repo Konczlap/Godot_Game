@@ -156,11 +156,12 @@ z_index = 10
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_84mch")
 
-[node name="Delivery" type="Area2D" parent="Player/CarSprite" node_paths=PackedStringArray("_movementScript", "_playerMoney") groups=["Player"]]
+[node name="Delivery" type="Area2D" parent="Player/CarSprite" node_paths=PackedStringArray("_movementScript", "_playerMoney", "_messageHUD") groups=["Player"]]
 collision_mask = 30
 script = ExtResource("3_nux3x")
 _movementScript = NodePath("../..")
 _playerMoney = NodePath("../PlayerMoney")
+_messageHUD = NodePath("../../../MessageHUD")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/CarSprite/Delivery"]
 position = Vector2(0, -3.44)
@@ -2358,12 +2359,13 @@ _playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 [node name="TimeHUD" parent="." node_paths=PackedStringArray("TimeSource") instance=ExtResource("38_jcakk")]
 TimeSource = NodePath("../DayNightCycle")
 
-[node name="PauseMenu" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "delivery") instance=ExtResource("42_ijyun")]
+[node name="PauseMenu" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "delivery", "_messageHUD") instance=ExtResource("42_ijyun")]
 player = NodePath("../Player")
 gas = NodePath("../Player/CarSprite/Gas")
 playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 dayNightCycle = NodePath("../DayNightCycle")
 delivery = NodePath("../Player/CarSprite/Delivery")
+_messageHUD = NodePath("../MessageHUD")
 
 [node name="Minimap" parent="." instance=ExtResource("45_xduwb")]
 

@@ -5,6 +5,7 @@ public partial class MessageHUD : CanvasLayer
 {
 	private Label _label;
 	private ColorRect _background;
+	private string _lastText;
 
 	public override void _Ready()
 	{
@@ -17,6 +18,16 @@ public partial class MessageHUD : CanvasLayer
 	{
 		_background.Visible = true;
 		_label.Text = text;
+		_label.Modulate = color;
+		_label.Visible = true;
+		
+		_lastText = text;
+	}
+	
+	public void ShowLastMessage(Color color)
+	{
+		_background.Visible = true;
+		_label.Text = _lastText;
 		_label.Modulate = color;
 		_label.Visible = true;
 	}

@@ -5,6 +5,7 @@ public partial class Delivery : Area2D
 {
 	[Export] public MovementScript _movementScript;
 	[Export] public PlayerMoney _playerMoney;
+	[Export] public MessageHUD _messageHUD;
 	[Export] public int MaxPackageAmount = 2;
 	public int CurrentPackageAmount = 0;
 	public int DeliveredPackagesPerDay = 0;
@@ -14,6 +15,8 @@ public partial class Delivery : Area2D
 	private bool _canTakePackage = false;
 	private bool _canDeliverPackage = false;
 	private List<Package> _collectedPackages = new List<Package>();
+	
+	private HintType _currentHint = HintType.None;
 	
 	private Minimap _minimap;
 
@@ -50,6 +53,8 @@ public partial class Delivery : Area2D
 		{
 			_overlappingPackageNode = area.GetParent() as Package;
 			_canTakePackage = true;
+			_currentHint = HintType.Package;
+			_messageHUD?.ShowMessage("Naciśnij E, aby podnieść paczkę", new Color("#FFFFFF"));
 		}
 
 		if (area.GetParent().IsInGroup("Customer"))
@@ -57,6 +62,8 @@ public partial class Delivery : Area2D
 			_overlappingCustomerNode = area.GetParent() as Customer;
 			_canDeliverPackage = true;
 			GD.Print("Wykryto klienta: " + area.GetParent().Name);
+			_currentHint = HintType.Customer;
+			_messageHUD?.ShowMessage("Naciśnij E, aby dostarczyć paczkę", new Color("#FFFFFF"));
 		}
 	}
 
@@ -66,12 +73,23 @@ public partial class Delivery : Area2D
 		{
 			_overlappingPackageNode = null;
 			_canTakePackage = false;
+			if(_currentHint != HintType.Customer)
+			{
+				_messageHUD?.HideMessage();
+				_currentHint = HintType.None;
+			}
+				
 		}
 
 		if (area.GetParent() == _overlappingCustomerNode)
 		{
 			_overlappingCustomerNode = null;
 			_canDeliverPackage = false;
+			if(_currentHint != HintType.Package)
+			{
+				_messageHUD?.HideMessage();
+				_currentHint = HintType.None;
+			}
 		}
 	}
 
@@ -106,7 +124,11 @@ public partial class Delivery : Area2D
 			
 			_collectedPackages.Add(_overlappingPackageNode);
 			CurrentPackageAmount++;
-
+			
+			_overlappingPackageNode = null;
+			_canTakePackage = false;
+			_messageHUD?.HideMessage();
+			
 			PrintCollectedPackages();
 			UpdateMinimapTarget();
 		}
@@ -128,6 +150,7 @@ public partial class Delivery : Area2D
 			{
 				if (_collectedPackage.GetTargetCustomer() == _overlappingCustomerNode.Name)
 				{
+					_messageHUD?.HideMessage();
 					_playerMoney.AddMoney(_collectedPackage.GetPackagePrice());
 					CurrentPackageAmount--;
 					_collectedPackages.Remove(_collectedPackage);

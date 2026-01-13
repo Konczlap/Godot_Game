@@ -12,6 +12,7 @@ public partial class PauseMenu : CanvasLayer
 	[Export] public PlayerMoney playerMoney;
 	[Export] public DayNightCycle dayNightCycle;
 	[Export] public Delivery delivery;
+	[Export] public MessageHUD _messageHUD;
 	
 	private Button resumeButton;
 	private Button restartButton;
@@ -63,6 +64,7 @@ public partial class PauseMenu : CanvasLayer
 	{
 		GetTree().Paused = false;
 		Visible = false;
+		_messageHUD?.ShowLastMessage(new Color("#FFFFFF"));
 	}
 	
 	private void OnRestartButtonPressed()
