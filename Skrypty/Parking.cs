@@ -4,17 +4,15 @@ using System;
 public partial class Parking : Area2D
 {
 	[Export] private ShopUI shopUI;
-	[Export] private Label hintLabel;   // "[E] SKLEP MOTORYZACYJNY"
-
 	private bool _playerInside = false;
+	private MessageHUD _messageHUD;
 
 	public override void _Ready()
 	{
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
-
-		if (hintLabel != null)
-			hintLabel.Visible = false;
+		
+		_messageHUD = GetTree().Root.GetNode<MessageHUD>("Node2D/MessageHUD");
 
 		if (shopUI != null)
 			shopUI.HideShop();
@@ -30,10 +28,15 @@ public partial class Parking : Area2D
 			if (shopUI != null)
 				shopUI.OpenShop();
 			
-			GD.Print("Wjechałeś do sklepu");
+			_messageHUD?.HideMessage();
+		}
+		
+		if(!shopUI.IsOpen)
+		{
+			_messageHUD?.ShowMessage("Naciśnij E, aby wejść do sklepu", new Color("#FFFFFF"));
 		}
 	}
-
+	
 	private void OnAreaEntered(Area2D area)
 	{
 		if (!area.GetParent().IsInGroup("Player"))
@@ -41,10 +44,7 @@ public partial class Parking : Area2D
 
 		_playerInside = true;
 
-		if (hintLabel != null)
-			hintLabel.Visible = true;
-
-		GD.Print("🅿️ Możesz wejść do sklepu (E)");
+		_messageHUD?.ShowMessage("Naciśnij E, aby wejść do sklepu", new Color("#FFFFFF"));
 	}
 
 	private void OnAreaExited(Area2D area)
@@ -54,12 +54,9 @@ public partial class Parking : Area2D
 
 		_playerInside = false;
 
-		if (hintLabel != null)
-			hintLabel.Visible = false;
+		_messageHUD?.HideMessage();
 
 		if (shopUI != null && shopUI.IsOpen)
 			shopUI.CloseShop();
-
-		GD.Print("🚗 Opuściłeś parking sklepu");
 	}
 }

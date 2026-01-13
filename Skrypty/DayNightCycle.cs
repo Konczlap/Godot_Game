@@ -15,6 +15,7 @@ public partial class DayNightCycle : Node2D
 	[Export] private PlayerMoney _playerMoney;
 	[Export] private PackageHUD _packageHUD;
 	[Export] private SpawnManager _spawnManager;
+	[Export] private MessageHUD _messageHUD;
 	public bool IsSummaryOpen = false;
 	
 	private float _currentMinutes = 6 * 60; // start: 6:00
@@ -108,11 +109,16 @@ public partial class DayNightCycle : Node2D
 		{
 			CustomersContainer.Visible = false;
 			PackagesContainer.Visible = false;
+			
+			_messageHUD.ShowMessage(
+				"Twój dzień pracy dobiegł końca.\nUdaj się do domu by odpocząć.",
+				new Color("#FFD966")); // pomarańczowy
 		}
 	}
 
 	public void EndDay()
 	{
+		_messageHUD.HideMessage();
 		IsSummaryOpen = true;
 		_movementScript.CanMove = false;
 		SummaryMenu.Visible = true;

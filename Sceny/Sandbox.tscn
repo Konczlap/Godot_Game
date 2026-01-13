@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=78 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -49,13 +49,14 @@
 [ext_resource type="PackedScene" uid="uid://beeamr1b01jnm" path="res://Sceny/minimap.tscn" id="45_xduwb"]
 [ext_resource type="PackedScene" uid="uid://tc2a4wu2y0ly" path="res://Sceny/FuelWarningHUD.tscn" id="47_c1bnq"]
 [ext_resource type="Script" uid="uid://cc558rqgwqsiw" path="res://Skrypty/Sandbox.cs" id="48_c1bnq"]
-[ext_resource type="PackedScene" uid="uid://bv5hgtel43xen" path="res://Sceny/Shopui.tscn" id="50_ius1y"]
+[ext_resource type="PackedScene" uid="uid://bv5hgtel43xen" path="res://Sceny/shopui.tscn" id="50_ius1y"]
 [ext_resource type="AudioStream" uid="uid://baho2dqqo7rwp" path="res://Assety do gry/miasto.mp3" id="52_ius1y"]
 [ext_resource type="Script" uid="uid://ddnl3sd0ik3c0" path="res://Sceny/AmbientAudio.cs" id="53_6m4gp"]
 [ext_resource type="AudioStream" uid="uid://cqulq000ftyoy" path="res://Assety do gry/game.mp3" id="53_ius1y"]
 [ext_resource type="Script" uid="uid://b83ag8ch3a0d0" path="res://Skrypty/VehicleManager.cs" id="54_bhq3s"]
 [ext_resource type="Resource" uid="uid://1lu0jd20r0vu" path="res://Typy pojazdów/PersonalCar.tres" id="55_yrxkk"]
 [ext_resource type="Resource" uid="uid://js62ql3m6nq3" path="res://Typy pojazdów/KombiTruck.tres" id="56_ndcfq"]
+[ext_resource type="PackedScene" uid="uid://d3pxe67pv37uc" path="res://Sceny/MessageHUD.tscn" id="56_s1ubo"]
 [ext_resource type="Resource" uid="uid://gvr112vewybs" path="res://Typy pojazdów/Truck.tres" id="57_s1ubo"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
@@ -2248,13 +2249,12 @@ physics_material_override = SubResource("PhysicsMaterial_g8htv")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Salon Samochodowy/WhitePixel/StaticBody2D"]
 shape = SubResource("RectangleShape2D_t2h15")
 
-[node name="parking" type="Area2D" parent="Mapa/Salon Samochodowy" node_paths=PackedStringArray("shopUI", "hintLabel")]
+[node name="parking" type="Area2D" parent="Mapa/Salon Samochodowy" node_paths=PackedStringArray("shopUI")]
 collision_layer = 7
 collision_mask = 31
 priority = 1
 script = ExtResource("43_ijyun")
 shopUI = NodePath("../../../ShopUI")
-hintLabel = NodePath("CollisionShape2D/Label")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mapa/Salon Samochodowy/parking"]
 position = Vector2(-83, 52)
@@ -2276,7 +2276,7 @@ position = Vector2(400, 169)
 scale = Vector2(0.00625, 0.00625)
 texture = ExtResource("15_5l22i")
 
-[node name="Area2D" type="Area2D" parent="Dom/Dom" node_paths=PackedStringArray("_dayNightCycle", "_playerMoney", "_gas", "_movementScript", "_delivery", "_vehicleManager", "PackagesContainer", "CustomersContainer")]
+[node name="Area2D" type="Area2D" parent="Dom/Dom" node_paths=PackedStringArray("_dayNightCycle", "_playerMoney", "_gas", "_movementScript", "_delivery", "_vehicleManager", "_messageHUD", "PackagesContainer", "CustomersContainer")]
 collision_layer = 6
 script = ExtResource("28_xexbp")
 _dayNightCycle = NodePath("../../../DayNightCycle")
@@ -2285,6 +2285,7 @@ _gas = NodePath("../../../Player/CarSprite/Gas")
 _movementScript = NodePath("../../../Player")
 _delivery = NodePath("../../../Player/CarSprite/Delivery")
 _vehicleManager = NodePath("../../../VehicleManager")
+_messageHUD = NodePath("../../../MessageHUD")
 PackagesContainer = NodePath("../../../Paczki")
 CustomersContainer = NodePath("../../../Klienci")
 
@@ -2297,7 +2298,7 @@ script = ExtResource("24_3h8bx")
 _packagesParentPath = NodePath("../Paczki")
 _customersParentPath = NodePath("../Klienci")
 
-[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_cityAmbient", "_movementScript", "_delivery", "_playerMoney", "_packageHUD", "_spawnManager")]
+[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("CustomersContainer", "PackagesContainer", "SummaryMenu", "GlobalModulate", "_cityAmbient", "_movementScript", "_delivery", "_playerMoney", "_packageHUD", "_spawnManager", "_messageHUD")]
 script = ExtResource("29_f744g")
 RealSecondsPerGameMinute = 0.15
 CustomersContainer = NodePath("../Klienci")
@@ -2310,10 +2311,12 @@ _delivery = NodePath("../Player/CarSprite/Delivery")
 _playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 _packageHUD = NodePath("../PackageHUD")
 _spawnManager = NodePath("../SpawnManager")
+_messageHUD = NodePath("../MessageHUD")
 
-[node name="PauseController" type="Node2D" parent="." node_paths=PackedStringArray("PauseMenu")]
+[node name="PauseController" type="Node2D" parent="." node_paths=PackedStringArray("PauseMenu", "_messageHUD")]
 script = ExtResource("34_xsqcf")
 PauseMenu = NodePath("../PauseMenu")
+_messageHUD = NodePath("../MessageHUD")
 
 [node name="Sandbox" type="Node" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "vehicleManager")]
 script = ExtResource("48_c1bnq")
@@ -2375,6 +2378,8 @@ DayNight = NodePath("../DayNightCycle")
 visible = false
 vehicleManager = NodePath("../VehicleManager")
 playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
+
+[node name="MessageHUD" parent="." instance=ExtResource("56_s1ubo")]
 
 [node name="AmbientAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("52_ius1y")

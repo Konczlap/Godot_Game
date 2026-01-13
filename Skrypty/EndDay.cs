@@ -9,6 +9,7 @@ public partial class EndDay : Area2D
 	[Export] private MovementScript _movementScript;
 	[Export] private Delivery _delivery;
 	[Export] private VehicleManager _vehicleManager;
+	[Export] private MessageHUD _messageHUD;
 	//[Export] private SaveManager _saveManager;
 	[Export] public Node2D PackagesContainer;
 	[Export] public Node2D CustomersContainer;
@@ -45,8 +46,12 @@ public partial class EndDay : Area2D
 		if (allInvisible && _delivery.CurrentPackageAmount == 0)
 		{
 			if (!_allPackageTaken)
+			{
 				GD.Print("Dostarczyłeś wszystkie paczki - wracaj!");
-
+				_messageHUD.ShowMessage(
+					"Udało ci się dostarczyć wszystkie paczki na dziś.\nUdaj się do domu by zakończyć dzień.",
+					new Color("#FFFFFF"));
+			}
 			_allPackageTaken = true;
 		}
 		else
