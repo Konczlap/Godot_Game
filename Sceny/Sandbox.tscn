@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=79 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -55,6 +55,7 @@
 [ext_resource type="AudioStream" uid="uid://cqulq000ftyoy" path="res://Assety do gry/game.mp3" id="53_ius1y"]
 [ext_resource type="Script" uid="uid://b83ag8ch3a0d0" path="res://Skrypty/VehicleManager.cs" id="54_bhq3s"]
 [ext_resource type="Resource" uid="uid://1lu0jd20r0vu" path="res://Typy pojazdów/PersonalCar.tres" id="55_yrxkk"]
+[ext_resource type="PackedScene" uid="uid://oslcj5uve7x7" path="res://Sceny/HintHUD.tscn" id="56_gxarf"]
 [ext_resource type="Resource" uid="uid://js62ql3m6nq3" path="res://Typy pojazdów/KombiTruck.tres" id="56_ndcfq"]
 [ext_resource type="PackedScene" uid="uid://d3pxe67pv37uc" path="res://Sceny/MessageHUD.tscn" id="56_s1ubo"]
 [ext_resource type="Resource" uid="uid://gvr112vewybs" path="res://Typy pojazdów/Truck.tres" id="57_s1ubo"]
@@ -2382,6 +2383,12 @@ vehicleManager = NodePath("../VehicleManager")
 playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 
 [node name="MessageHUD" parent="." instance=ExtResource("56_s1ubo")]
+
+[node name="HintHUD" parent="." node_paths=PackedStringArray("delivery", "gas", "dayNight", "minimap") instance=ExtResource("56_gxarf")]
+delivery = NodePath("../Player/CarSprite/Delivery")
+gas = NodePath("../Player/CarSprite/Gas")
+dayNight = NodePath("../DayNightCycle")
+minimap = NodePath("../Minimap")
 
 [node name="AmbientAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("52_ius1y")

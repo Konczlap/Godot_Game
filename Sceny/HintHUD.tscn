@@ -1,0 +1,101 @@
+[gd_scene load_steps=5 format=3 uid="uid://oslcj5uve7x7"]
+
+[ext_resource type="Script" uid="uid://bns85gsro3e5m" path="res://Skrypty/HintTutorial.cs" id="1_wu4rn"]
+
+[sub_resource type="FontFile" id="FontFile_skxkf"]
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/40/0/ascent = 0.0
+cache/0/40/0/descent = 0.0
+cache/0/40/0/underline_position = 0.0
+cache/0/40/0/underline_thickness = 0.0
+cache/0/40/0/scale = 1.0
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_ip1l4"]
+font = SubResource("FontFile_skxkf")
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_0f5te"]
+paragraph_spacing = 3.0
+font_size = 22
+
+[node name="HintHUD" type="CanvasLayer" node_paths=PackedStringArray("samouczekPanel", "titleLabel", "textLabel", "dalejButton")]
+script = ExtResource("1_wu4rn")
+samouczekPanel = NodePath("Control/SamouczekPanel")
+titleLabel = NodePath("Control/SamouczekPanel/TytułLabel")
+textLabel = NodePath("Control/SamouczekPanel/SamouczekLabel")
+dalejButton = NodePath("Control/SamouczekPanel/DalejButton")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SamouczekPanel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -471.0
+offset_top = -211.0
+offset_right = 471.0
+offset_bottom = 211.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "PODSUMOWANIE"
+
+[node name="TytułLabel" type="Label" parent="Control/SamouczekPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -101.0
+offset_right = 102.0
+offset_bottom = 55.0
+grow_horizontal = 2
+text = "Samouczek"
+label_settings = SubResource("LabelSettings_ip1l4")
+
+[node name="SamouczekLabel" type="Label" parent="Control/SamouczekPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -382.0
+offset_top = -96.0
+offset_right = 382.0
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Przykładowy tekst przykładowy tekst przykładowy tekst przykładowy tekst przykładowy tekst przykładowy tekst przykładowy tekst przykładowy tekst"
+label_settings = SubResource("LabelSettings_0f5te")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DalejButton" type="Button" parent="Control/SamouczekPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -58.5
+offset_top = -69.08499
+offset_right = 58.5
+offset_bottom = -38.08499
+grow_horizontal = 2
+grow_vertical = 0
+text = "Dalej"

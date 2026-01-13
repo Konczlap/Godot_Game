@@ -113,6 +113,7 @@ public partial class Delivery : Area2D
 	{
 		if (CurrentPackageAmount < MaxPackageAmount && _movementScript.GetIsStanding())
 		{
+			GetNodeOrNull<HintTutorial>("/root/Node2D/HintHUD")?.OnPackageTaken();
 			_overlappingPackageNode.Visible = false;
 			
 			var area = _overlappingPackageNode.GetNode<Area2D>("Area2D");
@@ -150,6 +151,7 @@ public partial class Delivery : Area2D
 			{
 				if (_collectedPackage.GetTargetCustomer() == _overlappingCustomerNode.Name)
 				{
+					GetNodeOrNull<HintTutorial>("/root/Node2D/HintHUD")?.OnPackageDelivered();
 					_messageHUD?.HideMessage();
 					_playerMoney.AddMoney(_collectedPackage.GetPackagePrice());
 					CurrentPackageAmount--;

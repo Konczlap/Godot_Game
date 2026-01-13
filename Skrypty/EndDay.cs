@@ -83,6 +83,7 @@ public partial class EndDay : Area2D
 		if (area.GetParent().IsInGroup("Player"))
 		{
 			_playerInside = true;
+			GetNodeOrNull<HintTutorial>("/root/Node2D/HintHUD")?.OnHomeReached();
 			GD.Print("Naduś E");
 			
 			Node car = area.GetParent();

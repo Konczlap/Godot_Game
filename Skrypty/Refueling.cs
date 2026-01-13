@@ -49,6 +49,7 @@ public partial class Refueling : Area2D
 
 				if (_gas.GetFuel() >= _gas.GetMaxFuel())
 				{
+					GetNodeOrNull<HintTutorial>("/root/Node2D/HintHUD")?.OnFuelFilled();
 					_canRefuel = false;
 				}
 			}
@@ -64,7 +65,7 @@ public partial class Refueling : Area2D
 		if (area.GetParent().IsInGroup("Player"))
 		{
 			//GD.Print("Wykryto pojazd na stacji paliw");
-			
+			GetNodeOrNull<HintTutorial>("/root/Node2D/HintHUD")?.OnFuelStationReached();
 			Node car = area.GetParent();
 			Node player = car.GetParent();
 			//GD.Print($"{player.Name}");

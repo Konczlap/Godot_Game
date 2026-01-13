@@ -3,23 +3,48 @@ using System;
 
 public partial class Options : Control
 {
+	private Control graphicsSection;
+	private Control audioSection;
 	private HSlider masterSlider;
 
 	public override void _Ready()
 	{
-		masterSlider = GetNode<HSlider>("VBoxContainer/VolumeLabel/MasterSlider");
+		graphicsSection = GetNode<Control>("VBoxContainer/GraphicsSection");
+		audioSection = GetNode<Control>("VBoxContainer/AudioSection");
 
-		int masterBus = AudioServer.GetBusIndex("Master");
+		masterSlider = GetNode<HSlider>(
+			"VBoxContainer/AudioSection/VolumeLabel/MasterSlider");
 
-		float currentDb = AudioServer.GetBusVolumeDb(masterBus);
-		masterSlider.Value = Mathf.DbToLinear(currentDb);
+		int bus = AudioServer.GetBusIndex("Master");
+		masterSlider.Value = Mathf.DbToLinear(
+			AudioServer.GetBusVolumeDb(bus));
 
 		masterSlider.ValueChanged += OnMasterVolumeChanged;
+
+		HideAllSections();
 	}
 
 	private void OnMasterVolumeChanged(double value)
 	{
-		int masterBus = AudioServer.GetBusIndex("Master");
-		AudioServer.SetBusVolumeDb(masterBus, Mathf.LinearToDb((float)value));
+		int bus = AudioServer.GetBusIndex("Master");
+		AudioServer.SetBusVolumeDb(bus, Mathf.LinearToDb((float)value));
+	}
+
+	private void HideAllSections()
+	{
+		graphicsSection.Visible = false;
+		audioSection.Visible = false;
+	}
+
+	public void OnGraphicsPressed()
+	{
+		HideAllSections();
+		graphicsSection.Visible = true;
+	}
+
+	public void OnAudioPressed()
+	{
+		HideAllSections();
+		audioSection.Visible = true;
 	}
 }
