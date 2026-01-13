@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3pxe67pv37uc"]
+
+[ext_resource type="Script" uid="uid://cvio1kir86dpk" path="res://Skrypty/MessageHUD.cs" id="1_bfcqx"]
+
+[sub_resource type="Theme" id="Theme_ck2eo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bfcqx"]
+
+[node name="MessageHUD" type="CanvasLayer"]
+script = ExtResource("1_bfcqx")
+
+[node name="MessageHUDControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -206.0
+offset_top = 105.0
+offset_right = 194.0
+offset_bottom = 165.0
+grow_horizontal = 2
+
+[node name="Background" type="ColorRect" parent="MessageHUDControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ck2eo")
+color = Color(0, 0, 0, 0.5019608)
+
+[node name="MessageLabel" type="Label" parent="MessageHUDControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Dostarczyłeś wszystkie paczki. Wróć do domu."
+label_settings = SubResource("LabelSettings_bfcqx")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

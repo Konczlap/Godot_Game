@@ -9,7 +9,7 @@ public partial class MovementScript : CharacterBody2D
 	[Export] public float MaxBackwardSpeed = -150f;   // (-37.5) maksymalna prędkość do tyłu
 	[Export] public float Acceleration = 400f;        // (150) moc przyspieszenia
 	[Export] public float BrakePower = 600f;          // (225) moc hamowania
-	[Export] public float EngineBraking = 200f;       // (10) hamowanie silnikiem
+	[Export] public float EngineBraking = 200f;       // (25) hamowanie silnikiem
 	[Export] public float RotationSpeed = 90f;        // (90) maksymalna prędkość obrotu (stopnie/sek)
 	[Export] private AudioStreamPlayer2D _engineDrive;
 	[Export] private AudioStreamPlayer2D _brakeSound;

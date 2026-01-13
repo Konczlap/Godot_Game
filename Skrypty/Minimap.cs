@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Minimap : CanvasLayer
 {
@@ -7,10 +8,16 @@ public partial class Minimap : CanvasLayer
 	private SubViewport _subViewport;
 	private Camera2D _minimapCamera;
 	private ColorRect _playerMarker;
-	private ColorRect _packageMarker;
-	private Polygon2D _edgeMarker; 
+	
+	private Control _markersOverlay; // Kontener na markery w UI
+	
+	// Listy markerów dla wielu celów
+	private List<ColorRect> _packageMarkers = new List<ColorRect>();
+	private List<Polygon2D> _edgeMarkers = new List<Polygon2D>();
+	private const int MAX_MARKERS = 6; // Maksymalna liczba paczek
+	
 	public Node2D player_node;
-	public Node2D target_package;
+	public List<Node2D> target_packages = new List<Node2D>(); // Lista celów zamiast jednego
 	
 	private bool _isPackageMode = true;
 
@@ -40,45 +47,61 @@ public partial class Minimap : CanvasLayer
 			GD.Print("Utworzono marker gracza");
 		}
 		
-		_packageMarker = _subViewport?.GetNodeOrNull<ColorRect>("PackageMarker");
-		if (_packageMarker == null && _subViewport != null)
+		// Utwórz Overlay na markery (nad SubViewportem)
+		if (_subViewportContainer != null)
 		{
-			_packageMarker = new ColorRect();
-			_packageMarker.Name = "PackageMarker";
-			_packageMarker.Size = new Vector2(15, 15); 
-			_packageMarker.Color = new Color(1.0f, 0.8f, 0.0f, 1.0f);
-			_packageMarker.Position = new Vector2(-12.5f, -12.5f);
-			_packageMarker.Visible = false;
-			_packageMarker.ZIndex = 100;
-			_subViewport.AddChild(_packageMarker);
-			GD.Print("Utworzono marker paczki");
+			_markersOverlay = new Control();
+			_markersOverlay.Name = "MarkersOverlay";
+			_markersOverlay.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+			_markersOverlay.MouseFilter = Control.MouseFilterEnum.Ignore;
+			_subViewportContainer.AddChild(_markersOverlay);
+			GD.Print("Utworzono MarkersOverlay");
 		}
 		
-		_edgeMarker = _subViewport?.GetNodeOrNull<Polygon2D>("EdgeMarker");
-		if (_edgeMarker == null && _subViewport != null)
+		// Tworzenie wielu markerów dla paczek/klientów w UI Overlay
+		for (int i = 0; i < MAX_MARKERS; i++)
 		{
-			_edgeMarker = new Polygon2D();
-			_edgeMarker.Name = "EdgeMarker";
+			// Marker paczki/klienta
+			var packageMarker = new ColorRect();
+			packageMarker.Name = $"PackageMarker_{i}";
+			packageMarker.Size = new Vector2(10, 10);  // Mniejszy bo w UI
+			packageMarker.Color = new Color(1.0f, 0.8f, 0.0f, 1.0f);
+			packageMarker.PivotOffset = new Vector2(5, 5); // Pivot na środku
+			packageMarker.Visible = false;
+			// packageMarker.ZIndex = 100; // W UI ZIndex działa inaczej (kolejność w drzewie)
+			
+			if (_markersOverlay != null)
+				_markersOverlay.AddChild(packageMarker);
+				
+			_packageMarkers.Add(packageMarker);
+			
+			// Marker strzałki na krawędzi
+			var edgeMarker = new Polygon2D();
+			edgeMarker.Name = $"EdgeMarker_{i}";
 			Vector2[] arrowShape = new Vector2[]
 			{
-				new Vector2(20, 0),    
-				new Vector2(-15, -12), 
-				new Vector2(-8, 0),    
-				new Vector2(-15, 12)   
+				new Vector2(15, 0),    
+				new Vector2(-10, -8), 
+				new Vector2(-5, 0),    
+				new Vector2(-10, 8)   
 			};
-			_edgeMarker.Polygon = arrowShape;
-			_edgeMarker.Color = new Color(1.0f, 0.3f, 0.0f, 1.0f); 
-			_edgeMarker.Visible = false;
-			_edgeMarker.ZIndex = 102;
-			_subViewport.AddChild(_edgeMarker);
-			GD.Print("Utworzono marker krawędzi (strzałka)");
+			edgeMarker.Polygon = arrowShape;
+			edgeMarker.Color = new Color(1.0f, 0.3f, 0.0f, 1.0f); 
+			edgeMarker.Visible = false;
+			
+			// Polygon2D w Controlu pozycjonuje się względem (0,0) Controla.
+			if (_markersOverlay != null)
+				_markersOverlay.AddChild(edgeMarker);
+				
+			_edgeMarkers.Add(edgeMarker);
 		}
+		GD.Print($"Utworzono {MAX_MARKERS} markerów paczek i strzałek w Overlayu");
 
 		GD.Print($"SubViewport: {(_subViewport != null ? "OK" : "NULL")}");
 		GD.Print($"MinimapCamera: {(_minimapCamera != null ? "OK" : "NULL")}");
 		GD.Print($"PlayerMarker: {(_playerMarker != null ? "OK" : "NULL")}");
-		GD.Print($"PackageMarker: {(_packageMarker != null ? "OK" : "NULL")}");
-		GD.Print($"EdgeMarker: {(_edgeMarker != null ? "OK" : "NULL")}");
+		GD.Print($"PackageMarkers: {_packageMarkers.Count}");
+		GD.Print($"EdgeMarkers: {_edgeMarkers.Count}");
 
 		if (_subViewport == null)
 		{
@@ -214,60 +237,71 @@ public partial class Minimap : CanvasLayer
 				_playerMarker.Visible = true;
 			}
 			
-			if (target_package != null)
+			// Ukryj wszystkie markery na start
+			for (int i = 0; i < MAX_MARKERS; i++)
 			{
-				if (_packageMarker == null || _edgeMarker == null)
+				_packageMarkers[i].Visible = false;
+				_edgeMarkers[i].Visible = false;
+			}
+			
+			// Pobierz rozmiar wyświetlanej minimapy na ekranie UI
+			Vector2 minimapSize = _subViewportContainer != null ? _subViewportContainer.Size : new Vector2(190, 190);
+			Vector2 minimapCenter = minimapSize / 2.0f;
+			
+			// Pozycja kamery w świecie
+			Vector2 cameraWorldPos = _minimapCamera.GlobalPosition;
+			
+			// Promień minimapy (połowa szerokości)
+			float radius = minimapSize.X / 2.0f;
+			
+			// Pokaż markery dla każdego celu
+			for (int i = 0; i < target_packages.Count && i < MAX_MARKERS; i++)
+			{
+				var target = target_packages[i];
+				if (target == null) continue;
+				
+				Vector2 targetWorldPos = target.GlobalPosition;
+				Vector2 worldDiff = targetWorldPos - cameraWorldPos;
+				
+				// Przelicz różnicę świata na piksele UI (używając zoomu)
+				Vector2 screenDiff = worldDiff * _minimapCamera.Zoom;
+				
+				// Odległość od środka minimapy w pikselach
+				float distFromCenter = screenDiff.Length();
+				
+				// Marginesy
+				float dotMargin = 10.0f;       // Margines dla kropki
+				float arrowTipOffset = 15.0f;  // Odsunięcie czubka strzałki od jej środka (zgodnie z definicją Polygon2D)
+				float arrowMargin = 5.0f;      // Dodatkowy margines od krawędzi koła
+				
+				// Maksymalny promień dla strzałki, aby jej czubek nie wystawał
+				// (Promień mapy) - (Długość strzałki) - (Margines estetyczny)
+				float maxArrowOrbit = radius - arrowTipOffset - arrowMargin;
+				
+				// Sprawdzamy czy cel mieści się w kole (z marginesem dla kropki)
+				if (distFromCenter < (radius - dotMargin))
 				{
-					return; 
-				}
-				
-				Vector2 targetWorldPos = target_package.GlobalPosition;
-				Vector2 cameraWorldPos = _minimapCamera.GlobalPosition;
-				Vector2 relativePos = targetWorldPos - cameraWorldPos;
-				
-				Vector2 viewportSize = _subViewport != null ? _subViewport.Size : new Vector2(200, 200);
-				Vector2 visibleWorldSize = viewportSize / _minimapCamera.Zoom;
-				float halfWidth = visibleWorldSize.X / 2;
-				float halfHeight = visibleWorldSize.Y / 2;
-				
-				float margin = 30;
-				bool isVisible = Mathf.Abs(relativePos.X) < (halfWidth - margin) && 
-								 Mathf.Abs(relativePos.Y) < (halfHeight - margin);
-				
-				if (isVisible)
-				{
-					_packageMarker.GlobalPosition = targetWorldPos;
-					_packageMarker.Visible = true;
-					_packageMarker.Scale = Vector2.One; 
-					_edgeMarker.Visible = false;
+					// WIDOCZNY - Pokaż kropkę
+					Vector2 targetScreenPos = minimapCenter + screenDiff;
+					
+					_packageMarkers[i].Position = targetScreenPos - _packageMarkers[i].Size / 2;
+					_packageMarkers[i].Visible = true;
+					_edgeMarkers[i].Visible = false;
 				}
 				else
 				{
-					_packageMarker.Visible = false;
+					// NIEWIDOCZNY - Pokaż strzałkę na krawędzi okręgu
+					_packageMarkers[i].Visible = false;
 					
-					Vector2 direction = relativePos.Normalized();
+					Vector2 direction = screenDiff.Normalized();
 					
-					float edgeMargin = 35;
-					float maxX = halfWidth - edgeMargin;
-					float maxY = halfHeight - edgeMargin;
+					// Pozycja na obwodzie (pomniejszonym tak, by czubek dotykał krawędzi)
+					Vector2 edgePos = minimapCenter + direction * maxArrowOrbit;
 					
-					float scaleX = maxX / Mathf.Abs(direction.X);
-					float scaleY = maxY / Mathf.Abs(direction.Y);
-					float scale = Mathf.Min(scaleX, scaleY);
-					
-					Vector2 edgeOffset = direction * scale;
-					Vector2 edgeWorldPos = cameraWorldPos + edgeOffset;
-					
-					_edgeMarker.GlobalPosition = edgeWorldPos;
-					_edgeMarker.Visible = true;
-					_edgeMarker.Rotation = relativePos.Angle();
-					_edgeMarker.Scale = Vector2.One;
+					_edgeMarkers[i].Position = edgePos;
+					_edgeMarkers[i].Rotation = direction.Angle(); // Obróć strzałkę w stronę celu
+					_edgeMarkers[i].Visible = true;
 				}
-			}
-			else
-			{
-				if (_packageMarker != null) _packageMarker.Visible = false;
-				if (_edgeMarker != null) _edgeMarker.Visible = false;
 			}
 		}
 	}
@@ -275,27 +309,52 @@ public partial class Minimap : CanvasLayer
 	public void ShowPackageMarker()
 	{
 		_isPackageMode = true;
-		if (_packageMarker != null)
+		foreach (var marker in _packageMarkers)
 		{
-			_packageMarker.Color = new Color(1.0f, 0.8f, 0.0f, 1.0f); 
+			marker.Color = new Color(1.0f, 0.8f, 0.0f, 1.0f); 
 		}
-		if (_edgeMarker != null)
+		foreach (var marker in _edgeMarkers)
 		{
-			_edgeMarker.Color = new Color(1.0f, 0.5f, 0.0f, 1.0f); 
+			marker.Color = new Color(1.0f, 0.5f, 0.0f, 1.0f); 
 		}
 	}
 
 	public void ShowCustomerMarker()
 	{
 		_isPackageMode = false;
-		if (_packageMarker != null)
+		foreach (var marker in _packageMarkers)
 		{
-			_packageMarker.Color = new Color(0.0f, 1.0f, 0.0f, 1.0f); 
+			marker.Color = new Color(0.0f, 1.0f, 0.0f, 1.0f); 
 		}
-		if (_edgeMarker != null)
+		foreach (var marker in _edgeMarkers)
 		{
-			_edgeMarker.Color = new Color(0.0f, 0.8f, 0.0f, 1.0f); 
+			marker.Color = new Color(0.0f, 0.8f, 0.0f, 1.0f); 
 		}
+	}
+	
+	// Nowe metody do zarządzania celami
+	public void SetTargets(List<Node2D> targets)
+	{
+		target_packages.Clear();
+		target_packages.AddRange(targets);
+	}
+	
+	public void ClearTargets()
+	{
+		target_packages.Clear();
+	}
+	
+	public void AddTarget(Node2D target)
+	{
+		if (!target_packages.Contains(target))
+		{
+			target_packages.Add(target);
+		}
+	}
+	
+	public void RemoveTarget(Node2D target)
+	{
+		target_packages.Remove(target);
 	}
 
 	private void SetMinimapLimitsFromNode(Node roadNode)

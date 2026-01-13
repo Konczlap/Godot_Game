@@ -4,6 +4,7 @@ using System;
 public partial class PauseController : Node
 {
 	[Export] public PauseMenu PauseMenu;
+	[Export] public MessageHUD _messageHUD;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -19,5 +20,6 @@ public partial class PauseController : Node
 
 		GetTree().Paused = !paused;
 		PauseMenu.Visible = !paused;
+		_messageHUD?.HideMessage();
 	}
 }

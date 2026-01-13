@@ -15,6 +15,7 @@ public partial class DayNightCycle : Node2D
 	[Export] private PlayerMoney _playerMoney;
 	[Export] private PackageHUD _packageHUD;
 	[Export] private SpawnManager _spawnManager;
+	[Export] private MessageHUD _messageHUD;
 	public bool IsSummaryOpen = false;
 	
 	private float _currentMinutes = 6 * 60; // start: 6:00
@@ -108,11 +109,19 @@ public partial class DayNightCycle : Node2D
 		{
 			CustomersContainer.Visible = false;
 			PackagesContainer.Visible = false;
+			
+			// Wyłącz możliwość dostarczania na minimapie
+			_delivery.StopDeliveries();
+			
+			_messageHUD.ShowMessage(
+				"Twój dzień pracy dobiegł końca.\nUdaj się do domu by odpocząć.",
+				new Color("#FFD966")); // pomarańczowy
 		}
 	}
 
 	public void EndDay()
 	{
+		_messageHUD.HideMessage();
 		IsSummaryOpen = true;
 		_movementScript.CanMove = false;
 		SummaryMenu.Visible = true;
@@ -126,6 +135,10 @@ public partial class DayNightCycle : Node2D
 		CustomersContainer.Visible = true; // TRZEBA PRZEJŚĆ PRZEZ WSZYSTKIE DZIECI I JE WŁĄCZYĆ BO
 		PackagesContainer.Visible = true; // TAKIE WŁĄCZENIE NIE WŁĄCZY TYCH KTÓRE ZOSTAŁY WEWNĄTRZ NICH WYŁĄCZONE
 		_spawnManager.RandomizeSpawn();
+		
+		// Wyczyść ekwipunek gracza z poprzedniego dnia (nie odkładaj paczek z powrotem na mapę)
+		_delivery.ClearInventory();
+		
 		foreach (Node child in PackagesContainer.GetChildren())
 		{
 			if (child is Node2D item)

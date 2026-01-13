@@ -10,6 +10,8 @@ public partial class SaveManager : Node
 	public Vector2 PlayerPosition { get; set; } = Vector2.Zero;
 	public float Fuel { get; set; } = 100f;
 	public float Money { get; set; } = 0f;
+	public string OwnedVehicles { get; set; } = "";
+	public int ActiveVehicleId { get; set; } = 0;
 	
 	public bool StartNewGame = false;
 	
@@ -42,17 +44,34 @@ public partial class SaveManager : Node
 
 		Fuel = Convert.ToSingle((double)loaded["fuel"]);
 		Money = Convert.ToSingle((double)loaded["money"]);
+		
+		OwnedVehicles = loaded.ContainsKey("owned_vehicles")
+		? loaded["owned_vehicles"].ToString()
+		: "";
+
+		ActiveVehicleId = loaded.ContainsKey("active_vehicle")
+		? Convert.ToInt32((double)loaded["active_vehicle"])
+		: 0;
 
 		GD.Print($"📂 Save wczytany! {loaded}");
 		return true;
 	}
 
-	public void SaveGame(MovementScript player, Gas gas, PlayerMoney money, DayNightCycle dayNight)
+	public void SaveGame(
+		MovementScript player,
+		Gas gas,
+		PlayerMoney money,
+		DayNightCycle dayNight,
+		VehicleManager vehicleManager   // ⬅ NOWY PARAMETR
+	)
 	{
 		PlayerPosition = player.GlobalPosition;
 		Fuel = gas.GetFuel();
 		Money = money.GetMoney();
 		Day = dayNight.GetDayNumber() + 1;
+
+		OwnedVehicles = vehicleManager.GetOwnedVehiclesString();
+		ActiveVehicleId = vehicleManager.GetActiveVehicleId();
 
 		var saveData = new Dictionary
 		{
@@ -60,7 +79,11 @@ public partial class SaveManager : Node
 			{ "player_x", (double)PlayerPosition.X },
 			{ "player_y", (double)PlayerPosition.Y },
 			{ "fuel", (double)Fuel },
-			{ "money", (double)Money }
+			{ "money", (double)Money },
+
+			// 🚗 NOWE
+			{ "owned_vehicles", OwnedVehicles },
+			{ "active_vehicle", ActiveVehicleId }
 		};
 
 		using var file = FileAccess.Open(saveFile, FileAccess.ModeFlags.Write);

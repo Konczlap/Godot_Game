@@ -8,12 +8,14 @@ public partial class Refueling : Area2D
 	[Export] private PlayerMoney _playerMoney;
 	private Gas _gas;
 	private MovementScript _movementScript;
+	private MessageHUD _messageHUD;
 	private bool _canRefuel = false;
 
 	public override void _Ready()
 	{
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
+		_messageHUD = GetTree().Root.GetNode<MessageHUD>("Node2D/MessageHUD");
 		//// Szukamy referencji (zakładamy, że są w tym samym drzewie lub wyżej)
 		//_playerMoney = GetTree().Root.GetNode<PlayerMoney>("/root/PlayerMoney");
 	}
@@ -76,7 +78,7 @@ public partial class Refueling : Area2D
 			if (_movementScript != null && _gas != null && _playerMoney != null)
 			{
 				_canRefuel = true;
-				//GD.Print("🅿️ Można tankować — naciśnij [E]");
+				_messageHUD?.ShowMessage("Przytrzymaj E, aby zatankować samochód", new Color("#FFFFFF"));
 			}
 			else
 			{
@@ -95,7 +97,7 @@ public partial class Refueling : Area2D
 			_gas = null;
 			_movementScript = null;
 			_playerMoney = null;
-			//GD.Print("🚗 Opuściłeś stację paliw.");
+			_messageHUD?.HideMessage();
 		}
 	}
 }
