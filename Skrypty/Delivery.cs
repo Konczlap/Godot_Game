@@ -149,21 +149,30 @@ public partial class Delivery : Area2D
 			return;
 		}
 
-		// Jeśli mamy paczki, pokaż pierwszego klienta
+		// Jeśli mamy paczki, pokaż WSZYSTKICH klientów docelowych
 		if (_collectedPackages.Count > 0)
 		{
-			var firstPackage = _collectedPackages[0];
-			var targetCustomer = firstPackage.GetTargetCustomerNode();
+			var targets = new System.Collections.Generic.List<Node2D>();
 			
-			if (targetCustomer != null)
+			foreach (var package in _collectedPackages)
 			{
-				_minimap.target_package = targetCustomer;
+				var targetCustomer = package.GetTargetCustomerNode();
+				if (targetCustomer != null)
+				{
+					targets.Add(targetCustomer);
+				}
+			}
+			
+			if (targets.Count > 0)
+			{
+				_minimap.SetTargets(targets);
 				_minimap.ShowCustomerMarker();
-				GD.Print($"📍 Minimap: Cel ustawiony na klienta {targetCustomer.Name}");
+				GD.Print($"📍 Minimap: Ustawiono {targets.Count} celów (klientów)");
 			}
 			else
 			{
-				GD.PrintErr("UpdateMinimapTarget: Target customer is null!");
+				_minimap.ClearTargets();
+				GD.PrintErr("UpdateMinimapTarget: Żaden klient docelowy nie jest dostępny!");
 			}
 		}
 		else
@@ -172,13 +181,14 @@ public partial class Delivery : Area2D
 			var nearestPackage = FindNearestVisiblePackage();
 			if (nearestPackage != null)
 			{
-				_minimap.target_package = nearestPackage;
+				var targets = new System.Collections.Generic.List<Node2D> { nearestPackage };
+				_minimap.SetTargets(targets);
 				_minimap.ShowPackageMarker();
 				GD.Print($"📦 Minimap: Cel ustawiony na paczkę {nearestPackage.Name}");
 			}
 			else
 			{
-				_minimap.target_package = null;
+				_minimap.ClearTargets();
 				GD.Print("⚠️ Minimap: Brak widocznych paczek!");
 			}
 		}
@@ -215,6 +225,23 @@ public partial class Delivery : Area2D
 		CurrentPackageAmount = 0;
 		
 		UpdateMinimapTarget();
+	}
+	
+	// Wywoływane na początku nowego dnia - usuwa paczki z ekwipunku gracza
+	public void ClearInventory()
+	{
+		_collectedPackages.Clear();
+		CurrentPackageAmount = 0;
+		UpdateMinimapTarget();
+	}
+
+	// Wywoływane gdy kończy się dzień (godzina 22:00)
+	public void StopDeliveries()
+	{
+		if (_minimap != null)
+		{
+			_minimap.ClearTargets();
+		}
 	}
 	
 	public void SetMaxPackages(int value)
