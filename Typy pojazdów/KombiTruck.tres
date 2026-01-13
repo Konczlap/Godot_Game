@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="VehicleData" load_steps=3 format=3 uid="uid://js62ql3m6nq3"]
+
+[ext_resource type="Texture2D" uid="uid://ci5h0forpk510" path="res://Assety do gry/kombi.png" id="1_80itg"]
+[ext_resource type="Script" uid="uid://yaf0cs5mrrik" path="res://Skrypty/VehicleData.cs" id="1_lnc8n"]
+
+[resource]
+script = ExtResource("1_lnc8n")
+Type = 1
+MaxForwardSpeed = 100.0
+MaxBackwardSpeed = -50.0
+Acceleration = 200.0
+BrakePower = 300.0
+EngineBraking = 35.0
+RotationSpeed = 60.0
+FuelConsumptionRate = 1.5
+MaxPackageAmount = 5
+Price = 5
+Sprite = ExtResource("1_80itg")
+metadata/_custom_type_script = "uid://yaf0cs5mrrik"
