@@ -217,4 +217,9 @@ public partial class DayNightCycle : Node2D
 	{
 		_currentMinutes = 6 * 60;
 	}
+	
+	public void SetNight()
+	{
+		_currentMinutes = 22 * 60;
+	}
 }

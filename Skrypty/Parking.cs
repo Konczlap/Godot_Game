@@ -29,7 +29,7 @@ public partial class Parking : Area2D
 				shopUI.OpenShop();
 			
 			_messageHUD?.HideMessage();
-			GetNodeOrNull<HintTutorial>("/root/Node2D/HintHUD")?.OnShopOpened();
+			//GetNodeOrNull<HintTutorial>("/root/Node2D/HintHUD")?.OnShopOpened();
 		}
 		
 		if(!shopUI.IsOpen)

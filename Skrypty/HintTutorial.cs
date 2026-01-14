@@ -63,8 +63,10 @@ public partial class HintTutorial : CanvasLayer
 			"Witaj!",
 			"Twoim celem jest dostarczanie paczek klientom.\n\n" +
 			"Sterowanie:\n" +
-			"WASD / strzałki – jazda\n" +
-			"E – interakcja\n\n" +
+			"WSAD / strzałki – jazda\n" +
+			"Space – hamulec ręczny\n" +
+			"E – interakcja\n" +
+			"Esc – pauza\n" +
 			"Kliknij DALEJ aby rozpocząć."
 		);
 	}
@@ -111,7 +113,7 @@ public partial class HintTutorial : CanvasLayer
 		ShowPanel(
 			"Stacja paliw",
 			"Jedź na stację paliw.\n" +
-			"Zatrzymaj się przy dystrybutorze."
+			"Zatrzymaj się w wyznaczonym miejscu (czerwony prostokąt)."
 		);
 	}
 
@@ -128,11 +130,21 @@ public partial class HintTutorial : CanvasLayer
 		ShowPanel(
 			"Sklep",
 			"Odwiedź sklep.\n" +
+			"Opuść sklep z użyciem Esc.\n" +
 			"Możesz tam kupować nowe pojazdy."
 		);
 	}
-
+	
 	private void ShowStep8()
+	{
+		ShowPanel(
+			"Noc",
+			"Ciemno robi się od 20:00,\n od 22:00 czas staje, a klienci i paczki znikają.\n Klikając F włączasz światła."
+		);
+		dayNight.SetNight();
+	}
+
+	private void ShowStep9()
 	{
 		ShowPanel(
 			"Koniec dnia",
@@ -208,10 +220,16 @@ public partial class HintTutorial : CanvasLayer
 		if (!_active || _step != 7) return;
 		NextStep();
 	}
+	
+	public void NightReached()
+	{
+		if (!_active || _step != 8) return;
+		NextStep();
+	}
 
 	public void OnHomeReached()
 	{
-		if (!_active || _step != 8) return;
+		if (!_active || _step != 9) return;
 		NextStep();
 	}
 
