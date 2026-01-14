@@ -55,7 +55,7 @@
 [ext_resource type="AudioStream" uid="uid://cqulq000ftyoy" path="res://Assety do gry/game.mp3" id="53_ius1y"]
 [ext_resource type="Script" uid="uid://b83ag8ch3a0d0" path="res://Skrypty/VehicleManager.cs" id="54_bhq3s"]
 [ext_resource type="Resource" uid="uid://1lu0jd20r0vu" path="res://Typy pojazdów/PersonalCar.tres" id="55_yrxkk"]
-[ext_resource type="PackedScene" uid="uid://oslcj5uve7x7" path="res://Sceny/HintHUD.tscn" id="56_gxarf"]
+[ext_resource type="PackedScene" path="res://Sceny/HintHUD.tscn" id="56_gxarf"]
 [ext_resource type="Resource" uid="uid://js62ql3m6nq3" path="res://Typy pojazdów/KombiTruck.tres" id="56_ndcfq"]
 [ext_resource type="PackedScene" uid="uid://d3pxe67pv37uc" path="res://Sceny/MessageHUD.tscn" id="56_s1ubo"]
 [ext_resource type="Resource" uid="uid://gvr112vewybs" path="res://Typy pojazdów/Truck.tres" id="57_s1ubo"]
@@ -2361,6 +2361,7 @@ _playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 TimeSource = NodePath("../DayNightCycle")
 
 [node name="PauseMenu" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "delivery", "_messageHUD") instance=ExtResource("42_ijyun")]
+layer = 999
 player = NodePath("../Player")
 gas = NodePath("../Player/CarSprite/Gas")
 playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
