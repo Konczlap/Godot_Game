@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0pqv8skiv2ng"]
+
+[ext_resource type="Shader" uid="uid://cb3nnc2521moq" path="res://Sceny/FogOverlay.gdshader" id="1_rol6y"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rol6y"]
+frequency = 0.0075
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_uew1v"]
+noise = SubResource("FastNoiseLite_rol6y")
+seamless = true
+seamless_blend_skirt = 0.75
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b8xan"]
+shader = ExtResource("1_rol6y")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_uew1v")
+shader_parameter/density = 0.25
+shader_parameter/speed = Vector2(0.02, 0.01)
+
+[node name="FogOverlay" type="CanvasLayer"]
+
+[node name="FogRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_b8xan")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

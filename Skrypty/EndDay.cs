@@ -65,6 +65,7 @@ public partial class EndDay : Area2D
 			_playerInside &&
 			(_dayNightCycle.IsNight || _allPackageTaken))
 		{
+			_messageHUD?.HideMessage();
 			_dayNightCycle.EndDay();
 			var sm = GetNodeOrNull<SaveManager>("/root/SaveManager");
 			GD.Print($"SaveManager: {sm}");

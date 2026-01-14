@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=81 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -55,10 +55,12 @@
 [ext_resource type="AudioStream" uid="uid://cqulq000ftyoy" path="res://Assety do gry/game.mp3" id="53_ius1y"]
 [ext_resource type="Script" uid="uid://b83ag8ch3a0d0" path="res://Skrypty/VehicleManager.cs" id="54_bhq3s"]
 [ext_resource type="Resource" uid="uid://1lu0jd20r0vu" path="res://Typy pojazdów/PersonalCar.tres" id="55_yrxkk"]
+[ext_resource type="PackedScene" uid="uid://c0pqv8skiv2ng" path="res://Sceny/FogOverlay.tscn" id="56_73wwk"]
 [ext_resource type="PackedScene" uid="uid://oslcj5uve7x7" path="res://Sceny/HintHUD.tscn" id="56_gxarf"]
 [ext_resource type="Resource" uid="uid://js62ql3m6nq3" path="res://Typy pojazdów/KombiTruck.tres" id="56_ndcfq"]
 [ext_resource type="PackedScene" uid="uid://d3pxe67pv37uc" path="res://Sceny/MessageHUD.tscn" id="56_s1ubo"]
 [ext_resource type="Resource" uid="uid://gvr112vewybs" path="res://Typy pojazdów/Truck.tres" id="57_s1ubo"]
+[ext_resource type="PackedScene" uid="uid://cqb50t0l0t6a6" path="res://Sceny/weather_conroler.tscn" id="61_73wwk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_84mch"]
 
@@ -2353,6 +2355,7 @@ script = ExtResource("33_f744g")
 CarScript = NodePath("../Player")
 
 [node name="SummaryView" parent="." node_paths=PackedStringArray("_dayNightCycle", "_delivery", "_playerMoney") instance=ExtResource("36_pqddq")]
+layer = 999
 _dayNightCycle = NodePath("../DayNightCycle")
 _delivery = NodePath("../Player/CarSprite/Delivery")
 _playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
@@ -2372,6 +2375,7 @@ _messageHUD = NodePath("../MessageHUD")
 [node name="Minimap" parent="." instance=ExtResource("45_xduwb")]
 
 [node name="FuelWarningHUD" parent="." node_paths=PackedStringArray("Movement", "GasScript", "PlayerMoney", "Delivery", "DayNight") instance=ExtResource("47_c1bnq")]
+layer = 999
 Movement = NodePath("../Player")
 GasScript = NodePath("../Player/CarSprite/Gas")
 PlayerMoney = NodePath("../Player/CarSprite/PlayerMoney")
@@ -2379,11 +2383,14 @@ Delivery = NodePath("../Player/CarSprite/Delivery")
 DayNight = NodePath("../DayNightCycle")
 
 [node name="ShopUI" parent="." node_paths=PackedStringArray("vehicleManager", "playerMoney") instance=ExtResource("50_ius1y")]
+layer = 999
 visible = false
 vehicleManager = NodePath("../VehicleManager")
 playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 
 [node name="MessageHUD" parent="." instance=ExtResource("56_s1ubo")]
+
+[node name="FogOverlay" parent="." instance=ExtResource("56_73wwk")]
 
 [node name="HintHUD" parent="." node_paths=PackedStringArray("delivery", "gas", "dayNight", "minimap") instance=ExtResource("56_gxarf")]
 delivery = NodePath("../Player/CarSprite/Delivery")
@@ -2403,3 +2410,5 @@ stream = ExtResource("53_ius1y")
 volume_db = -15.0
 autoplay = true
 parameters/looping = true
+
+[node name="weather_control" parent="." instance=ExtResource("61_73wwk")]
