@@ -13,6 +13,8 @@ public partial class PauseMenu : CanvasLayer
 	[Export] public DayNightCycle dayNightCycle;
 	[Export] public Delivery delivery;
 	[Export] public MessageHUD _messageHUD;
+	[Export] public HintTutorial hintTutorial;
+	[Export] public FuelWarningHUD fuelWarningHUD;
 	
 	private Button resumeButton;
 	private Button restartButton;
@@ -65,6 +67,8 @@ public partial class PauseMenu : CanvasLayer
 		GetTree().Paused = false;
 		Visible = false;
 		_messageHUD?.ShowLastMessage(new Color("#FFFFFF"));
+		fuelWarningHUD?.ShowCommunicate();
+		
 	}
 	
 	private void OnRestartButtonPressed()
@@ -100,7 +104,7 @@ public partial class PauseMenu : CanvasLayer
 			}
 		
 		GD.Print("🔄 Gra zrestartowana od początku dnia!");
-		
+		hintTutorial.StartTutorialAgain();
 		OnResumeButtonPressed(); // ukryj menu pauzy i odblokuj grę
 	}
 	

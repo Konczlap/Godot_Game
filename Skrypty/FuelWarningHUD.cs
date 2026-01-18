@@ -119,4 +119,14 @@ public partial class FuelWarningHUD : CanvasLayer
 		Visible = false;
 		if (Movement != null) Movement.CanMove = true;
 	}
+	
+	public void HideCommunicate()
+	{
+		Visible = false;
+	}
+	
+	public void ShowCommunicate()
+	{
+		Visible = true;
+	}
 }

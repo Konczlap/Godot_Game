@@ -17,16 +17,26 @@ public partial class HintTutorial : CanvasLayer
 
 	public override void _Ready()
 	{
+		dalejButton.Pressed += OnNextClicked;
+		StartTutorialAgain();
+	}
+	
+	public void StartTutorialAgain()
+	{
 		// Sprawdź czy to pierwszy dzień
 		if (dayNight.GetDayNumber() > 1)
 		{
 			DisableTutorial();
 			return;
 		}
+		
+		_step = 0;
+		_active = true;
 
 		TimeScalePause(true);
 
-		dalejButton.Pressed += OnNextClicked;
+		//dalejButton.Pressed += OnNextClicked;
+		//dalejButton.Pressed -= OnNextClicked; // ważne
 
 		ShowStep0();
 	}

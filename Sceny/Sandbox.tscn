@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://bd5evck3edtjv"]
+[gd_scene load_steps=82 format=3 uid="uid://bd5evck3edtjv"]
 
 [ext_resource type="Script" uid="uid://ba6mioupfe4kn" path="res://Skrypty/Main.cs" id="1_3e1ui"]
 [ext_resource type="Script" uid="uid://0rsokkdp73wc" path="res://Skrypty/MovementScript.cs" id="1_d5l5x"]
@@ -128,6 +128,10 @@ size = Vector2(1000, 1000)
 size = Vector2(12, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_820eb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_73wwk"]
+font_size = 2000
+font_color = Color(0, 0, 0, 1)
 
 [node name="Node2D" type="Node2D" node_paths=PackedStringArray("DayNightCycle", "SummaryView", "Player")]
 script = ExtResource("1_3e1ui")
@@ -2297,6 +2301,24 @@ CustomersContainer = NodePath("../../../Klienci")
 scale = Vector2(50, 50)
 shape = SubResource("RectangleShape2D_820eb")
 
+[node name="Label2" type="Label" parent="Dom/Dom"]
+z_index = 20
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 2.1000001
+anchor_right = 0.5
+anchor_bottom = 2.1000001
+offset_left = -5299.998
+offset_top = -500.00012
+offset_right = 4299.998
+offset_bottom = 7339.998
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 94
+text = "DOM"
+label_settings = SubResource("LabelSettings_73wwk")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="SpawnManager" type="Node2D" parent="."]
 script = ExtResource("24_3h8bx")
 _packagesParentPath = NodePath("../Paczki")
@@ -2317,10 +2339,11 @@ _packageHUD = NodePath("../PackageHUD")
 _spawnManager = NodePath("../SpawnManager")
 _messageHUD = NodePath("../MessageHUD")
 
-[node name="PauseController" type="Node2D" parent="." node_paths=PackedStringArray("PauseMenu", "_messageHUD")]
+[node name="PauseController" type="Node2D" parent="." node_paths=PackedStringArray("PauseMenu", "_messageHUD", "fuelWarningHUD")]
 script = ExtResource("34_xsqcf")
 PauseMenu = NodePath("../PauseMenu")
 _messageHUD = NodePath("../MessageHUD")
+fuelWarningHUD = NodePath("../FuelWarningHUD")
 
 [node name="Sandbox" type="Node" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "vehicleManager")]
 script = ExtResource("48_c1bnq")
@@ -2363,7 +2386,7 @@ _playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 [node name="TimeHUD" parent="." node_paths=PackedStringArray("TimeSource") instance=ExtResource("38_jcakk")]
 TimeSource = NodePath("../DayNightCycle")
 
-[node name="PauseMenu" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "delivery", "_messageHUD") instance=ExtResource("42_ijyun")]
+[node name="PauseMenu" parent="." node_paths=PackedStringArray("player", "gas", "playerMoney", "dayNightCycle", "delivery", "_messageHUD", "hintTutorial", "fuelWarningHUD") instance=ExtResource("42_ijyun")]
 layer = 999
 player = NodePath("../Player")
 gas = NodePath("../Player/CarSprite/Gas")
@@ -2371,6 +2394,8 @@ playerMoney = NodePath("../Player/CarSprite/PlayerMoney")
 dayNightCycle = NodePath("../DayNightCycle")
 delivery = NodePath("../Player/CarSprite/Delivery")
 _messageHUD = NodePath("../MessageHUD")
+hintTutorial = NodePath("../HintHUD")
+fuelWarningHUD = NodePath("../FuelWarningHUD")
 
 [node name="Minimap" parent="." instance=ExtResource("45_xduwb")]
 

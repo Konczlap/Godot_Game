@@ -30,6 +30,10 @@ public partial class Sandbox : Node
 			dayNightCycle.SetDayNumber(1);
 			vehicleManager.LoadOwnedVehicles("");
 			vehicleManager.LoadActiveVehicle((int)VehicleType.Personal);
+			
+			//Pierwszy zapis w grze
+			sm.SaveNewGame();
+			//sm.SaveGame(player, gas, playerMoney, dayNightCycle, vehicleManager);
 			return; // WAŻNE — przerwij dalsze ładowanie zapisu
 		}
 

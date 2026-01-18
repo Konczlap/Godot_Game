@@ -91,4 +91,31 @@ public partial class SaveManager : Node
 
 		GD.Print("💾 Save zapisany!");
 	}
+	
+	public void SaveNewGame()
+	{
+		Day = 1;
+		PlayerPosition = new Vector2(346, 217);
+		Fuel = 100f;
+		Money = 50f;
+
+		OwnedVehicles = "0"; // albo ID startowego auta
+		ActiveVehicleId = 0;
+
+		var saveData = new Dictionary
+		{
+			{ "day", Day },
+			{ "player_x", (double)PlayerPosition.X },
+			{ "player_y", (double)PlayerPosition.Y },
+			{ "fuel", (double)Fuel },
+			{ "money", (double)Money },
+			{ "owned_vehicles", OwnedVehicles },
+			{ "active_vehicle", ActiveVehicleId }
+		};
+
+		using var file = FileAccess.Open(saveFile, FileAccess.ModeFlags.Write);
+		file.StoreString(Json.Stringify(saveData, "\t"));
+
+		GD.Print("🆕 Nowa gra zapisana!");
+	}
 }

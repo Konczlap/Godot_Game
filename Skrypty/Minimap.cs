@@ -206,7 +206,7 @@ public partial class Minimap : CanvasLayer
 					
 					if (_minimapCamera != null)
 					{
-						_minimapCamera.Zoom = new Vector2(0.7f, 0.7f);
+						_minimapCamera.Zoom = new Vector2(0.5f, 0.5f); // 0.7f, 0.7f
 					}
 					
 					SetMinimapLimitsFromNode(child);
