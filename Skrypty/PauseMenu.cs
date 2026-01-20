@@ -67,7 +67,10 @@ public partial class PauseMenu : CanvasLayer
 		GetTree().Paused = false;
 		Visible = false;
 		_messageHUD?.ShowLastMessage(new Color("#FFFFFF"));
-		fuelWarningHUD?.ShowCommunicate();
+		if(fuelWarningHUD.IsShowed)
+			fuelWarningHUD?.ShowCommunicate();
+		else
+			return;
 		
 	}
 	

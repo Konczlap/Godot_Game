@@ -14,6 +14,7 @@ public partial class FuelWarningHUD : CanvasLayer
 	private Label _note;
 	private Button _reloadButton;
 	private Button _confirmButton;
+	public bool IsShowed = false;
 
 	public override void _Ready()
 	{
@@ -27,12 +28,14 @@ public partial class FuelWarningHUD : CanvasLayer
 		_confirmButton.Pressed += OnConfirmPressed;
 
 		Visible = false;
+		IsShowed = false;
 	}
 
 	// Pokazujemy czerwone okno "PORAŻKA" (brak pieniędzy)
 	public void ShowFailureMessage()
 	{
 		Visible = true;
+		IsShowed = true;
 		_title.Text = "PORAŻKA";
 		_title.Modulate = new Color(1f, 0f, 0f); // czerwony
 		_note.Text = "NOTE:\nZabrakło ci paliwa i nie masz pieniędzy by zatankować swój pojazd.";
@@ -46,6 +49,7 @@ public partial class FuelWarningHUD : CanvasLayer
 	public void ShowTowMessage()
 	{
 		Visible = true;
+		IsShowed = true;
 		_title.Text = "KOMUNIKAT";
 		_title.Modulate = new Color(1f, 0.5f, 0f); // pomarańczowy
 		_note.Text = "NOTE:\nZabrakło ci paliwa, twoje auto zostało przeholowane na stację paliw,\nCena holowania 75 zł.";
@@ -94,6 +98,7 @@ public partial class FuelWarningHUD : CanvasLayer
 			Delivery.ResetPackages();
 
 		Visible = false;
+		IsShowed = false;
 		if (Movement != null) Movement.CanMove = true;
 	}
 
